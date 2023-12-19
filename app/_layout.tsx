@@ -86,7 +86,10 @@ function RootLayoutNav() {
           ),
         }}
       />
-      <Stack.Screen name="listing/[id]" options={{ headerTitle: "" }} />
+      <Stack.Screen
+        name="find/[id]"
+        options={{ presentation: "modal", headerShown: false }}
+      />
     </Stack>
   );
 }

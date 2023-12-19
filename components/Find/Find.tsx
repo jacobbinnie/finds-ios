@@ -10,6 +10,9 @@ import Colors from "@/constants/Colors";
 import { Theme } from "@/constants/Styles";
 import { AntDesign, FontAwesome, Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useRouter } from "expo-router";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/utils/supabase";
 
 interface FindProps {
   id: string;
@@ -30,6 +33,8 @@ interface FindProps {
 
 const Find = ({ id, place, photo, profile, rating, review }: FindProps) => {
   const deviceHeight = useWindowDimensions().height;
+
+  const router = useRouter();
 
   return (
     <View
@@ -57,61 +62,63 @@ const Find = ({ id, place, photo, profile, rating, review }: FindProps) => {
           elevation: 4,
         }}
       >
-        <Text
-          style={{
-            position: "absolute",
-            zIndex: 10,
-            top: 10,
-            left: 10,
-            backgroundColor: Colors.light,
-            padding: 10,
-            borderRadius: 10,
-            overflow: "hidden",
-            fontFamily: "font-m",
-          }}
-        >
-          {`Find by @${profile?.username}`}
-        </Text>
+        <TouchableOpacity onPress={() => router.push(`/find/${id}`)}>
+          <Text
+            style={{
+              position: "absolute",
+              zIndex: 10,
+              top: 10,
+              left: 10,
+              backgroundColor: Colors.light,
+              padding: 10,
+              borderRadius: 10,
+              overflow: "hidden",
+              fontFamily: "font-m",
+            }}
+          >
+            {`Find by @${profile?.username}`}
+          </Text>
 
-        <Image
-          style={{ width: "100%", height: 200, objectFit: "cover" }}
-          source={{ uri: photo }}
-        />
-        <View
-          style={{
-            paddingVertical: 20,
-            paddingHorizontal: 10,
-            gap: 10,
-            backgroundColor: "#FFF",
-            paddingBottom: 20,
-            borderEndStartRadius: 10,
-            borderEndEndRadius: 10,
-            overflow: "hidden",
-          }}
-        >
+          <Image
+            style={{ width: "100%", height: 200, objectFit: "cover" }}
+            source={{ uri: photo }}
+          />
           <View
             style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "baseline",
-              gap: 7,
+              paddingVertical: 20,
+              paddingHorizontal: 10,
+              gap: 10,
+              backgroundColor: "#FFF",
+              paddingBottom: 20,
+              borderEndStartRadius: 10,
+              borderEndEndRadius: 10,
+              overflow: "hidden",
             }}
           >
-            <FontAwesome name="map-marker" size={15} color={Colors.primary} />
-            <Text style={Theme.BodyText}>{place?.locality}</Text>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "baseline",
+                gap: 7,
+              }}
+            >
+              <FontAwesome name="map-marker" size={15} color={Colors.primary} />
+              <Text style={Theme.BodyText}>{place?.locality}</Text>
+            </View>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Text style={Theme.Title}>{place?.name}</Text>
+              <Text style={Theme.Title}>{rating}/10</Text>
+            </View>
+            <Text style={Theme.BodyText}>{review}</Text>
           </View>
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
-            <Text style={Theme.Title}>{place?.name}</Text>
-            <Text style={Theme.Title}>{rating}/10</Text>
-          </View>
-          <Text style={Theme.BodyText}>{review}</Text>
-        </View>
+        </TouchableOpacity>
 
         <View
           style={{
