@@ -3,10 +3,10 @@ import React from "react";
 import { useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/utils/supabase";
-import { FontAwesome } from "@expo/vector-icons";
-import { Theme } from "@/constants/Styles";
 import Colors from "@/constants/Colors";
 import ProfileCard from "@/components/ProfileCard/ProfileCard";
+import ReviewPreviewCard from "@/components/ReviewPreviewCard/ReviewPreviewCard";
+import FindReviews from "@/components/FindReviews/FindReviews";
 
 const FindDetails = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -80,46 +80,18 @@ const FindDetails = () => {
         {"Add to my finds"}
       </Text>
 
-      <Image
-        style={{ width: "100%", height: 200, objectFit: "cover" }}
-        source={{ uri: find?.data?.photos[0] }}
+      <ReviewPreviewCard
+        place={find?.data?.places}
+        photo={find?.data?.photos[0]}
+        rating={find?.data?.rating}
+        review={find?.data?.review}
       />
-      <View
-        style={{
-          paddingVertical: 20,
-          paddingHorizontal: 10,
-          gap: 10,
-          paddingBottom: 20,
-          borderEndStartRadius: 10,
-          borderEndEndRadius: 10,
-          overflow: "hidden",
-        }}
-      >
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "baseline",
-            gap: 7,
-          }}
-        >
-          <FontAwesome name="map-marker" size={15} color={Colors.primary} />
-          <Text style={Theme.BodyText}>{find?.data?.places?.locality}</Text>
-        </View>
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
-        >
-          <Text style={Theme.Title}>{find?.data?.places?.name}</Text>
-          <Text style={Theme.Title}>{find?.data?.rating}/10</Text>
-        </View>
-        <Text style={Theme.BodyText}>{find?.data?.review}</Text>
 
+      <View style={{ paddingHorizontal: 10 }}>
         <ProfileCard profile={find?.data?.profile} />
       </View>
+
+      {find?.data?.places?.id && <FindReviews id={find?.data?.places?.id} />}
     </View>
   );
 };

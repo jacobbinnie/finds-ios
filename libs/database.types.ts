@@ -14,7 +14,7 @@ export interface Database {
           created_at: string
           id: string
           photos: string[]
-          place: string
+          place: string | null
           rating: number
           review: string
           user_id: string
@@ -23,7 +23,7 @@ export interface Database {
           created_at?: string
           id?: string
           photos: string[]
-          place: string
+          place?: string | null
           rating: number
           review: string
           user_id: string
@@ -32,7 +32,7 @@ export interface Database {
           created_at?: string
           id?: string
           photos?: string[]
-          place?: string
+          place?: string | null
           rating?: number
           review?: string
           user_id?: string
@@ -43,7 +43,7 @@ export interface Database {
             columns: ["place"]
             isOneToOne: false
             referencedRelation: "places"
-            referencedColumns: ["hashed_mapbox_id"]
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "finds_user_id_fkey"
