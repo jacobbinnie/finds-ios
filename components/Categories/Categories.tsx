@@ -1,4 +1,10 @@
-import { View, Text, ScrollView, Touchable } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  Touchable,
+  useWindowDimensions,
+} from "react-native";
 import React from "react";
 import { categories } from "./Categories.json";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -17,8 +23,19 @@ type Categories = {
 const AllCategories: Categories = categories;
 
 const Categories = () => {
+  const deviceHeight = useWindowDimensions().height;
+
   return (
-    <View style={{ padding: 0, flexGrow: 0 }}>
+    <View
+      style={{
+        padding: 0,
+        flexGrow: 0,
+        height: deviceHeight * 0.075,
+        alignItems: "center",
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
       <ScrollView
         showsHorizontalScrollIndicator={false}
         horizontal

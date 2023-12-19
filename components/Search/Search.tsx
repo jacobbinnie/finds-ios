@@ -1,26 +1,27 @@
-import { View, Text } from "react-native";
+import { View, Text, useWindowDimensions } from "react-native";
 import React from "react";
 import Colors from "@/constants/Colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { useRoute } from "@react-navigation/native";
-import { Stack, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
 const Search = () => {
   const router = useRouter();
+  const deviceHeight = useWindowDimensions().height;
 
   return (
-    <View style={{ paddingHorizontal: 20, zIndex: 10 }}>
+    <View style={{ paddingHorizontal: 10, zIndex: 10 }}>
       <TouchableOpacity
         onPress={() => router.push("/(modals)/search")}
         style={{
-          padding: 20,
+          height: deviceHeight * 0.075,
           backgroundColor: "#FFF",
           shadowColor: Colors.grey,
           shadowOffset: {
             width: 0,
             height: 2,
           },
+          paddingHorizontal: 20,
           shadowOpacity: 0.2,
           shadowRadius: 2.62,
           elevation: 4,

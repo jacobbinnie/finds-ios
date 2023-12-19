@@ -29,13 +29,15 @@ interface FindProps {
 }
 
 const Find = ({ id, place, photo, profile, rating, review }: FindProps) => {
+  const deviceHeight = useWindowDimensions().height;
+
   return (
     <View
       id={id}
       style={{
         width: "100%",
-        height: Dimensions.get("window").height - 297,
         justifyContent: "space-between",
+        height: deviceHeight * 0.6,
       }}
     >
       <View
@@ -72,7 +74,7 @@ const Find = ({ id, place, photo, profile, rating, review }: FindProps) => {
         </Text>
 
         <Image
-          style={{ width: "100%", height: 300, objectFit: "cover" }}
+          style={{ width: "100%", height: 200, objectFit: "cover" }}
           source={{ uri: photo }}
         />
         <View
@@ -119,6 +121,7 @@ const Find = ({ id, place, photo, profile, rating, review }: FindProps) => {
             alignItems: "center",
             flexDirection: "row",
             gap: 20,
+            marginTop: 20,
           }}
         >
           <TouchableOpacity

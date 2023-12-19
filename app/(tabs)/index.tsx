@@ -1,4 +1,10 @@
-import { SafeAreaView, View, Text, FlatList } from "react-native";
+import {
+  SafeAreaView,
+  View,
+  Text,
+  FlatList,
+  useWindowDimensions,
+} from "react-native";
 import React, { useEffect } from "react";
 import { Theme } from "@/constants/Styles";
 import Search from "@/components/Search/Search";
@@ -9,6 +15,8 @@ import { Divider } from "react-native-elements";
 import Categories from "@/components/Categories/Categories";
 
 const Page = () => {
+  const deviceHeight = useWindowDimensions().height;
+
   const {
     data: finds,
     isLoading,
@@ -49,26 +57,28 @@ const Page = () => {
 
   return (
     <>
-      <SafeAreaView />
-      <Search />
       <View style={[Theme.Container, { gap: 10 }]}>
+        <SafeAreaView />
+        <Search />
         <Categories />
-        <View style={{ height: "100%", flex: 1 }}>
+        <View style={{ flex: 1 }}>
           <Divider style={{ marginBottom: 10 }} />
           <FlatList
             style={{
               borderRadius: 10,
               overflow: "hidden",
+              flexGrow: 1,
             }}
-            snapToAlignment={"start"}
-            viewabilityConfig={{ itemVisiblePercentThreshold: 90 }}
+            decelerationRate={"fast"}
+            viewabilityConfig={{ itemVisiblePercentThreshold: 80 }}
             pagingEnabled={true}
             onRefresh={() => refetch()}
             refreshing={isLoading}
             data={finds?.data}
             keyExtractor={(item) => item.id}
-            ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
             showsVerticalScrollIndicator={false}
+            snapToInterval={deviceHeight * 0.6 + 40}
+            ItemSeparatorComponent={() => <View style={{ marginTop: 40 }} />}
             renderItem={({ item }) => (
               <Find
                 key={item.id}
