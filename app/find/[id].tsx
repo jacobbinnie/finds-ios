@@ -1,4 +1,4 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
@@ -64,7 +64,7 @@ const FindDetails = () => {
         flex: 1,
       }}
     >
-      <Text
+      <TouchableOpacity
         style={{
           position: "absolute",
           zIndex: 10,
@@ -74,11 +74,16 @@ const FindDetails = () => {
           padding: 10,
           borderRadius: 10,
           overflow: "hidden",
-          fontFamily: "font-m",
         }}
       >
-        {"Add to my finds"}
-      </Text>
+        <Text
+          style={{
+            fontFamily: "font-m",
+          }}
+        >
+          {"Add to my finds"}
+        </Text>
+      </TouchableOpacity>
 
       <ReviewPreviewCard
         place={find?.data?.places}
