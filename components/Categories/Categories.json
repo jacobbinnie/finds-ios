@@ -1,0 +1,84 @@
+{
+  "categories": {
+    "italian": {
+      "name": "Italian",
+      "icon": "🍝"
+    },
+    "cocktail": {
+      "name": "Cocktails",
+      "icon": "🍹"
+    },
+    "coffee": {
+      "name": "Coffee",
+      "icon": "☕️"
+    },
+    "pizza": {
+      "name": "Pizza",
+      "icon": "🍕"
+    },
+    "burger": {
+      "name": "Burgers",
+      "icon": "🍔"
+    },
+    "sushi": {
+      "name": "Sushi",
+      "icon": "🍣"
+    },
+    "steak": {
+      "name": "Steak",
+      "icon": "🥩"
+    },
+    "fish": {
+      "name": "Fish",
+      "icon": "🐟"
+    },
+    "chinese": {
+      "name": "Chinese",
+      "icon": "🥡"
+    },
+    "indian": {
+      "name": "Indian",
+      "icon": "🍛"
+    },
+    "thai": {
+      "name": "Thai",
+      "icon": "🍜"
+    },
+    "mexican": {
+      "name": "Mexican",
+      "icon": "🌮"
+    },
+    "vegetarian": {
+      "name": "Vegetarian",
+      "icon": "🥗"
+    },
+    "vegan": {
+      "name": "Vegan",
+      "icon": "🥦"
+    },
+    "bagel": {
+      "name": "Bagels",
+      "icon": "🥯"
+    },
+    "donut": {
+      "name": "Donuts",
+      "icon": "🍩"
+    },
+    "icecream": {
+      "name": "Ice Cream",
+      "icon": "🍦"
+    },
+    "dessert": {
+      "name": "Dessert",
+      "icon": "🍰"
+    },
+    "bar": {
+      "name": "Bars",
+      "icon": "🍺"
+    },
+    "burrito": {
+      "name": "Burritos",
+      "icon": "🌯"
+    }
+  }
+}

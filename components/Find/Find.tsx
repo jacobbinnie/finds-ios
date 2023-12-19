@@ -8,7 +8,7 @@ import {
 import React from "react";
 import Colors from "@/constants/Colors";
 import { Theme } from "@/constants/Styles";
-import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { AntDesign, FontAwesome, Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 interface FindProps {
@@ -19,6 +19,7 @@ interface FindProps {
   place: {
     name: string;
     id: string;
+    locality: string | null;
   } | null;
   profile: {
     id: string;
@@ -33,16 +34,18 @@ const Find = ({ id, place, photo, profile, rating, review }: FindProps) => {
       id={id}
       style={{
         width: "100%",
-        height: Dimensions.get("window").height - 129,
+        height: Dimensions.get("window").height - 297,
+        justifyContent: "space-between",
       }}
     >
       <View
         style={{
-          backgroundColor: "#FFF",
+          display: "flex",
+          position: "relative",
+          flex: 1,
           borderRadius: 10,
-          paddingBottom: 20,
-          shadowColor: Colors.grey,
           overflow: "hidden",
+          shadowColor: Colors.grey,
           shadowOffset: {
             width: 0,
             height: 2,
@@ -50,8 +53,6 @@ const Find = ({ id, place, photo, profile, rating, review }: FindProps) => {
           shadowOpacity: 0.2,
           shadowRadius: 2.62,
           elevation: 4,
-          display: "flex",
-          position: "relative",
         }}
       >
         <Text
@@ -67,7 +68,7 @@ const Find = ({ id, place, photo, profile, rating, review }: FindProps) => {
             fontFamily: "font-m",
           }}
         >
-          {place?.name}
+          {`Find by @${profile?.username}`}
         </Text>
 
         <Image
@@ -76,11 +77,27 @@ const Find = ({ id, place, photo, profile, rating, review }: FindProps) => {
         />
         <View
           style={{
-            paddingTop: 20,
+            paddingVertical: 20,
             paddingHorizontal: 10,
             gap: 10,
+            backgroundColor: "#FFF",
+            paddingBottom: 20,
+            borderEndStartRadius: 10,
+            borderEndEndRadius: 10,
+            overflow: "hidden",
           }}
         >
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "baseline",
+              gap: 7,
+            }}
+          >
+            <FontAwesome name="map-marker" size={15} color={Colors.primary} />
+            <Text style={Theme.BodyText}>{place?.locality}</Text>
+          </View>
           <View
             style={{
               display: "flex",
@@ -88,49 +105,65 @@ const Find = ({ id, place, photo, profile, rating, review }: FindProps) => {
               justifyContent: "space-between",
             }}
           >
-            <Text style={Theme.Title}>{`Find by @${profile?.username}`}</Text>
+            <Text style={Theme.Title}>{place?.name}</Text>
             <Text style={Theme.Title}>{rating}/10</Text>
           </View>
           <Text style={Theme.BodyText}>{review}</Text>
         </View>
-      </View>
 
-      <View
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "row",
-          gap: 20,
-          marginTop: 20,
-        }}
-      >
-        <TouchableOpacity
+        <View
           style={{
-            backgroundColor: Colors.primary,
             display: "flex",
-            width: 70,
-            height: 70,
+            flexGrow: 1,
             justifyContent: "center",
             alignItems: "center",
-            borderRadius: 99,
+            flexDirection: "row",
+            gap: 20,
           }}
         >
-          <Ionicons name="ios-heart" size={35} color="#FFF" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            backgroundColor: "#FFF",
-            display: "flex",
-            width: 70,
-            height: 70,
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: 99,
-          }}
-        >
-          <AntDesign name="like1" size={35} color={Colors.light} />
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              backgroundColor: Colors.primary,
+              display: "flex",
+              width: 70,
+              height: 70,
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: 99,
+              shadowColor: Colors.grey,
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.2,
+              shadowRadius: 2.62,
+              elevation: 4,
+            }}
+          >
+            <Ionicons name="ios-heart" size={35} color="#FFF" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              backgroundColor: "#FFF",
+              display: "flex",
+              width: 70,
+              height: 70,
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: 99,
+              shadowColor: Colors.grey,
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.2,
+              shadowRadius: 2.62,
+              elevation: 4,
+            }}
+          >
+            <AntDesign name="like1" size={35} color={Colors.light} />
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );

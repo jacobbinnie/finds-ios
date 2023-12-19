@@ -6,7 +6,6 @@ export const Theme = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.light,
     padding: 10,
-    gap: 20,
   },
   Button: {
     borderWidth: 1,

@@ -4,12 +4,13 @@ import Colors from "@/constants/Colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useRoute } from "@react-navigation/native";
 import { Stack, useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
 const Search = () => {
   const router = useRouter();
 
   return (
-    <View style={{ paddingHorizontal: 20 }}>
+    <View style={{ paddingHorizontal: 20, zIndex: 10 }}>
       <TouchableOpacity
         onPress={() => router.push("/(modals)/search")}
         style={{
@@ -24,9 +25,16 @@ const Search = () => {
           shadowRadius: 2.62,
           elevation: 4,
           borderRadius: 99,
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 10,
         }}
       >
-        <Text style={{ fontFamily: "font-s", color: Colors.grey }}>Search</Text>
+        <Ionicons name="search" size={15} color={Colors.grey} />
+        <Text style={{ fontFamily: "font-s", color: Colors.grey }}>
+          Search people or food
+        </Text>
       </TouchableOpacity>
     </View>
   );

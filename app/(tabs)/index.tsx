@@ -6,6 +6,7 @@ import { supabase } from "@/utils/supabase";
 import { useQuery } from "@tanstack/react-query";
 import Find from "@/components/Find/Find";
 import { Divider } from "react-native-elements";
+import Categories from "@/components/Categories/Categories";
 
 const Page = () => {
   const {
@@ -24,7 +25,8 @@ const Page = () => {
         photos,
         places (
           name,
-          id
+          id,
+          locality
         ),
         profile (
           id,
@@ -38,43 +40,50 @@ const Page = () => {
   });
 
   if (isLoading) {
-    return <Text>Loading...</Text>; // Optional loading state
+    return <Text>Loading...</Text>;
   }
 
   if (isError) {
-    return <Text>Error fetching data</Text>; // Optional error state
+    return <Text>Error fetching data</Text>;
   }
 
   return (
-    <View style={Theme.Container}>
+    <>
       <SafeAreaView />
       <Search />
-      <View style={{ height: "100%" }}>
-        <Divider style={{ marginBottom: 10 }} />
-        <FlatList
-          snapToAlignment={"start"}
-          viewabilityConfig={{ itemVisiblePercentThreshold: 90 }}
-          pagingEnabled={true}
-          onRefresh={() => refetch()}
-          refreshing={isLoading}
-          data={finds?.data}
-          keyExtractor={(item) => item.id}
-          ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <Find
-              key={item.id}
-              id={item.id}
-              rating={item.rating}
-              review={item.review}
-              photo={item.photos[0]}
-              place={item.places}
-              profile={item.profile}
-            />
-          )}
-        />
+      <View style={[Theme.Container, { gap: 10 }]}>
+        <Categories />
+        <View style={{ height: "100%", flex: 1 }}>
+          <Divider style={{ marginBottom: 10 }} />
+          <FlatList
+            style={{
+              borderRadius: 10,
+              overflow: "hidden",
+            }}
+            snapToAlignment={"start"}
+            viewabilityConfig={{ itemVisiblePercentThreshold: 90 }}
+            pagingEnabled={true}
+            onRefresh={() => refetch()}
+            refreshing={isLoading}
+            data={finds?.data}
+            keyExtractor={(item) => item.id}
+            ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item }) => (
+              <Find
+                key={item.id}
+                id={item.id}
+                rating={item.rating}
+                review={item.review}
+                photo={item.photos[0]}
+                place={item.places}
+                profile={item.profile}
+              />
+            )}
+          />
+        </View>
       </View>
-    </View>
+    </>
   );
 };
 
