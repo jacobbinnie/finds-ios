@@ -13,6 +13,7 @@ export interface Database {
         Row: {
           created_at: string
           id: string
+          photos: string[]
           place: string
           rating: number
           review: string
@@ -21,6 +22,7 @@ export interface Database {
         Insert: {
           created_at?: string
           id?: string
+          photos: string[]
           place: string
           rating: number
           review: string
@@ -29,6 +31,7 @@ export interface Database {
         Update: {
           created_at?: string
           id?: string
+          photos?: string[]
           place?: string
           rating?: number
           review?: string

@@ -1,6 +1,7 @@
 import { Theme } from "@/constants/Styles";
 import { SupabaseProvider } from "@/providers/SupabaseProvider";
 import { Ionicons } from "@expo/vector-icons";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
@@ -22,8 +23,9 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    "agr-wh": require("../assets/fonts/Agrandir-WideHeavy.otf"),
-    "agr-wm": require("../assets/fonts/Agrandir-WideMedium.otf"),
+    "font-b": require("../assets/fonts/Gilroy-Bold.ttf"),
+    "font-s": require("../assets/fonts/Gilroy-SemiBold.ttf"),
+    "font-m": require("../assets/fonts/Gilroy-Medium.ttf"),
   });
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
@@ -41,10 +43,14 @@ export default function RootLayout() {
     return null;
   }
 
+  const queryClient = new QueryClient();
+
   return (
-    <SupabaseProvider>
-      <RootLayoutNav />
-    </SupabaseProvider>
+    <QueryClientProvider client={queryClient}>
+      <SupabaseProvider>
+        <RootLayoutNav />
+      </SupabaseProvider>
+    </QueryClientProvider>
   );
 }
 

@@ -9,24 +9,24 @@ const Search = () => {
   const router = useRouter();
 
   return (
-    <View>
+    <View style={{ paddingHorizontal: 20 }}>
       <TouchableOpacity
         onPress={() => router.push("/(modals)/search")}
         style={{
           padding: 20,
-          backgroundColor: Colors.light,
+          backgroundColor: "#FFF",
           shadowColor: Colors.grey,
           shadowOffset: {
             width: 0,
             height: 2,
           },
-          shadowOpacity: 0.4,
+          shadowOpacity: 0.2,
           shadowRadius: 2.62,
           elevation: 4,
           borderRadius: 99,
         }}
       >
-        <Text style={{ fontFamily: "agr-wm", color: Colors.grey }}>Search</Text>
+        <Text style={{ fontFamily: "font-s", color: Colors.grey }}>Search</Text>
       </TouchableOpacity>
     </View>
   );

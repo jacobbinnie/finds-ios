@@ -17,13 +17,15 @@ export const Theme = StyleSheet.create({
     borderRadius: 99,
   },
   ButtonText: {
-    fontSize: 15,
     color: Colors.primary,
-    fontFamily: "agr-wh",
+    fontFamily: "font-b",
   },
   Title: {
-    fontSize: 20,
-    fontFamily: "agr-wh",
-    color: Colors.primary,
+    fontFamily: "font-b",
+    color: Colors.dark,
+    fontSize: 18,
+  },
+  BodyText: {
+    fontFamily: "font-m",
   },
 });
