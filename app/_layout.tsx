@@ -1,3 +1,5 @@
+import { Theme } from "@/constants/Styles";
+import { SupabaseProvider } from "@/providers/SupabaseProvider";
 import { Ionicons } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack, useRouter } from "expo-router";
@@ -39,7 +41,11 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+  return (
+    <SupabaseProvider>
+      <RootLayoutNav />
+    </SupabaseProvider>
+  );
 }
 
 function RootLayoutNav() {
@@ -48,13 +54,12 @@ function RootLayoutNav() {
   return (
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-
       <Stack.Screen
         name="(modals)/login"
         options={{
           presentation: "modal",
-          title: "Log in or sign up",
-          headerTitleStyle: { fontFamily: "agr-wm" },
+          title: "Sign in",
+          headerTitleStyle: Theme.Title,
           headerLeft: () => (
             <TouchableOpacity onPress={() => router.back()}>
               <Ionicons name="close-outline" size={24} />
@@ -62,7 +67,19 @@ function RootLayoutNav() {
           ),
         }}
       />
-
+      <Stack.Screen
+        name="(modals)/search"
+        options={{
+          presentation: "modal",
+          title: "Search",
+          headerTitleStyle: Theme.Title,
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => router.back()}>
+              <Ionicons name="close-outline" size={24} />
+            </TouchableOpacity>
+          ),
+        }}
+      />
       <Stack.Screen name="listing/[id]" options={{ headerTitle: "" }} />
     </Stack>
   );

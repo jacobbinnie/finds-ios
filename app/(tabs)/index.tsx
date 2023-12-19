@@ -1,12 +1,15 @@
-import { View, Text } from "react-native";
+import { SafeAreaView, View } from "react-native";
 import React from "react";
-import { Link } from "expo-router";
+import { Theme } from "@/constants/Styles";
+import { Stack } from "expo-router";
+import Search from "@/components/Search/Search";
+import Colors from "@/constants/Colors";
 
 const Page = () => {
   return (
-    <View>
-      <Link href={"/(modals)/login"}>Login</Link>
-      <Link href={"/listing/1337"}>Listing details</Link>
+    <View style={Theme.Container}>
+      <SafeAreaView />
+      <Search />
     </View>
   );
 };

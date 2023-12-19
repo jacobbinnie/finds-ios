@@ -1,5 +1,5 @@
 import React from "react";
-import { Tabs } from "expo-router";
+import { Link, Tabs } from "expo-router";
 import Colors from "@/constants/Colors";
 
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
@@ -8,15 +8,17 @@ const Layout = () => {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors.secondary,
+        tabBarActiveTintColor: Colors.primary,
+        tabBarInactiveTintColor: Colors.grey,
         tabBarLabelStyle: {
-          fontFamily: "agr-wh",
+          fontFamily: "agr-wm",
         },
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
+          headerShown: false,
           tabBarLabel: "Explore",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="search" size={size} color={color} />
@@ -44,7 +46,9 @@ const Layout = () => {
       <Tabs.Screen
         name="profile"
         options={{
+          headerShown: false,
           tabBarLabel: "Profile",
+          title: "Account",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name="face-man-profile"

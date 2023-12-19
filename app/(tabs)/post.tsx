@@ -1,9 +1,10 @@
 import { View, Text } from "react-native";
 import React from "react";
+import { Theme } from "@/constants/Styles";
 
 const Post = () => {
   return (
-    <View>
+    <View style={Theme.Container}>
       <Text>Post</Text>
     </View>
   );
