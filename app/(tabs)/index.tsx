@@ -31,6 +31,11 @@ const Page = () => {
         rating,
         review,
         photos,
+        user_id,
+        likes (
+          id,
+          profile
+        ),
         places (
           name,
           id,
@@ -77,7 +82,7 @@ const Page = () => {
             data={finds?.data}
             keyExtractor={(item) => item.id}
             showsVerticalScrollIndicator={false}
-            snapToInterval={deviceHeight * 0.6 + 40}
+            snapToInterval={deviceHeight * 0.7 + 40}
             ItemSeparatorComponent={() => <View style={{ marginTop: 40 }} />}
             renderItem={({ item }) => (
               <Find
@@ -87,7 +92,9 @@ const Page = () => {
                 review={item.review}
                 photo={item.photos[0]}
                 place={item.places}
+                profileId={item.user_id}
                 profile={item.profile}
+                isLiked={false}
               />
             )}
           />
