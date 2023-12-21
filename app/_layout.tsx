@@ -79,6 +79,7 @@ function RootLayoutNav() {
           presentation: "modal",
           title: "Search",
           headerTitleStyle: Theme.Title,
+          headerShown: false,
           headerLeft: () => (
             <TouchableOpacity onPress={() => router.back()}>
               <Ionicons name="close-outline" size={24} />
