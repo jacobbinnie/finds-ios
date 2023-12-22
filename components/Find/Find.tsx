@@ -5,8 +5,6 @@ import { Theme } from "@/constants/Styles";
 import { AntDesign, FontAwesome, Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
-import { supabase } from "@/utils/supabase";
-import { useSupabase } from "@/providers/SupabaseProvider";
 
 interface FindProps {
   id: string;
@@ -40,21 +38,6 @@ const Find = ({
   const deviceHeight = useWindowDimensions().height;
   const router = useRouter();
 
-  const { profile: authProfile } = useSupabase();
-
-  const handleAction = async (type: "LIKE" | "SAVE") => {
-    if (!authProfile) {
-      return router.push("/(modals)/login");
-    }
-
-    if (type === "LIKE") {
-      const res = await supabase.from("likes").insert({
-        find: id,
-        profile: profileId,
-      });
-    }
-  };
-
   return (
     <View
       id={id}
@@ -67,7 +50,7 @@ const Find = ({
         style={{
           display: "flex",
           position: "relative",
-          flex: 1,
+          height: deviceHeight * 0.7,
           borderRadius: 10,
           overflow: "hidden",
           shadowColor: Colors.grey,
@@ -100,14 +83,16 @@ const Find = ({
           <Image
             style={{
               width: "100%",
-              height: deviceHeight * 0.3,
+              height: deviceHeight * 0.35,
               objectFit: "cover",
             }}
             source={{ uri: photo }}
           />
           <View
             style={{
-              paddingVertical: 20,
+              height: 100,
+              display: "flex",
+              justifyContent: "center",
               paddingHorizontal: 10,
               gap: 10,
               backgroundColor: "#FFF",
@@ -143,16 +128,15 @@ const Find = ({
 
         <View
           style={{
+            height: deviceHeight * 0.17,
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "row",
-            gap: 20,
-            marginTop: 40,
+            gap: 40,
           }}
         >
           <TouchableOpacity
-            onPress={() => handleAction("SAVE")}
             style={{
               backgroundColor: Colors.primary,
               display: "flex",
@@ -174,7 +158,6 @@ const Find = ({
             <Ionicons name="ios-heart" size={35} color="#FFF" />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => handleAction("LIKE")}
             style={{
               backgroundColor: isLiked ? Colors.secondary : "#FFF",
               display: "flex",

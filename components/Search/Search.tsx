@@ -10,7 +10,7 @@ const Search = () => {
   const deviceHeight = useWindowDimensions().height;
 
   return (
-    <View style={{ paddingHorizontal: 10, zIndex: 10 }}>
+    <View style={{ zIndex: 10 }}>
       <TouchableOpacity
         onPress={() => router.push("/(modals)/search")}
         style={{
