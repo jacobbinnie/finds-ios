@@ -8,47 +8,32 @@ import {
 import React, { useEffect } from "react";
 import { Theme } from "@/constants/Styles";
 import Search from "@/components/Search/Search";
-import { supabase } from "@/utils/supabase";
 import { useQuery } from "@tanstack/react-query";
 import Find from "@/components/Find/Find";
 import { Divider } from "react-native-elements";
 import Categories from "@/components/Categories/Categories";
+import { useSupabase } from "@/providers/SupabaseProvider";
+import { AllFinds, SingleFind, getAllFindsQuery } from "@/types/queries";
 
 const Page = () => {
   const deviceHeight = useWindowDimensions().height;
+  const { profile } = useSupabase();
+
+  const isLiked = (find: SingleFind) => {
+    return find.likes.some((item) => item.profile === profile?.id);
+  };
 
   const {
     data: finds,
     isLoading,
     isError,
     refetch,
-  } = useQuery({
+  } = useQuery<AllFinds>({
     queryKey: ["finds"],
     queryFn: async () => {
-      const response = await supabase.from("finds").select(
-        `
-        id,
-        rating,
-        review,
-        photos,
-        user_id,
-        likes (
-          id,
-          profile
-        ),
-        places (
-          name,
-          id,
-          locality
-        ),
-        profile (
-          id,
-          firstname,
-          username
-        )
-        `
-      );
-      return response;
+      const { data, error } = await getAllFindsQuery;
+      if (error) throw error;
+      return data;
     },
   });
 
@@ -79,7 +64,7 @@ const Page = () => {
             pagingEnabled={true}
             onRefresh={() => refetch()}
             refreshing={isLoading}
-            data={finds?.data}
+            data={finds}
             keyExtractor={(item) => item.id}
             showsVerticalScrollIndicator={false}
             snapToInterval={deviceHeight * 0.7 + 40}
@@ -94,7 +79,7 @@ const Page = () => {
                 place={item.places}
                 profileId={item.user_id}
                 profile={item.profile}
-                isLiked={false}
+                isLiked={isLiked(item)}
               />
             )}
           />
