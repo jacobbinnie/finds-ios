@@ -2,20 +2,15 @@ import { View, Text, Image } from "react-native";
 import React from "react";
 import Colors from "@/constants/Colors";
 import { Theme } from "@/constants/Styles";
+import { Find, Profile } from "@/types/types";
 
 interface ProfileCardProps {
   profile:
-    | {
-        id: string;
-        firstname: string;
-        username: string;
-        image: string | null;
+    | Profile & {
         finds: {
           id: string;
         }[];
-      }
-    | null
-    | undefined;
+      };
 }
 
 const ProfileCard = ({ profile }: ProfileCardProps) => {

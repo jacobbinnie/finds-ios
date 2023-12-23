@@ -3,25 +3,13 @@ import React from "react";
 import Colors from "@/constants/Colors";
 import { Theme } from "@/constants/Styles";
 import moment from "moment";
+import { SingleFindReview } from "@/types/queries";
 
 interface ReviewCardProps {
-  id: string;
-  createdAt: string;
-  profile: {
-    firstname: string;
-    username: string;
-    image: string | null;
-  } | null;
-  review: string;
-  rating: number;
+  review: SingleFindReview;
 }
 
-const ReviewCard = ({
-  profile,
-  review,
-  rating,
-  createdAt,
-}: ReviewCardProps) => {
+const ReviewCard = ({ review }: ReviewCardProps) => {
   return (
     <View style={{ gap: 5 }}>
       <View
@@ -47,17 +35,17 @@ const ReviewCard = ({
               objectFit: "cover",
               borderRadius: 99,
             }}
-            source={{ uri: profile?.image ?? "" }}
+            source={{ uri: review.profile?.image ?? "" }}
           />
 
           <Text style={{ fontFamily: "font-b" }}>
-            {`${profile?.firstname}`}
+            {`${review.profile?.firstname}`}
           </Text>
-          <Text style={Theme.BodyText}>{`@${profile?.username}`}</Text>
+          <Text style={Theme.BodyText}>{`@${review.profile?.username}`}</Text>
         </View>
-        <Text style={Theme.BodyText}>{`Rating: ${rating}`}</Text>
+        <Text style={Theme.BodyText}>{`Rating: ${review.rating}`}</Text>
       </View>
-      <Text style={Theme.BodyText}>{review}</Text>
+      <Text style={Theme.BodyText}>{review.review}</Text>
       {/* <View
         style={{
           backgroundColor: Colors.light,

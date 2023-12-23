@@ -6,6 +6,7 @@ import { FlatList } from "react-native-gesture-handler";
 import ReviewCard from "../ReviewCard/ReviewCard";
 import { Theme } from "@/constants/Styles";
 import { Divider } from "react-native-elements";
+import { AllFindReviews, getFindReviewsQuery } from "@/types/queries";
 
 interface FindReviewsProps {
   id: string;
@@ -17,33 +18,12 @@ const FindReviews = ({ id }: FindReviewsProps) => {
     isLoading,
     isError,
     refetch,
-  } = useQuery({
+  } = useQuery<AllFindReviews>({
     queryKey: ["reviews"],
     queryFn: async () => {
-      const response = await supabase
-        .from("finds")
-        .select(
-          `
-        id,
-        created_at,
-        profile (
-          id,
-          firstname,
-          username,
-          image
-        ),
-        review,
-        rating,
-        places (
-          id,
-          name,
-          locality
-        )
-        `
-        )
-        .eq("place", id);
-
-      return response;
+      const { data, error } = await getFindReviewsQuery.eq("place", id);
+      if (error) throw error;
+      return data;
     },
   });
 
@@ -59,19 +39,11 @@ const FindReviews = ({ id }: FindReviewsProps) => {
     <View style={{ paddingVertical: 20, paddingHorizontal: 10, gap: 10 }}>
       <Text style={Theme.Title}>All Reviews</Text>
       <FlatList
-        data={reviews?.data}
+        data={reviews}
         ItemSeparatorComponent={() => (
           <Divider style={{ marginVertical: 10 }} />
         )}
-        renderItem={(item) => (
-          <ReviewCard
-            id={item.item.id}
-            createdAt={item.item.created_at}
-            profile={item.item.profile}
-            rating={item.item.rating}
-            review={item.item.review}
-          />
-        )}
+        renderItem={(item) => <ReviewCard review={item.item} />}
       />
     </View>
   );

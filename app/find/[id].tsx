@@ -1,12 +1,12 @@
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import { useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/utils/supabase";
 import Colors from "@/constants/Colors";
 import ProfileCard from "@/components/ProfileCard/ProfileCard";
 import ReviewPreviewCard from "@/components/ReviewPreviewCard/ReviewPreviewCard";
 import FindReviews from "@/components/FindReviews/FindReviews";
+import { SingleFindDetails, getFindDetailsQuery } from "@/types/queries";
 
 const FindDetails = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -16,36 +16,12 @@ const FindDetails = () => {
     isLoading,
     isError,
     refetch,
-  } = useQuery({
+  } = useQuery<SingleFindDetails>({
     queryKey: ["find"],
     queryFn: async () => {
-      const response = await supabase
-        .from("finds")
-        .select(
-          `
-        id,
-        rating,
-        review,
-        photos,
-        places (
-          name,
-          id,
-          locality
-        ),
-        profile (
-          id,
-          firstname,
-          username,
-          image,
-          finds (
-            id
-          )
-        )
-        `
-        )
-        .eq("id", id)
-        .single();
-      return response;
+      const { data, error } = await getFindDetailsQuery.eq("id", id).single();
+      if (error) throw error;
+      return data;
     },
   });
 
@@ -86,17 +62,19 @@ const FindDetails = () => {
       </TouchableOpacity>
 
       <ReviewPreviewCard
-        place={find?.data?.places}
-        photo={find?.data?.photos[0]}
-        rating={find?.data?.rating}
-        review={find?.data?.review}
+        place={find?.places}
+        photo={find?.photos[0]}
+        rating={find?.rating}
+        review={find?.review}
       />
 
-      <View style={{ paddingHorizontal: 10 }}>
-        <ProfileCard profile={find?.data?.profile} />
-      </View>
+      {find?.profile && (
+        <View style={{ paddingHorizontal: 10 }}>
+          <ProfileCard profile={find.profile} />
+        </View>
+      )}
 
-      {find?.data?.places?.id && <FindReviews id={find?.data?.places?.id} />}
+      {find?.places?.id && <FindReviews id={find?.places?.id} />}
     </View>
   );
 };
