@@ -5,42 +5,21 @@ import { Theme } from "@/constants/Styles";
 import { AntDesign, FontAwesome, Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
+import { SingleFind } from "@/types/queries";
 
 interface FindProps {
-  id: string;
-  rating: number;
-  review: string;
-  photo: string;
-  place: {
-    name: string;
-    id: string;
-    locality: string | null;
-  } | null;
-  profileId: string;
-  profile: {
-    id: string;
-    firstname: string;
-    username: string;
-  } | null;
-  isLiked: boolean;
+  find: SingleFind & {
+    isLiked: boolean;
+  };
 }
 
-const Find = ({
-  id,
-  place,
-  photo,
-  profileId,
-  profile,
-  rating,
-  review,
-  isLiked,
-}: FindProps) => {
+const Find = ({ find }: FindProps) => {
   const deviceHeight = useWindowDimensions().height;
   const router = useRouter();
 
   return (
     <View
-      id={id}
+      id={find.id}
       style={{
         width: "100%",
         height: deviceHeight * 0.7,
@@ -63,7 +42,7 @@ const Find = ({
           elevation: 4,
         }}
       >
-        <TouchableOpacity onPress={() => router.push(`/find/${id}`)}>
+        <TouchableOpacity onPress={() => router.push(`/find/${find.id}`)}>
           <Text
             style={{
               position: "absolute",
@@ -77,7 +56,7 @@ const Find = ({
               fontFamily: "font-m",
             }}
           >
-            {`Find by @${profile?.username}`}
+            {`Find by @${find.profile?.username}`}
           </Text>
 
           <Image
@@ -86,7 +65,7 @@ const Find = ({
               height: deviceHeight * 0.35,
               objectFit: "cover",
             }}
-            source={{ uri: photo }}
+            source={{ uri: find.photos[0] }}
           />
           <View
             style={{
@@ -110,7 +89,7 @@ const Find = ({
               }}
             >
               <FontAwesome name="map-marker" size={15} color={Colors.primary} />
-              <Text style={Theme.BodyText}>{place?.locality}</Text>
+              <Text style={Theme.BodyText}>{find.places?.locality}</Text>
             </View>
             <View
               style={{
@@ -119,10 +98,10 @@ const Find = ({
                 justifyContent: "space-between",
               }}
             >
-              <Text style={Theme.Title}>{place?.name}</Text>
-              <Text style={Theme.Title}>{rating}/10</Text>
+              <Text style={Theme.Title}>{find.places?.name}</Text>
+              <Text style={Theme.Title}>{find.rating}/10</Text>
             </View>
-            <Text style={Theme.BodyText}>{review}</Text>
+            <Text style={Theme.BodyText}>{find.review}</Text>
           </View>
         </TouchableOpacity>
 
@@ -159,7 +138,7 @@ const Find = ({
           </TouchableOpacity>
           <TouchableOpacity
             style={{
-              backgroundColor: isLiked ? Colors.secondary : "#FFF",
+              backgroundColor: find.isLiked ? Colors.secondary : "#FFF",
               display: "flex",
               width: 70,
               height: 70,

@@ -70,17 +70,7 @@ const Page = () => {
             snapToInterval={deviceHeight * 0.7 + 40}
             ItemSeparatorComponent={() => <View style={{ marginTop: 40 }} />}
             renderItem={({ item }) => (
-              <Find
-                key={item.id}
-                id={item.id}
-                rating={item.rating}
-                review={item.review}
-                photo={item.photos[0]}
-                place={item.places}
-                profileId={item.user_id}
-                profile={item.profile}
-                isLiked={isLiked(item)}
-              />
+              <Find find={{ ...item, isLiked: isLiked(item) }} />
             )}
           />
         </View>
