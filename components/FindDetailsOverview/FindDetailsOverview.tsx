@@ -3,32 +3,18 @@ import React from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { Theme } from "@/constants/Styles";
 import Colors from "@/constants/Colors";
+import { SingleFindDetailsDto } from "@/types/queries";
 
-interface ReviewPreviewCardProps {
-  photo?: string;
-  place:
-    | {
-        name: string;
-        id: string;
-        locality: string | null;
-      }
-    | null
-    | undefined;
-  rating?: number;
-  review?: string;
+interface FindDetailsOverviewProps {
+  find: SingleFindDetailsDto;
 }
 
-const ReviewPreviewCard = ({
-  place,
-  photo,
-  rating,
-  review,
-}: ReviewPreviewCardProps) => {
+const FindDetailsOverview = ({ find }: FindDetailsOverviewProps) => {
   return (
     <View>
       <Image
         style={{ width: "100%", height: 200, objectFit: "cover" }}
-        source={{ uri: photo }}
+        source={{ uri: find.photos[0] }}
       />
       <View
         style={{
@@ -50,7 +36,7 @@ const ReviewPreviewCard = ({
           }}
         >
           <FontAwesome name="map-marker" size={15} color={Colors.primary} />
-          <Text style={Theme.BodyText}>{place?.locality}</Text>
+          <Text style={Theme.BodyText}>{find.places?.locality}</Text>
         </View>
         <View
           style={{
@@ -59,13 +45,13 @@ const ReviewPreviewCard = ({
             justifyContent: "space-between",
           }}
         >
-          <Text style={Theme.Title}>{place?.name}</Text>
-          <Text style={Theme.Title}>{rating}/10</Text>
+          <Text style={Theme.Title}>{find.places?.name}</Text>
+          <Text style={Theme.Title}>{find.rating}/10</Text>
         </View>
-        <Text style={Theme.BodyText}>{review}</Text>
+        <Text style={Theme.BodyText}>{find.review}</Text>
       </View>
     </View>
   );
 };
 
-export default ReviewPreviewCard;
+export default FindDetailsOverview;

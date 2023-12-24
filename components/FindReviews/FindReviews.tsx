@@ -6,7 +6,7 @@ import { FlatList } from "react-native-gesture-handler";
 import ReviewCard from "../ReviewCard/ReviewCard";
 import { Theme } from "@/constants/Styles";
 import { Divider } from "react-native-elements";
-import { AllFindReviews, getFindReviewsQuery } from "@/types/queries";
+import { FindReviewsDto, FindReviewsQuery } from "@/types/queries";
 
 interface FindReviewsProps {
   id: string;
@@ -17,11 +17,14 @@ const FindReviews = ({ id }: FindReviewsProps) => {
     data: reviews,
     isLoading,
     isError,
-    refetch,
-  } = useQuery<AllFindReviews>({
-    queryKey: ["reviews"],
+  } = useQuery<FindReviewsDto>({
+    queryKey: ["reviews", id],
     queryFn: async () => {
-      const { data, error } = await getFindReviewsQuery.eq("place", id);
+      const { data, error } = await supabase
+        .from("finds")
+        .select(FindReviewsQuery)
+        .eq("place", id);
+
       if (error) throw error;
       return data;
     },

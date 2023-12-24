@@ -1,17 +1,15 @@
 import { View, Text, Image } from "react-native";
 import React from "react";
-import Colors from "@/constants/Colors";
 import { Theme } from "@/constants/Styles";
-import moment from "moment";
-import { SingleFindReview } from "@/types/queries";
+import { SingleFindReviewsDto } from "@/types/queries";
 
 interface ReviewCardProps {
-  review: SingleFindReview;
+  review: SingleFindReviewsDto;
 }
 
 const ReviewCard = ({ review }: ReviewCardProps) => {
   return (
-    <View style={{ gap: 5 }}>
+    <View style={{ gap: 10 }}>
       <View
         style={{
           display: "flex",

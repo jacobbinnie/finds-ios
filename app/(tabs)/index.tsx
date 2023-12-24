@@ -5,7 +5,7 @@ import {
   FlatList,
   useWindowDimensions,
 } from "react-native";
-import React, { useEffect } from "react";
+import React from "react";
 import { Theme } from "@/constants/Styles";
 import Search from "@/components/Search/Search";
 import { useQuery } from "@tanstack/react-query";
@@ -29,7 +29,7 @@ const Page = () => {
     isError,
     refetch,
   } = useQuery<AllFinds>({
-    queryKey: ["finds"],
+    queryKey: ["finds", "explore"],
     queryFn: async () => {
       const { data, error } = await getAllFindsQuery;
       if (error) throw error;

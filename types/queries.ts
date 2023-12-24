@@ -33,8 +33,7 @@ export type SingleFind = QueryData<typeof getAllFindsQuery>[0];
 
 // Find Details Modal
 
-export const getFindDetailsQuery = supabase.from("finds").select(
-  `
+export const FindDetailsQuery = `
 id,
 rating,
 review,
@@ -54,16 +53,15 @@ profile (
     id
   )
 )
-`
-);
+`;
 
-export type FindDetails = QueryData<typeof getFindDetailsQuery>;
-export type SingleFindDetails = QueryData<typeof getFindDetailsQuery>[0];
+const FindDetails_SB_Query = supabase.from("finds").select(FindDetailsQuery);
+export type FindDetailsDto = QueryData<typeof FindDetails_SB_Query>;
+export type SingleFindDetailsDto = QueryData<typeof FindDetails_SB_Query>[0];
 
 // Find Reviews
 
-export const getFindReviewsQuery = supabase.from("finds").select(
-  `
+export const FindReviewsQuery = `
 id,
 created_at,
 profile (
@@ -79,8 +77,8 @@ places (
   name,
   locality
 )
-`
-);
+`;
 
-export type AllFindReviews = QueryData<typeof getFindReviewsQuery>;
-export type SingleFindReview = QueryData<typeof getFindReviewsQuery>[0];
+const FindReviews_SB_Query = supabase.from("finds").select(FindReviewsQuery);
+export type FindReviewsDto = QueryData<typeof FindReviews_SB_Query>;
+export type SingleFindReviewsDto = QueryData<typeof FindReviews_SB_Query>[0];

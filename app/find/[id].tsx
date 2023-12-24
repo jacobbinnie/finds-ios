@@ -4,9 +4,11 @@ import { useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import Colors from "@/constants/Colors";
 import ProfileCard from "@/components/ProfileCard/ProfileCard";
-import ReviewPreviewCard from "@/components/ReviewPreviewCard/ReviewPreviewCard";
+import ReviewPreviewCard from "@/components/FindDetailsOverview/FindDetailsOverview";
 import FindReviews from "@/components/FindReviews/FindReviews";
-import { SingleFindDetails, getFindDetailsQuery } from "@/types/queries";
+import { SingleFindDetailsDto, FindDetailsQuery } from "@/types/queries";
+import { supabase } from "@/utils/supabase";
+import FindDetailsOverview from "@/components/FindDetailsOverview/FindDetailsOverview";
 
 const FindDetails = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -15,12 +17,19 @@ const FindDetails = () => {
     data: find,
     isLoading,
     isError,
-    refetch,
-  } = useQuery<SingleFindDetails>({
-    queryKey: ["find"],
+  } = useQuery<SingleFindDetailsDto>({
+    queryKey: ["find", id],
     queryFn: async () => {
-      const { data, error } = await getFindDetailsQuery.eq("id", id).single();
-      if (error) throw error;
+      const { data, error } = await supabase
+        .from("finds")
+        .select(FindDetailsQuery)
+        .eq("id", id)
+        .single();
+
+      if (error) {
+        console.log(error);
+        throw error;
+      }
       return data;
     },
   });
@@ -31,6 +40,10 @@ const FindDetails = () => {
 
   if (isError) {
     return <Text>Error fetching data</Text>;
+  }
+
+  if (!find) {
+    return <Text>Find not found</Text>;
   }
 
   return (
@@ -61,12 +74,7 @@ const FindDetails = () => {
         </Text>
       </TouchableOpacity>
 
-      <ReviewPreviewCard
-        place={find?.places}
-        photo={find?.photos[0]}
-        rating={find?.rating}
-        review={find?.review}
-      />
+      <FindDetailsOverview find={find} />
 
       {find?.profile && (
         <View style={{ paddingHorizontal: 10 }}>
