@@ -5,8 +5,7 @@ import { QueryData } from "@supabase/supabase-js";
 
 // Explore Tab
 
-export const getAllFindsQuery = supabase.from("finds").select(
-  `
+export const AllFindsQuery = `
       id,
       rating,
       review,
@@ -25,11 +24,11 @@ export const getAllFindsQuery = supabase.from("finds").select(
         firstname,
         username
       )
-      `
-);
+      `;
 
-export type AllFinds = QueryData<typeof getAllFindsQuery>;
-export type SingleFind = QueryData<typeof getAllFindsQuery>[0];
+const AllFinds_SB_Query = supabase.from("finds").select(AllFindsQuery);
+export type AllFindsDto = QueryData<typeof AllFinds_SB_Query>;
+export type SingleFindDto = QueryData<typeof AllFinds_SB_Query>[0];
 
 // Find Details Modal
 

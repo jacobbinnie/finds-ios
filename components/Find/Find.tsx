@@ -5,10 +5,10 @@ import { Theme } from "@/constants/Styles";
 import { AntDesign, FontAwesome, Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
-import { SingleFind } from "@/types/queries";
+import { SingleFindDto } from "@/types/queries";
 
 interface FindProps {
-  find: SingleFind & {
+  find: SingleFindDto & {
     isLiked: boolean;
   };
 }

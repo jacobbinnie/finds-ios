@@ -13,13 +13,14 @@ import Find from "@/components/Find/Find";
 import { Divider } from "react-native-elements";
 import Categories from "@/components/Categories/Categories";
 import { useSupabase } from "@/providers/SupabaseProvider";
-import { AllFinds, SingleFind, getAllFindsQuery } from "@/types/queries";
+import { AllFindsDto, AllFindsQuery, SingleFindDto } from "@/types/queries";
+import { supabase } from "@/utils/supabase";
 
 const Page = () => {
   const deviceHeight = useWindowDimensions().height;
   const { profile } = useSupabase();
 
-  const isLiked = (find: SingleFind) => {
+  const isLiked = (find: SingleFindDto) => {
     return find.likes.some((item) => item.profile === profile?.id);
   };
 
@@ -28,10 +29,12 @@ const Page = () => {
     isLoading,
     isError,
     refetch,
-  } = useQuery<AllFinds>({
+  } = useQuery<AllFindsDto>({
     queryKey: ["finds", "explore"],
     queryFn: async () => {
-      const { data, error } = await getAllFindsQuery;
+      const { data, error } = await supabase
+        .from("finds")
+        .select(AllFindsQuery);
       if (error) throw error;
       return data;
     },
