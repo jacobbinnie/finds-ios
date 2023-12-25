@@ -67,7 +67,7 @@ function RootLayoutNav() {
           title: "Sign in",
           headerTitleStyle: Theme.Title,
           headerLeft: () => (
-            <TouchableOpacity onPress={() => router.back()}>
+            <TouchableOpacity onPress={() => router.replace("/")}>
               <Ionicons name="close-outline" size={24} />
             </TouchableOpacity>
           ),

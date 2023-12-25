@@ -1,10 +1,22 @@
-import React from "react";
-import { Link, Tabs } from "expo-router";
+import React, { useEffect } from "react";
+import { Link, Tabs, useRouter, useSegments } from "expo-router";
 import Colors from "@/constants/Colors";
 
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { useSupabase } from "@/providers/SupabaseProvider";
+import { useNavigation } from "expo-router";
 
 const Layout = () => {
+  const segments = useSegments();
+  const { profile } = useSupabase();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!profile && segments[1] === "(auth)") {
+      router.push("/(modals)/login");
+    }
+  }, [segments[1]]);
+
   return (
     <Tabs
       screenOptions={{
@@ -16,7 +28,7 @@ const Layout = () => {
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="(public)/index"
         options={{
           headerShown: false,
           tabBarLabel: "Explore",
@@ -26,7 +38,7 @@ const Layout = () => {
         }}
       />
       <Tabs.Screen
-        name="finds"
+        name="(auth)/finds"
         options={{
           tabBarLabel: "Finds",
           tabBarIcon: ({ color, size }) => (
@@ -35,7 +47,7 @@ const Layout = () => {
         }}
       />
       <Tabs.Screen
-        name="post"
+        name="(auth)/post"
         options={{
           tabBarLabel: "Post",
           tabBarIcon: ({ color, size }) => (
@@ -44,7 +56,7 @@ const Layout = () => {
         }}
       />
       <Tabs.Screen
-        name="profile"
+        name="(auth)/profile"
         options={{
           headerShown: false,
           tabBarLabel: "Profile",

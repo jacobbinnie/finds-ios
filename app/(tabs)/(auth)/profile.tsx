@@ -10,6 +10,10 @@ const Profile = () => {
   const { profile } = useSupabase();
   const router = useRouter();
 
+  if (!profile) {
+    return null;
+  }
+
   return (
     <View style={Theme.Container}>
       <SafeAreaView />

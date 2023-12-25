@@ -27,7 +27,6 @@ export function Auth() {
                 provider: "apple",
                 token: credential.identityToken,
               });
-              console.log(JSON.stringify({ error, user }, null, 2));
               if (!error) {
                 // User is signed in.
               }
