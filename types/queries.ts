@@ -22,7 +22,8 @@ export const AllFindsQuery = `
       profile (
         id,
         firstname,
-        username
+        username,
+        image
       )
       `;
 

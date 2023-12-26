@@ -5,8 +5,9 @@ export const Theme = StyleSheet.create({
   Container: {
     flex: 1,
     backgroundColor: Colors.light,
-    padding: 10,
+    paddingHorizontal: 15,
   },
+
   Button: {
     borderWidth: 1,
     borderColor: Colors.primary,

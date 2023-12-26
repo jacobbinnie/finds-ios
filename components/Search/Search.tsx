@@ -4,6 +4,7 @@ import Colors from "@/constants/Colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { Theme } from "@/constants/Styles";
 
 const Search = () => {
   const router = useRouter();
@@ -33,8 +34,8 @@ const Search = () => {
         }}
       >
         <Ionicons name="search" size={15} color={Colors.grey} />
-        <Text style={{ fontFamily: "font-s", color: Colors.grey }}>
-          Search people or food
+        <Text style={[Theme.Title, { color: Colors.grey }]}>
+          Search people & places
         </Text>
       </TouchableOpacity>
     </View>

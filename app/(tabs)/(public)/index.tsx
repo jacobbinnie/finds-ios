@@ -5,7 +5,7 @@ import {
   FlatList,
   useWindowDimensions,
 } from "react-native";
-import React from "react";
+import React, { useRef, useState } from "react";
 import { Theme } from "@/constants/Styles";
 import Search from "@/components/Search/Search";
 import { useQuery } from "@tanstack/react-query";
@@ -17,7 +17,7 @@ import { AllFindsDto, AllFindsQuery, SingleFindDto } from "@/types/queries";
 import { supabase } from "@/utils/supabase";
 
 const Page = () => {
-  const deviceHeight = useWindowDimensions().height;
+  const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
   const { profile } = useSupabase();
 
   const isLiked = (find: SingleFindDto) => {
@@ -49,13 +49,22 @@ const Page = () => {
   }
 
   return (
-    <>
-      <View style={[Theme.Container, { gap: 10 }]}>
-        <SafeAreaView />
+    <View style={{ flex: 1, gap: 10 }}>
+      <SafeAreaView />
+
+      <View style={{ paddingHorizontal: 15 }}>
         <Search />
-        <Categories />
-        <View style={{ flex: 1 }}>
-          <Divider style={{ marginBottom: 10 }} />
+      </View>
+
+      <Categories />
+
+      <View
+        style={Theme.Container}
+        onLayout={(e) => {
+          setFindHeight(e.nativeEvent.layout.height);
+        }}
+      >
+        {findHeight && (
           <FlatList
             style={{
               borderRadius: 10,
@@ -70,15 +79,17 @@ const Page = () => {
             data={finds}
             keyExtractor={(item) => item.id}
             showsVerticalScrollIndicator={false}
-            snapToInterval={deviceHeight * 0.7 + 40}
-            ItemSeparatorComponent={() => <View style={{ marginTop: 40 }} />}
+            snapToInterval={findHeight}
             renderItem={({ item }) => (
-              <Find find={{ ...item, isLiked: isLiked(item) }} />
+              <Find
+                findHeight={findHeight}
+                find={{ ...item, isLiked: isLiked(item) }}
+              />
             )}
           />
-        </View>
+        )}
       </View>
-    </>
+    </View>
   );
 };
 

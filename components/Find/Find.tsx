@@ -8,13 +8,13 @@ import { useRouter } from "expo-router";
 import { SingleFindDto } from "@/types/queries";
 
 interface FindProps {
+  findHeight: number;
   find: SingleFindDto & {
     isLiked: boolean;
   };
 }
 
-const Find = ({ find }: FindProps) => {
-  const deviceHeight = useWindowDimensions().height;
+const Find = ({ findHeight, find }: FindProps) => {
   const router = useRouter();
 
   return (
@@ -22,14 +22,14 @@ const Find = ({ find }: FindProps) => {
       id={find.id}
       style={{
         width: "100%",
-        height: deviceHeight * 0.7,
+        height: findHeight,
       }}
     >
       <View
         style={{
           display: "flex",
           position: "relative",
-          height: deviceHeight * 0.7,
+          height: findHeight,
           borderRadius: 10,
           overflow: "hidden",
           shadowColor: Colors.grey,
@@ -43,26 +43,42 @@ const Find = ({ find }: FindProps) => {
         }}
       >
         <TouchableOpacity onPress={() => router.push(`/find/${find.id}`)}>
-          <Text
+          <View
             style={{
+              display: "flex",
+              flexDirection: "row",
               position: "absolute",
               zIndex: 10,
               top: 10,
               left: 10,
               backgroundColor: Colors.light,
-              padding: 10,
+              paddingHorizontal: 7,
+              paddingVertical: 7,
               borderRadius: 10,
               overflow: "hidden",
-              fontFamily: "font-m",
+              gap: 7,
+              alignItems: "center",
             }}
           >
-            {`Find by @${find.profile?.username}`}
-          </Text>
+            {find.profile?.image && (
+              <Image
+                source={{ uri: find.profile?.image }}
+                style={{ width: 25, height: 25, borderRadius: 99 }}
+              />
+            )}
+            <Text
+              style={{
+                fontFamily: "font-m",
+              }}
+            >
+              {`Find by @${find.profile?.username}`}
+            </Text>
+          </View>
 
           <Image
             style={{
               width: "100%",
-              height: deviceHeight * 0.35,
+              height: findHeight * 0.6,
               objectFit: "cover",
             }}
             source={{ uri: find.photos[0] }}
@@ -107,34 +123,33 @@ const Find = ({ find }: FindProps) => {
 
         <View
           style={{
-            height: deviceHeight * 0.17,
-            display: "flex",
+            flex: 1,
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "row",
-            gap: 40,
+            gap: 20,
           }}
         >
           <TouchableOpacity
             style={{
-              backgroundColor: Colors.primary,
+              backgroundColor: "#FFF",
               display: "flex",
               width: 70,
               height: 70,
               justifyContent: "center",
               alignItems: "center",
               borderRadius: 99,
-              shadowColor: Colors.grey,
+              shadowColor: Colors.light,
               shadowOffset: {
                 width: 0,
                 height: 2,
               },
-              shadowOpacity: 0.2,
+              shadowOpacity: 0.1,
               shadowRadius: 2.62,
               elevation: 4,
             }}
           >
-            <Ionicons name="ios-heart" size={35} color="#FFF" />
+            <Ionicons name="ios-heart" size={35} color={Colors.primary} />
           </TouchableOpacity>
           <TouchableOpacity
             style={{
@@ -145,12 +160,12 @@ const Find = ({ find }: FindProps) => {
               justifyContent: "center",
               alignItems: "center",
               borderRadius: 99,
-              shadowColor: Colors.grey,
+              shadowColor: Colors.light,
               shadowOffset: {
                 width: 0,
                 height: 2,
               },
-              shadowOpacity: 0.2,
+              shadowOpacity: 0.1,
               shadowRadius: 2.62,
               elevation: 4,
             }}
