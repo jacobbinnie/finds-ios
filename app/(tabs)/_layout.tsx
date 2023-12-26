@@ -13,9 +13,9 @@ const Layout = () => {
 
   useEffect(() => {
     if (!profile && segments[1] === "(auth)") {
-      router.push("/(modals)/login");
+      router.push("/");
     }
-  }, [segments[1]]);
+  }, [segments[1], profile]);
 
   return (
     <Tabs
@@ -45,6 +45,16 @@ const Layout = () => {
             <Ionicons name="heart-outline" size={size} color={color} />
           ),
         }}
+        listeners={{
+          tabPress: (e) => {
+            e.preventDefault();
+            if (!profile) {
+              router.push("/(modals)/login");
+            } else {
+              router.push("/finds");
+            }
+          },
+        }}
       />
       <Tabs.Screen
         name="(auth)/post"
@@ -53,6 +63,16 @@ const Layout = () => {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="add-circle-outline" size={size} color={color} />
           ),
+        }}
+        listeners={{
+          tabPress: (e) => {
+            e.preventDefault();
+            if (!profile) {
+              router.push("/(modals)/login");
+            } else {
+              router.push("/post");
+            }
+          },
         }}
       />
       <Tabs.Screen
@@ -68,6 +88,16 @@ const Layout = () => {
               color={color}
             />
           ),
+        }}
+        listeners={{
+          tabPress: (e) => {
+            e.preventDefault();
+            if (!profile) {
+              router.push("/(modals)/login");
+            } else {
+              router.push("/profile");
+            }
+          },
         }}
       />
     </Tabs>
