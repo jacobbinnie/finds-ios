@@ -4,8 +4,10 @@ import {
   Text,
   FlatList,
   useWindowDimensions,
+  UIManager,
+  LayoutAnimation,
 } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Theme } from "@/constants/Styles";
 import Search from "@/components/Search/Search";
 import { useQuery } from "@tanstack/react-query";
@@ -23,6 +25,12 @@ const Page = () => {
   const isLiked = (find: SingleFindDto) => {
     return find.likes.some((item) => item.profile === profile?.id);
   };
+
+  useEffect(() => {
+    // Enable layout animation
+    UIManager.setLayoutAnimationEnabledExperimental &&
+      UIManager.setLayoutAnimationEnabledExperimental(true);
+  }, []);
 
   const {
     data: finds,
@@ -61,7 +69,15 @@ const Page = () => {
       <View
         style={Theme.Container}
         onLayout={(e) => {
-          setFindHeight(e.nativeEvent.layout.height);
+          if (findHeight) {
+            e.nativeEvent.layout.height < findHeight &&
+              setFindHeight(e.nativeEvent.layout.height);
+          } else {
+            LayoutAnimation.configureNext(
+              LayoutAnimation.Presets.easeInEaseOut
+            );
+            setFindHeight(e.nativeEvent.layout.height);
+          }
         }}
       >
         {findHeight && (

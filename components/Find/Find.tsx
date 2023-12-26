@@ -22,14 +22,14 @@ const Find = ({ findHeight, find }: FindProps) => {
       id={find.id}
       style={{
         width: "100%",
-        height: findHeight,
+        height: findHeight ?? 0,
       }}
     >
       <View
         style={{
           display: "flex",
           position: "relative",
-          height: findHeight,
+          height: "100%",
           borderRadius: 10,
           overflow: "hidden",
           shadowColor: Colors.grey,
