@@ -157,39 +157,44 @@ const Find = ({ findHeight, find }: FindProps) => {
             style={{
               height: findHeight * 0.25,
               display: "flex",
-              justifyContent: "center",
+              justifyContent: "space-evenly",
               paddingHorizontal: 10,
-              gap: 10,
               backgroundColor: "#FFF",
               borderEndStartRadius: 10,
               borderEndEndRadius: 10,
               overflow: "hidden",
             }}
           >
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "baseline",
-                gap: 7,
-              }}
-            >
-              <FontAwesome name="map-marker" size={15} color={Colors.primary} />
-              <Text style={Theme.BodyText}>{find.places?.locality}</Text>
+            <View style={{ gap: 10 }}>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "baseline",
+                  gap: 7,
+                }}
+              >
+                <FontAwesome
+                  name="map-marker"
+                  size={15}
+                  color={Colors.primary}
+                />
+                <Text style={Theme.BodyText}>{find.places?.locality}</Text>
+              </View>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={Theme.Title}>{find.places?.name}</Text>
+                <Text style={Theme.Title}>{find.rating}/10</Text>
+              </View>
+              <Text style={Theme.BodyText}>{find.review}</Text>
             </View>
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text style={Theme.Title}>{find.places?.name}</Text>
-              <Text style={Theme.Title}>{find.rating}/10</Text>
-            </View>
-            <Text style={Theme.BodyText}>{find.review}</Text>
 
-            <Divider style={{ marginTop: 5 }} />
+            <Divider />
 
             <View>
               <Text
