@@ -97,10 +97,7 @@ const Page = () => {
             showsVerticalScrollIndicator={false}
             snapToInterval={findHeight}
             renderItem={({ item }) => (
-              <Find
-                findHeight={findHeight}
-                find={{ ...item, isLiked: isLiked(item) }}
-              />
+              <Find findHeight={findHeight} find={item} />
             )}
           />
         )}

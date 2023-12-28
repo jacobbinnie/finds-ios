@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 
 import { supabase } from "@/utils/supabase";
 import { Session } from "@supabase/supabase-js";
-import { Profile } from "@/interfaces";
+import { Profile } from "@/types/types";
 
 interface SupabaseContextValues {
   currentSession?: Session | null;
@@ -34,7 +34,9 @@ export const SupabaseProvider = ({ children }: SupabaseProviderOptions) => {
             setProfile({
               id: data.id,
               username: data.username,
-              name: data.firstname,
+              firstname: data.firstname,
+              image: data.image,
+              created_at: data.created_at,
             });
           });
       } else {

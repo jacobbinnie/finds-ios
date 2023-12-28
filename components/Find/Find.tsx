@@ -6,16 +6,80 @@ import { AntDesign, FontAwesome, Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
 import { SingleFindDto } from "@/types/queries";
+import { FindAction } from "@/types/types";
+import { useSupabase } from "@/providers/SupabaseProvider";
+import { supabase } from "@/utils/supabase";
+import { Query, useQuery, useQueryClient } from "@tanstack/react-query";
 
 interface FindProps {
   findHeight: number;
-  find: SingleFindDto & {
-    isLiked: boolean;
-  };
+  find: SingleFindDto;
 }
 
 const Find = ({ findHeight, find }: FindProps) => {
   const router = useRouter();
+  const { profile } = useSupabase();
+  const queryClient = useQueryClient();
+
+  const { data: existingLike } = useQuery({
+    queryKey: ["likes", "find", find.id],
+    queryFn: async () => {
+      if (!profile) return undefined;
+
+      const { data, error } = await supabase
+        .from("likes")
+        .select("id")
+        .eq("find", find.id)
+        .eq("profile", profile?.id)
+        .single();
+
+      if (error) throw error;
+
+      return data;
+    },
+  });
+
+  const handleAction = async (action: FindAction) => {
+    try {
+      if (!profile) {
+        return router.push("/(modals)/login");
+      }
+
+      if (action === FindAction.LIKE) {
+        if (existingLike) {
+          const { error } = await supabase
+            .from("likes")
+            .delete()
+            .eq("id", existingLike.id);
+
+          if (error) throw error;
+
+          await queryClient.refetchQueries({
+            queryKey: ["likes", "find", find.id],
+          });
+        } else {
+          const { error } = await supabase.from("likes").insert([
+            {
+              profile: profile.id,
+              find: find.id,
+            },
+          ]);
+
+          if (error) throw error;
+
+          await queryClient.refetchQueries({
+            queryKey: ["likes", "find", find.id],
+          });
+        }
+      }
+
+      if (action === FindAction.SAVE) {
+        console.log("SAVE");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <View
@@ -131,6 +195,7 @@ const Find = ({ findHeight, find }: FindProps) => {
           }}
         >
           <TouchableOpacity
+            onPress={() => handleAction(FindAction.SAVE)}
             style={{
               backgroundColor: "#FFF",
               display: "flex",
@@ -152,8 +217,9 @@ const Find = ({ findHeight, find }: FindProps) => {
             <Ionicons name="ios-heart" size={35} color={Colors.primary} />
           </TouchableOpacity>
           <TouchableOpacity
+            onPress={() => handleAction(FindAction.LIKE)}
             style={{
-              backgroundColor: find.isLiked ? Colors.secondary : "#FFF",
+              backgroundColor: existingLike ? Colors.primary : "#FFF",
               display: "flex",
               width: 70,
               height: 70,
