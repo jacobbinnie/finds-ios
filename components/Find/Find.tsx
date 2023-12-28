@@ -10,6 +10,14 @@ import { FindAction } from "@/types/types";
 import { useSupabase } from "@/providers/SupabaseProvider";
 import { supabase } from "@/utils/supabase";
 import { Query, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  format,
+  isThisMinute,
+  isThisHour,
+  isToday,
+  isYesterday,
+} from "date-fns";
+import { Divider } from "react-native-elements";
 
 interface FindProps {
   findHeight: number;
@@ -140,14 +148,14 @@ const Find = ({ findHeight, find }: FindProps) => {
           <Image
             style={{
               width: "100%",
-              height: findHeight * 0.6,
+              height: findHeight * 0.5,
               objectFit: "cover",
             }}
             source={{ uri: find.photos[0] }}
           />
           <View
             style={{
-              height: 100,
+              height: findHeight * 0.25,
               display: "flex",
               justifyContent: "center",
               paddingHorizontal: 10,
@@ -180,6 +188,29 @@ const Find = ({ findHeight, find }: FindProps) => {
               <Text style={Theme.Title}>{find.rating}/10</Text>
             </View>
             <Text style={Theme.BodyText}>{find.review}</Text>
+
+            <Divider style={{ marginTop: 5 }} />
+
+            <View>
+              <Text
+                style={[
+                  ,
+                  {
+                    backgroundColor: "#FFF",
+                  },
+                ]}
+              >
+                {isThisMinute(find.created_at)
+                  ? "Just now"
+                  : isThisHour(find.created_at)
+                  ? "In the past hour"
+                  : isToday(find.created_at)
+                  ? "Today"
+                  : isYesterday(find.created_at)
+                  ? "Yesterday"
+                  : format(new Date(find.created_at), "MMM dd, yyyy")}
+              </Text>
+            </View>
           </View>
         </TouchableOpacity>
 

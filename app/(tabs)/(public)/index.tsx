@@ -42,7 +42,8 @@ const Page = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("finds")
-        .select(AllFindsQuery);
+        .select(AllFindsQuery)
+        .order("created_at", { ascending: false });
       if (error) throw error;
       return data;
     },

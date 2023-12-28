@@ -7,6 +7,7 @@ import { QueryData } from "@supabase/supabase-js";
 
 export const AllFindsQuery = `
       id,
+      created_at,
       rating,
       review,
       photos,
