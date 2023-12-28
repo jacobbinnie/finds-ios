@@ -8,7 +8,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "test": "jest --watchAll",
-    "generate-types": "supabase gen types typescript --project-id ypjwmiabnurvmvzysvkr > libs/database.types.ts"
+    "gen-client": "supabase gen types typescript --project-id ypjwmiabnurvmvzysvkr > libs/database.types.ts"
   },
   "jest": {
     "preset": "jest-expo"
@@ -39,7 +39,8 @@
     "react-native-safe-area-context": "4.6.3",
     "react-native-screens": "~3.22.0",
     "react-native-url-polyfill": "^2.0.0",
-    "react-native-web": "~0.19.6"
+    "react-native-web": "~0.19.6",
+    "supabase": "^1.127.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

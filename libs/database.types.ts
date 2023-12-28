@@ -57,20 +57,23 @@ export interface Database {
       likes: {
         Row: {
           created_at: string
+          deleted_at: string | null
           find: string
-          id: number
+          id: string
           profile: string
         }
         Insert: {
           created_at?: string
+          deleted_at?: string | null
           find: string
-          id?: number
+          id?: string
           profile: string
         }
         Update: {
           created_at?: string
+          deleted_at?: string | null
           find?: string
-          id?: number
+          id?: string
           profile?: string
         }
         Relationships: [
