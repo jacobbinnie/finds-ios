@@ -19,23 +19,25 @@ interface FindProps {
 const Find = ({ findHeight, find }: FindProps) => {
   const router = useRouter();
   const { profile } = useSupabase();
-  const queryClient = useQueryClient();
 
-  const { data: existingLike } = useQuery({
+  const {
+    data: existingLike,
+    refetch,
+    isLoading,
+  } = useQuery({
     queryKey: ["likes", "find", find.id],
     queryFn: async () => {
-      if (!profile) return undefined;
+      if (!profile) return null;
 
       const { data, error } = await supabase
         .from("likes")
         .select("id")
         .eq("find", find.id)
-        .eq("profile", profile?.id)
-        .single();
+        .eq("profile", profile.id);
 
       if (error) throw error;
 
-      return data;
+      return data?.[0] ?? null;
     },
   });
 
@@ -54,9 +56,7 @@ const Find = ({ findHeight, find }: FindProps) => {
 
           if (error) throw error;
 
-          await queryClient.refetchQueries({
-            queryKey: ["likes", "find", find.id],
-          });
+          await refetch();
         } else {
           const { error } = await supabase.from("likes").insert([
             {
@@ -67,9 +67,7 @@ const Find = ({ findHeight, find }: FindProps) => {
 
           if (error) throw error;
 
-          await queryClient.refetchQueries({
-            queryKey: ["likes", "find", find.id],
-          });
+          await refetch();
         }
       }
 
