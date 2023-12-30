@@ -30,8 +30,8 @@ const Find = ({ findHeight, find }: FindProps) => {
 
   const {
     data: existingLike,
-    refetch,
-    isLoading,
+    refetch: refetchLike,
+    isLoading: isLoadingLike,
   } = useQuery({
     queryKey: ["likes", "find", find.id],
     queryFn: async () => {
@@ -39,6 +39,27 @@ const Find = ({ findHeight, find }: FindProps) => {
 
       const { data, error } = await supabase
         .from("likes")
+        .select("id")
+        .eq("find", find.id)
+        .eq("profile", profile.id);
+
+      if (error) throw error;
+
+      return data?.[0] ?? null;
+    },
+  });
+
+  const {
+    data: existingSave,
+    refetch: refetchSave,
+    isLoading: isLoadingSave,
+  } = useQuery({
+    queryKey: ["saves", "find", find.id],
+    queryFn: async () => {
+      if (!profile) return null;
+
+      const { data, error } = await supabase
+        .from("saves")
         .select("id")
         .eq("find", find.id)
         .eq("profile", profile.id);
@@ -64,7 +85,7 @@ const Find = ({ findHeight, find }: FindProps) => {
 
           if (error) throw error;
 
-          await refetch();
+          await refetchLike();
         } else {
           const { error } = await supabase.from("likes").insert([
             {
@@ -75,12 +96,32 @@ const Find = ({ findHeight, find }: FindProps) => {
 
           if (error) throw error;
 
-          await refetch();
+          await refetchLike();
         }
       }
 
       if (action === FindAction.SAVE) {
-        console.log("SAVE");
+        if (existingSave) {
+          const { error } = await supabase
+            .from("saves")
+            .delete()
+            .eq("id", existingSave.id);
+
+          if (error) throw error;
+
+          await refetchSave();
+        } else {
+          const { error } = await supabase.from("saves").insert([
+            {
+              profile: profile.id,
+              find: find.id,
+            },
+          ]);
+
+          if (error) throw error;
+
+          await refetchSave();
+        }
       }
     } catch (error) {
       console.error(error);
@@ -231,7 +272,7 @@ const Find = ({ findHeight, find }: FindProps) => {
           <TouchableOpacity
             onPress={() => handleAction(FindAction.SAVE)}
             style={{
-              backgroundColor: "#FFF",
+              backgroundColor: existingSave ? Colors.primary : "#FFF",
               display: "flex",
               width: 70,
               height: 70,
@@ -248,7 +289,11 @@ const Find = ({ findHeight, find }: FindProps) => {
               elevation: 4,
             }}
           >
-            <Ionicons name="ios-heart" size={35} color={Colors.primary} />
+            <Ionicons
+              name="ios-heart"
+              size={35}
+              color={existingSave ? Colors.light : Colors.primary}
+            />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => handleAction(FindAction.LIKE)}
