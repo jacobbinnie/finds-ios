@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
-import { Link, Tabs, useRouter, useSegments } from "expo-router";
+import { Tabs, useRouter, useSegments } from "expo-router";
 import Colors from "@/constants/Colors";
 
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useSupabase } from "@/providers/SupabaseProvider";
-import { useNavigation } from "expo-router";
 
 const Layout = () => {
   const segments = useSegments();
@@ -52,25 +51,6 @@ const Layout = () => {
               router.push("/(modals)/login");
             } else {
               router.push("/finds");
-            }
-          },
-        }}
-      />
-      <Tabs.Screen
-        name="(auth)/post"
-        options={{
-          tabBarLabel: "Post",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="add-circle-outline" size={size} color={color} />
-          ),
-        }}
-        listeners={{
-          tabPress: (e) => {
-            e.preventDefault();
-            if (!profile) {
-              router.push("/(modals)/login");
-            } else {
-              router.push("/post");
             }
           },
         }}

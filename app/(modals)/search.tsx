@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { FlatList } from "react-native-gesture-handler";
 import SearchResult from "@/components/SearchResult/SearchResult";
 import { Divider } from "react-native-elements";
+import useGooglePlacesSearch from "@/hooks/useGooglePlaces";
 
 const Search = () => {
   const deviceHeight = useWindowDimensions().height;
@@ -26,13 +27,22 @@ const Search = () => {
         id,
         firstname,
         username,
-        image
+        image,
+        created_at
         `
       );
 
       return response;
     },
   });
+
+  const {
+    data,
+    isLoading: isGooglePlacesLoading,
+    error,
+  } = useGooglePlacesSearch(searchQuery);
+
+  console.log(data, isGooglePlacesLoading, error);
 
   useEffect(() => {
     if (searchQuery) {
@@ -52,7 +62,7 @@ const Search = () => {
     <View>
       <TextInput
         onChangeText={(e) => setSearchQuery(e)}
-        placeholder="Search people or food"
+        placeholder="Search people, places and foods"
         autoFocus={true}
         style={{
           height: deviceHeight * 0.075,
@@ -63,6 +73,7 @@ const Search = () => {
           alignItems: "center",
         }}
       />
+
       <Divider />
       <FlatList
         data={profiles?.data}
@@ -72,9 +83,10 @@ const Search = () => {
             <SearchResult
               profile={{
                 id: item.item.id,
-                name: item.item.firstname,
+                firstname: item.item.firstname,
                 username: item.item.username,
-                image: item.item.image ?? undefined,
+                image: item.item.image,
+                created_at: item.item.created_at,
               }}
             />
           );

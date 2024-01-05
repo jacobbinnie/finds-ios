@@ -5,7 +5,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
-import { Text, useColorScheme } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 export {

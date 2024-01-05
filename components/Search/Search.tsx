@@ -34,7 +34,7 @@ const Search = () => {
         }}
       >
         <Ionicons name="search" size={15} color={Colors.grey} />
-        <Text style={[Theme.Title, { color: Colors.grey }]}>
+        <Text style={[Theme.BodyText, { color: Colors.grey }]}>
           Search people & places
         </Text>
       </TouchableOpacity>

@@ -1,7 +1,6 @@
 import { View, Text, Image } from "react-native";
 import React from "react";
-import { Profile } from "@/interfaces";
-import Colors from "@/constants/Colors";
+import { Profile } from "@/types/types";
 import { Theme } from "@/constants/Styles";
 
 interface SearchResultProps {
@@ -17,11 +16,12 @@ const SearchResult = ({ profile }: SearchResultProps) => {
         alignItems: "center",
         backgroundColor: "#FFF",
         flexDirection: "row",
+        gap: 10,
       }}
     >
       <Image
-        source={{ uri: profile.image }}
-        style={{ width: 20, height: 20 }}
+        source={{ uri: profile.image ?? undefined }}
+        style={{ width: 20, height: 20, borderRadius: 99 }}
       />
       <Text style={Theme.BodyText}>@{profile.username}</Text>
     </View>
