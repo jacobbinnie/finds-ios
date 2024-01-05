@@ -1,15 +1,22 @@
 import { useState, useEffect, useRef } from "react";
 
-type PlacesData = google.maps.places.PlaceResult[];
+type PlacesData = google.maps.places.PlaceResult;
+
+interface PlacesResponse {
+  places: {
+    displayName: string;
+    formattedAddress: string;
+  }[];
+}
 
 interface UseGooglePlacesSearchProps {
-  data: PlacesData | null;
+  data: PlacesResponse | null;
   isLoading: boolean;
   error: string | null;
 }
 
 const useGooglePlacesSearch = (query?: string): UseGooglePlacesSearchProps => {
-  const [data, setData] = useState<PlacesData | null>(null);
+  const [data, setData] = useState<PlacesResponse | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -36,8 +43,7 @@ const useGooglePlacesSearch = (query?: string): UseGooglePlacesSearchProps => {
     const headers = {
       "Content-Type": "application/json",
       "X-Goog-Api-Key": apiKey,
-      "X-Goog-FieldMask":
-        "places.displayName,places.formattedAddress,places.priceLevel",
+      "X-Goog-FieldMask": "places.displayName,places.formattedAddress",
     };
 
     try {
@@ -52,7 +58,7 @@ const useGooglePlacesSearch = (query?: string): UseGooglePlacesSearchProps => {
         }
       );
 
-      const responseData: PlacesData = await response.json();
+      const responseData: PlacesResponse = await response.json();
       setData(responseData);
     } catch (error) {
       console.log(error);

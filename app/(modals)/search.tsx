@@ -42,7 +42,7 @@ const Search = () => {
     error,
   } = useGooglePlacesSearch(searchQuery);
 
-  console.log(data, isGooglePlacesLoading, error);
+  console.log(data?.places[0].formattedAddress);
 
   useEffect(() => {
     if (searchQuery) {
