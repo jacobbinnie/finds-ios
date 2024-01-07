@@ -1,7 +1,12 @@
-import { TextInput, View, useWindowDimensions, Text } from "react-native";
+import {
+  TextInput,
+  View,
+  useWindowDimensions,
+  Text,
+  Keyboard,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { Theme } from "@/constants/Styles";
-import Colors from "@/constants/Colors";
 import { supabase } from "@/utils/supabase";
 import { useQuery } from "@tanstack/react-query";
 import { FlatList } from "react-native-gesture-handler";
@@ -9,7 +14,7 @@ import { Divider } from "react-native-elements";
 import useGooglePlacesSearch from "@/hooks/useGooglePlacesSearch";
 import ProfileSearchResult from "@/components/ProfileSearchResult/ProfileSearchResult";
 import PlaceSearchResult from "@/components/PlaceSearchResult/PlaceSearchResult";
-import { Ionicons } from "@expo/vector-icons";
+import { ProfileSearchDto, ProfileSearchQuery } from "@/types/queries";
 
 const Search = () => {
   const deviceHeight = useWindowDimensions().height;
@@ -21,20 +26,20 @@ const Search = () => {
     isLoading,
     isError,
     refetch,
-  } = useQuery({
+  } = useQuery<ProfileSearchDto>({
     queryKey: ["profile_search"],
     queryFn: async () => {
-      const response = await supabase.from("profile").select(
-        `
-        id,
-        firstname,
-        username,
-        image,
-        created_at
-        `
-      );
+      if (!searchQuery || searchQuery.length < 3) {
+        return [];
+      }
 
-      return response;
+      const { data, error } = await supabase
+        .from("profile")
+        .select(ProfileSearchQuery)
+        .ilike("username", `%${searchQuery}%`);
+
+      if (error) throw error;
+      return data;
     },
   });
 
@@ -58,8 +63,20 @@ const Search = () => {
     return <Text>Error fetching data</Text>;
   }
 
+  // Combine profiles and places into a single array
+  const combinedData = [
+    ...(profiles || []), // Add profiles
+    ...(places?.places || []), // Add places
+  ].sort((a, b) => {
+    if ("firstname" in a) {
+      return 1;
+    } else {
+      return -1;
+    }
+  });
+
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <TextInput
         onChangeText={(e) => setSearchQuery(e)}
         placeholder="Search people, places and foods"
@@ -78,33 +95,32 @@ const Search = () => {
         ]}
       />
 
-      {places?.places && <Divider />}
-      <FlatList
-        data={places?.places}
-        ItemSeparatorComponent={() => <Divider />}
-        renderItem={(place) => {
-          return <PlaceSearchResult place={place.item} />;
-        }}
-      />
-
-      <Divider />
-      <FlatList
-        data={profiles?.data}
-        ItemSeparatorComponent={() => <Divider />}
-        renderItem={(item) => {
-          return (
-            <ProfileSearchResult
-              profile={{
-                id: item.item.id,
-                firstname: item.item.firstname,
-                username: item.item.username,
-                image: item.item.image,
-                created_at: item.item.created_at,
-              }}
-            />
-          );
-        }}
-      />
+      {combinedData && (
+        <FlatList
+          data={combinedData}
+          ItemSeparatorComponent={() => <Divider />}
+          onScroll={Keyboard.dismiss}
+          renderItem={({ item }) => {
+            if ("firstname" in item) {
+              // This is a profile item
+              return (
+                <ProfileSearchResult
+                  profile={{
+                    id: item.id,
+                    firstname: item.firstname,
+                    username: item.username,
+                    image: item.image,
+                    created_at: item.created_at,
+                  }}
+                />
+              );
+            } else {
+              // This is a place item
+              return <PlaceSearchResult place={item} />;
+            }
+          }}
+        />
+      )}
     </View>
   );
 };

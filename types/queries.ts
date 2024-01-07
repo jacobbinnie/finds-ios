@@ -83,3 +83,21 @@ places (
 const FindReviews_SB_Query = supabase.from("finds").select(FindReviewsQuery);
 export type FindReviewsDto = QueryData<typeof FindReviews_SB_Query>;
 export type SingleFindReviewsDto = QueryData<typeof FindReviews_SB_Query>[0];
+
+// Profile Search
+
+export const ProfileSearchQuery = `
+id,
+firstname,
+username,
+image,
+created_at
+`;
+
+const ProfileSearch_SB_Query = supabase
+  .from("profile")
+  .select(ProfileSearchQuery);
+export type ProfileSearchDto = QueryData<typeof ProfileSearch_SB_Query>;
+export type SingleProfileSearchDto = QueryData<
+  typeof ProfileSearch_SB_Query
+>[0];

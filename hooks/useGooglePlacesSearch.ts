@@ -29,6 +29,7 @@ const useGooglePlacesSearch = (query?: string): UseGooglePlacesSearchProps => {
     if (!query || query.length < 3) {
       // Check for query length
       setIsLoading(false);
+      setData({ places: [] });
       return;
     }
 
@@ -62,7 +63,7 @@ const useGooglePlacesSearch = (query?: string): UseGooglePlacesSearchProps => {
                 },
               },
             },
-            maxResultCount: 10,
+            maxResultCount: 7,
           }),
         }
       );
