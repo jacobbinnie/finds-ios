@@ -1,11 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 
-type PlacesData = google.maps.places.PlaceResult;
-
 interface PlacesResponse {
   places: {
-    displayName: string;
-    formattedAddress: string;
+    id: string;
+    displayName: {
+      languageCode: string;
+      text: string;
+    };
+    shortFormattedAddress: string;
+    types: string[];
   }[];
 }
 
@@ -43,8 +46,11 @@ const useGooglePlacesSearch = (query?: string): UseGooglePlacesSearchProps => {
     const headers = {
       "Content-Type": "application/json",
       "X-Goog-Api-Key": apiKey,
-      "X-Goog-FieldMask": "places.displayName,places.formattedAddress",
+      "X-Goog-FieldMask":
+        "places.id,places.displayName,places.shortFormattedAddress,places.types",
     };
+
+    const acceptableTypes = ["bar", "restaurant", "food"];
 
     try {
       const response = await fetch(
@@ -54,12 +60,31 @@ const useGooglePlacesSearch = (query?: string): UseGooglePlacesSearchProps => {
           headers: headers,
           body: JSON.stringify({
             textQuery: query,
+            // New York City
+            locationBias: {
+              rectangle: {
+                low: {
+                  latitude: 40.477398,
+                  longitude: -74.259087,
+                },
+                high: {
+                  latitude: 40.91618,
+                  longitude: -73.70018,
+                },
+              },
+            },
+            maxResultCount: 10,
           }),
         }
       );
 
       const responseData: PlacesResponse = await response.json();
-      setData(responseData);
+
+      const filteredData = responseData.places.filter((place) => {
+        return place.types.some((type) => acceptableTypes.includes(type));
+      });
+
+      setData({ places: filteredData });
     } catch (error) {
       console.log(error);
     } finally {

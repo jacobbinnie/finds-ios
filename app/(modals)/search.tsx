@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { FlatList } from "react-native-gesture-handler";
 import SearchResult from "@/components/SearchResult/SearchResult";
 import { Divider } from "react-native-elements";
-import useGooglePlacesSearch from "@/hooks/useGooglePlaces";
+import useGooglePlacesSearch from "@/hooks/useGooglePlacesSearch";
 
 const Search = () => {
   const deviceHeight = useWindowDimensions().height;
@@ -42,7 +42,11 @@ const Search = () => {
     error,
   } = useGooglePlacesSearch(searchQuery);
 
-  console.log(data?.places[0].formattedAddress);
+  useEffect(() => {
+    if (data?.places) {
+      console.log(data?.places[0]);
+    }
+  }, [data]);
 
   useEffect(() => {
     if (searchQuery) {
