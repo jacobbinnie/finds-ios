@@ -3,12 +3,16 @@ import React from "react";
 import { Profile } from "@/types/types";
 import { Theme } from "@/constants/Styles";
 import Colors from "@/constants/Colors";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { useRouter } from "expo-router";
 
 interface SearchResultProps {
   profile: Profile;
 }
 
 const ProfileSearchResult = ({ profile }: SearchResultProps) => {
+  const router = useRouter();
+
   return (
     <View
       style={{

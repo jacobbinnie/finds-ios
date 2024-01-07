@@ -93,6 +93,10 @@ function RootLayoutNav() {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="profile/[id]"
+        options={{ headerShown: false, gestureDirection: "horizontal" }}
+      />
     </Stack>
   );
 }

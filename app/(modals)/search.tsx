@@ -4,6 +4,7 @@ import {
   useWindowDimensions,
   Text,
   Keyboard,
+  TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Theme } from "@/constants/Styles";
@@ -15,11 +16,14 @@ import useGooglePlacesSearch from "@/hooks/useGooglePlacesSearch";
 import ProfileSearchResult from "@/components/ProfileSearchResult/ProfileSearchResult";
 import PlaceSearchResult from "@/components/PlaceSearchResult/PlaceSearchResult";
 import { ProfileSearchDto, ProfileSearchQuery } from "@/types/queries";
+import { useRouter } from "expo-router";
 
 const Search = () => {
   const deviceHeight = useWindowDimensions().height;
 
   const [searchQuery, setSearchQuery] = useState<string>("");
+
+  const router = useRouter();
 
   const {
     data: profiles,
@@ -104,15 +108,19 @@ const Search = () => {
             if ("firstname" in item) {
               // This is a profile item
               return (
-                <ProfileSearchResult
-                  profile={{
-                    id: item.id,
-                    firstname: item.firstname,
-                    username: item.username,
-                    image: item.image,
-                    created_at: item.created_at,
-                  }}
-                />
+                <TouchableOpacity
+                  onPress={() => router.replace(`/profile/${item.id}`)}
+                >
+                  <ProfileSearchResult
+                    profile={{
+                      id: item.id,
+                      firstname: item.firstname,
+                      username: item.username,
+                      image: item.image,
+                      created_at: item.created_at,
+                    }}
+                  />
+                </TouchableOpacity>
               );
             } else {
               // This is a place item

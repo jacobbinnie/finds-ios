@@ -98,3 +98,19 @@ export type ProfileSearchDto = QueryData<typeof ProfileSearch_SB_Query>;
 export type SingleProfileSearchDto = QueryData<
   typeof ProfileSearch_SB_Query
 >[0];
+
+// Profile Details
+
+export const ProfileDetailsQuery = `
+id,
+firstname,
+username,
+finds (
+  *
+)
+`;
+
+const ProfileDetails_SB_Query = supabase
+  .from("profile")
+  .select(ProfileDetailsQuery);
+export type ProfileDetailsDto = QueryData<typeof ProfileDetails_SB_Query>[0];
