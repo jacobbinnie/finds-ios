@@ -20,10 +20,6 @@ const Page = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
   const { profile } = useSupabase();
 
-  const isLiked = (find: SingleFindDto) => {
-    return find.likes.some((item) => item.profile === profile?.id);
-  };
-
   useEffect(() => {
     // Enable layout animation
     UIManager.setLayoutAnimationEnabledExperimental &&

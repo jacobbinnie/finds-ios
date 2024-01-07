@@ -12,9 +12,6 @@ export const AllFindsQuery = `
       review,
       photos,
       user_id,
-      likes (
-        profile
-      ),
       places (
         name,
         id,

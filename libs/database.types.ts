@@ -54,42 +54,6 @@ export interface Database {
           }
         ]
       }
-      likes: {
-        Row: {
-          created_at: string
-          find: string
-          id: string
-          profile: string
-        }
-        Insert: {
-          created_at?: string
-          find: string
-          id?: string
-          profile: string
-        }
-        Update: {
-          created_at?: string
-          find?: string
-          id?: string
-          profile?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "likes_find_fkey"
-            columns: ["find"]
-            isOneToOne: false
-            referencedRelation: "finds"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "likes_profile_fkey"
-            columns: ["profile"]
-            isOneToOne: false
-            referencedRelation: "profile"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
       places: {
         Row: {
           categories: string[] | null
