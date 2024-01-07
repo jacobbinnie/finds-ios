@@ -21,7 +21,7 @@ const Search = () => {
         gap: 15,
       }}
     >
-      <Text style={[Theme.Title, { fontSize: 36, color: Colors.primary }]}>
+      <Text style={[Theme.Title, { fontSize: 32, color: Colors.primary }]}>
         finds
       </Text>
 

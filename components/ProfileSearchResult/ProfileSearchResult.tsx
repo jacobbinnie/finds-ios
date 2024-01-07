@@ -2,6 +2,7 @@ import { View, Text, Image } from "react-native";
 import React from "react";
 import { Profile } from "@/types/types";
 import { Theme } from "@/constants/Styles";
+import Colors from "@/constants/Colors";
 
 interface SearchResultProps {
   profile: Profile;
@@ -32,6 +33,16 @@ const ProfileSearchResult = ({ profile }: SearchResultProps) => {
         />
         <Text style={Theme.BodyText}>@{profile.username}</Text>
       </View>
+      <Text
+        style={[
+          Theme.BodyText,
+          {
+            color: Colors.grey,
+          },
+        ]}
+      >
+        1.4k followers
+      </Text>
     </View>
   );
 };
