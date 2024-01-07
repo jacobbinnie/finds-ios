@@ -31,14 +31,14 @@ const Search = () => {
           alignItems: "center",
         }}
       >
-        <Feather name="bell" size={24} color="black" />
+        <Feather name="bell" size={deviceHeight * 0.03} color="black" />
         <TouchableOpacity
           onPress={() => router.push("/(modals)/search")}
           style={{
             height: deviceHeight * 0.07,
             width: deviceHeight * 0.07,
             backgroundColor: "#FFF",
-            paddingHorizontal: 20,
+
             elevation: 4,
             borderRadius: 99,
             flexDirection: "row",
@@ -46,7 +46,11 @@ const Search = () => {
             justifyContent: "center",
           }}
         >
-          <Ionicons name="search" size={24} color={Colors.dark} />
+          <Ionicons
+            name="search"
+            size={deviceHeight * 0.03}
+            color={Colors.dark}
+          />
         </TouchableOpacity>
       </View>
     </View>
