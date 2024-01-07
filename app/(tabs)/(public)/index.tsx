@@ -64,7 +64,7 @@ const Page = () => {
         <Search />
       </View>
 
-      <Categories />
+      {/* <Categories /> */}
 
       <View
         style={Theme.Container}

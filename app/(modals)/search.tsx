@@ -82,7 +82,7 @@ const Search = () => {
         placeholder="Search people, places and foods"
         autoFocus={true}
         style={[
-          Theme.Title,
+          Theme.BodyText,
           {
             height: deviceHeight * 0.075,
             backgroundColor: "#FFF",

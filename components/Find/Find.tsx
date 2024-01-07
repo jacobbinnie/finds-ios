@@ -2,7 +2,7 @@ import { View, Text, Image, useWindowDimensions } from "react-native";
 import React from "react";
 import Colors from "@/constants/Colors";
 import { Theme } from "@/constants/Styles";
-import { AntDesign, FontAwesome, Ionicons } from "@expo/vector-icons";
+import { AntDesign, Entypo, FontAwesome, Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
 import { SingleFindDto } from "@/types/queries";
@@ -27,27 +27,6 @@ interface FindProps {
 const Find = ({ findHeight, find }: FindProps) => {
   const router = useRouter();
   const { profile } = useSupabase();
-
-  const {
-    data: existingLike,
-    refetch: refetchLike,
-    isLoading: isLoadingLike,
-  } = useQuery({
-    queryKey: ["likes", "find", find.id],
-    queryFn: async () => {
-      if (!profile) return null;
-
-      const { data, error } = await supabase
-        .from("likes")
-        .select("id")
-        .eq("find", find.id)
-        .eq("profile", profile.id);
-
-      if (error) throw error;
-
-      return data?.[0] ?? null;
-    },
-  });
 
   const {
     data: existingSave,
@@ -76,28 +55,8 @@ const Find = ({ findHeight, find }: FindProps) => {
         return router.push("/(modals)/login");
       }
 
-      if (action === FindAction.LIKE) {
-        if (existingLike) {
-          const { error } = await supabase
-            .from("likes")
-            .delete()
-            .eq("id", existingLike.id);
-
-          if (error) throw error;
-
-          await refetchLike();
-        } else {
-          const { error } = await supabase.from("likes").insert([
-            {
-              profile: profile.id,
-              find: find.id,
-            },
-          ]);
-
-          if (error) throw error;
-
-          await refetchLike();
-        }
+      if (action === FindAction.FIND) {
+        // do something
       }
 
       if (action === FindAction.SAVE) {
@@ -191,7 +150,7 @@ const Find = ({ findHeight, find }: FindProps) => {
           <Image
             style={{
               width: "100%",
-              height: findHeight * 0.5,
+              height: findHeight * 0.6,
               objectFit: "cover",
             }}
             source={{ uri: find.photos[0] }}
@@ -269,8 +228,8 @@ const Find = ({ findHeight, find }: FindProps) => {
             style={{
               backgroundColor: existingSave ? Colors.primary : "#FFF",
               display: "flex",
-              width: 70,
-              height: 70,
+              width: findHeight * 0.1,
+              height: findHeight * 0.1,
               justifyContent: "center",
               alignItems: "center",
               borderRadius: 99,
@@ -286,17 +245,17 @@ const Find = ({ findHeight, find }: FindProps) => {
           >
             <Ionicons
               name="ios-heart"
-              size={35}
-              color={existingSave ? Colors.light : Colors.primary}
+              size={findHeight * 0.05}
+              color={Colors.light}
             />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => handleAction(FindAction.LIKE)}
+            onPress={() => handleAction(FindAction.FIND)}
             style={{
-              backgroundColor: existingLike ? Colors.primary : "#FFF",
+              backgroundColor: "#FFF",
               display: "flex",
-              width: 70,
-              height: 70,
+              width: findHeight * 0.1,
+              height: findHeight * 0.1,
               justifyContent: "center",
               alignItems: "center",
               borderRadius: 99,
@@ -310,7 +269,7 @@ const Find = ({ findHeight, find }: FindProps) => {
               elevation: 4,
             }}
           >
-            <AntDesign name="like1" size={35} color={Colors.light} />
+            <Entypo name="loop" size={findHeight * 0.05} color={Colors.light} />
           </TouchableOpacity>
         </View>
       </View>

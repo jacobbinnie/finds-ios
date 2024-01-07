@@ -4,7 +4,7 @@ export type Profile = Database["public"]["Tables"]["profile"]["Row"];
 export type Find = Database["public"]["Tables"]["finds"]["Row"];
 
 export enum FindAction {
-  LIKE = "LIKE",
+  FIND = "FIND",
   SAVE = "SAVE",
 }
 

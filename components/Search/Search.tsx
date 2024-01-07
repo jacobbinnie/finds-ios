@@ -3,7 +3,7 @@ import React from "react";
 import Colors from "@/constants/Colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
+import { Feather, Ionicons } from "@expo/vector-icons";
 import { Theme } from "@/constants/Styles";
 
 const Search = () => {
@@ -14,43 +14,39 @@ const Search = () => {
     <View
       style={{
         zIndex: 10,
-        display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between",
-        gap: 15,
+        justifyContent: "space-between", // Aligns items along the main axis (horizontal in this case)
       }}
     >
       <Text style={[Theme.Title, { fontSize: 32, color: Colors.primary }]}>
         finds
       </Text>
 
-      <View style={{ flex: 1 }}>
+      <View
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          gap: 20,
+          alignItems: "center",
+        }}
+      >
+        <Feather name="bell" size={24} color="black" />
         <TouchableOpacity
           onPress={() => router.push("/(modals)/search")}
           style={{
             height: deviceHeight * 0.07,
+            width: deviceHeight * 0.07,
             backgroundColor: "#FFF",
             paddingHorizontal: 20,
             elevation: 4,
             borderRadius: 99,
-            display: "flex",
             flexDirection: "row",
             alignItems: "center",
-            gap: 10,
+            justifyContent: "center",
           }}
         >
-          <Ionicons name="search" size={18} color={Colors.dark} />
-          <Text
-            style={[
-              Theme.Title,
-              {
-                color: Colors.dark,
-              },
-            ]}
-          >
-            Search finds
-          </Text>
+          <Ionicons name="search" size={24} color={Colors.dark} />
         </TouchableOpacity>
       </View>
     </View>
