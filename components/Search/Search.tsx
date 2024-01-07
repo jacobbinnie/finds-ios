@@ -25,7 +25,7 @@ const Search = () => {
         finds
       </Text>
 
-      <View style={{ width: "50%" }}>
+      <View style={{ flex: 1 }}>
         <TouchableOpacity
           onPress={() => router.push("/(modals)/search")}
           style={{

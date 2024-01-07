@@ -150,6 +150,7 @@ const Find = ({ findHeight, find }: FindProps) => {
           },
           shadowOpacity: 0.2,
           shadowRadius: 2.62,
+          backgroundColor: Colors.light,
           elevation: 4,
         }}
       >
@@ -231,7 +232,7 @@ const Find = ({ findHeight, find }: FindProps) => {
                 }}
               >
                 <Text style={Theme.Title}>{find.places?.name}</Text>
-                <Text style={Theme.Title}>{find.rating}/10</Text>
+                <Text style={Theme.Title}>{find.rating}</Text>
               </View>
               <Text style={Theme.BodyText}>{find.review}</Text>
             </View>
