@@ -1,25 +1,14 @@
+import { GooglePlacesResponse } from "@/types/types";
 import { useState, useEffect, useRef } from "react";
 
-interface PlacesResponse {
-  places: {
-    id: string;
-    displayName: {
-      languageCode: string;
-      text: string;
-    };
-    shortFormattedAddress: string;
-    types: string[];
-  }[];
-}
-
 interface UseGooglePlacesSearchProps {
-  data: PlacesResponse | null;
+  data: GooglePlacesResponse | null;
   isLoading: boolean;
   error: string | null;
 }
 
 const useGooglePlacesSearch = (query?: string): UseGooglePlacesSearchProps => {
-  const [data, setData] = useState<PlacesResponse | null>(null);
+  const [data, setData] = useState<GooglePlacesResponse | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -61,7 +50,7 @@ const useGooglePlacesSearch = (query?: string): UseGooglePlacesSearchProps => {
           body: JSON.stringify({
             textQuery: query,
             // New York City
-            locationBias: {
+            locationRestriction: {
               rectangle: {
                 low: {
                   latitude: 40.477398,
@@ -78,7 +67,7 @@ const useGooglePlacesSearch = (query?: string): UseGooglePlacesSearchProps => {
         }
       );
 
-      const responseData: PlacesResponse = await response.json();
+      const responseData: GooglePlacesResponse = await response.json();
 
       const filteredData = responseData.places.filter((place) => {
         return place.types.some((type) => acceptableTypes.includes(type));

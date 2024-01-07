@@ -5,9 +5,11 @@ import Colors from "@/constants/Colors";
 import { supabase } from "@/utils/supabase";
 import { useQuery } from "@tanstack/react-query";
 import { FlatList } from "react-native-gesture-handler";
-import SearchResult from "@/components/SearchResult/SearchResult";
 import { Divider } from "react-native-elements";
 import useGooglePlacesSearch from "@/hooks/useGooglePlacesSearch";
+import ProfileSearchResult from "@/components/ProfileSearchResult/ProfileSearchResult";
+import PlaceSearchResult from "@/components/PlaceSearchResult/PlaceSearchResult";
+import { Ionicons } from "@expo/vector-icons";
 
 const Search = () => {
   const deviceHeight = useWindowDimensions().height;
@@ -37,16 +39,10 @@ const Search = () => {
   });
 
   const {
-    data,
-    isLoading: isGooglePlacesLoading,
+    data: places,
+    isLoading: isPlacesLoading,
     error,
   } = useGooglePlacesSearch(searchQuery);
-
-  useEffect(() => {
-    if (data?.places) {
-      console.log(data?.places[0]);
-    }
-  }, [data]);
 
   useEffect(() => {
     if (searchQuery) {
@@ -68,13 +64,26 @@ const Search = () => {
         onChangeText={(e) => setSearchQuery(e)}
         placeholder="Search people, places and foods"
         autoFocus={true}
-        style={{
-          height: deviceHeight * 0.075,
-          backgroundColor: "#FFF",
-          paddingHorizontal: 20,
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
+        style={[
+          Theme.Title,
+          {
+            height: deviceHeight * 0.075,
+            backgroundColor: "#FFF",
+            paddingHorizontal: 20,
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            textAlign: "center",
+          },
+        ]}
+      />
+
+      {places?.places && <Divider />}
+      <FlatList
+        data={places?.places}
+        ItemSeparatorComponent={() => <Divider />}
+        renderItem={(place) => {
+          return <PlaceSearchResult place={place.item} />;
         }}
       />
 
@@ -84,7 +93,7 @@ const Search = () => {
         ItemSeparatorComponent={() => <Divider />}
         renderItem={(item) => {
           return (
-            <SearchResult
+            <ProfileSearchResult
               profile={{
                 id: item.item.id,
                 firstname: item.item.firstname,

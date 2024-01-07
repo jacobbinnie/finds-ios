@@ -50,13 +50,13 @@ const Categories = () => {
                 borderRadius: 10,
                 display: "flex",
                 alignItems: "center",
-                gap: 5,
+                gap: 10,
               }}
             >
               <Text style={{ fontSize: 20 }}>
                 {AllCategories[category].icon}
               </Text>
-              <Text style={{ fontFamily: "font-b" }}>
+              <Text style={{ fontFamily: "font-b", fontSize: 16 }}>
                 {AllCategories[category].name}
               </Text>
             </TouchableOpacity>

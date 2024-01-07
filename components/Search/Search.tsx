@@ -11,33 +11,48 @@ const Search = () => {
   const deviceHeight = useWindowDimensions().height;
 
   return (
-    <View style={{ zIndex: 10 }}>
-      <TouchableOpacity
-        onPress={() => router.push("/(modals)/search")}
-        style={{
-          height: deviceHeight * 0.075,
-          backgroundColor: "#FFF",
-          shadowColor: Colors.grey,
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          paddingHorizontal: 20,
-          shadowOpacity: 0.2,
-          shadowRadius: 2.62,
-          elevation: 4,
-          borderRadius: 99,
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          gap: 10,
-        }}
-      >
-        <Ionicons name="search" size={15} color={Colors.grey} />
-        <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-          Search people & places
-        </Text>
-      </TouchableOpacity>
+    <View
+      style={{
+        zIndex: 10,
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        gap: 15,
+      }}
+    >
+      <Text style={[Theme.Title, { fontSize: 36, color: Colors.primary }]}>
+        finds
+      </Text>
+
+      <View style={{ width: "50%" }}>
+        <TouchableOpacity
+          onPress={() => router.push("/(modals)/search")}
+          style={{
+            height: deviceHeight * 0.07,
+            backgroundColor: "#FFF",
+            paddingHorizontal: 20,
+            elevation: 4,
+            borderRadius: 99,
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 10,
+          }}
+        >
+          <Ionicons name="search" size={18} color={Colors.dark} />
+          <Text
+            style={[
+              Theme.Title,
+              {
+                color: Colors.dark,
+              },
+            ]}
+          >
+            Search finds
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

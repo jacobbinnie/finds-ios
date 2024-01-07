@@ -3,16 +3,14 @@ import {
   View,
   Text,
   FlatList,
-  useWindowDimensions,
   UIManager,
   LayoutAnimation,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Theme } from "@/constants/Styles";
 import Search from "@/components/Search/Search";
 import { useQuery } from "@tanstack/react-query";
 import Find from "@/components/Find/Find";
-import { Divider } from "react-native-elements";
 import Categories from "@/components/Categories/Categories";
 import { useSupabase } from "@/providers/SupabaseProvider";
 import { AllFindsDto, AllFindsQuery, SingleFindDto } from "@/types/queries";
@@ -58,7 +56,7 @@ const Page = () => {
   }
 
   return (
-    <View style={{ flex: 1, gap: 10 }}>
+    <View style={{ flex: 1, gap: 15 }}>
       <SafeAreaView />
 
       <View style={{ paddingHorizontal: 15 }}>

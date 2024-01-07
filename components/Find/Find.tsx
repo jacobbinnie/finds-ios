@@ -163,11 +163,11 @@ const Find = ({ findHeight, find }: FindProps) => {
               top: 10,
               left: 10,
               backgroundColor: Colors.light,
-              paddingHorizontal: 7,
-              paddingVertical: 7,
+              paddingHorizontal: 10,
+              paddingVertical: 10,
               borderRadius: 10,
               overflow: "hidden",
-              gap: 7,
+              gap: 10,
               alignItems: "center",
             }}
           >
@@ -180,6 +180,7 @@ const Find = ({ findHeight, find }: FindProps) => {
             <Text
               style={{
                 fontFamily: "font-m",
+                fontSize: 16,
               }}
             >
               {`Find by @${find.profile?.username}`}
@@ -212,7 +213,7 @@ const Find = ({ findHeight, find }: FindProps) => {
                   display: "flex",
                   flexDirection: "row",
                   alignItems: "baseline",
-                  gap: 7,
+                  gap: 10,
                 }}
               >
                 <FontAwesome
@@ -238,14 +239,7 @@ const Find = ({ findHeight, find }: FindProps) => {
             <Divider />
 
             <View>
-              <Text
-                style={[
-                  ,
-                  {
-                    backgroundColor: "#FFF",
-                  },
-                ]}
-              >
+              <Text style={Theme.BodyText}>
                 {isThisMinute(find.created_at)
                   ? "Just now"
                   : isThisHour(find.created_at)
