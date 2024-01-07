@@ -103,10 +103,32 @@ export type SingleProfileSearchDto = QueryData<
 
 export const ProfileDetailsQuery = `
 id,
+created_at,
 firstname,
 username,
+image,
 finds (
-  *
+  id,
+  created_at,
+  user_id,
+  rating,
+  review,
+  photos,
+  places (
+    name,
+    id,
+    locality
+  ),
+  profile (
+  id,
+  created_at,
+  firstname,
+  username,
+  image,
+  finds (
+    id
+  )
+  )
 )
 `;
 
