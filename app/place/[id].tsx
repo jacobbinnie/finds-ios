@@ -3,54 +3,19 @@ import React, { useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import Colors from "@/constants/Colors";
-import { ProfileDetailsQuery, ProfileDetailsDto } from "@/types/queries";
 import { supabase } from "@/utils/supabase";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { Theme } from "@/constants/Styles";
 import { Image } from "react-native-elements";
 import { FlatList } from "react-native-gesture-handler";
 import Find from "@/components/Find/Find";
 
-const ProfileDetails = () => {
+const PlaceDetails = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
 
   const router = useRouter();
-
-  const {
-    data: profile,
-    isLoading,
-    isError,
-    refetch,
-  } = useQuery<ProfileDetailsDto>({
-    queryKey: ["profile", id],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("profile")
-        .select(ProfileDetailsQuery)
-        .eq("id", id)
-        .single();
-
-      if (error) {
-        console.log(error);
-        throw error;
-      }
-      return data;
-    },
-  });
-
-  if (isLoading) {
-    return <Text>Loading...</Text>;
-  }
-
-  if (isError) {
-    return <Text>Error fetching data</Text>;
-  }
-
-  if (!profile) {
-    return <Text>Profile not found</Text>;
-  }
 
   return (
     <View style={Theme.Container}>
@@ -83,21 +48,27 @@ const ProfileDetails = () => {
             <TouchableOpacity
               style={{
                 backgroundColor: Colors.dark,
-                padding: 5,
+                padding: 15,
+                gap: 5,
                 borderRadius: 99,
                 position: "absolute",
                 right: 0,
                 top: 0,
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
               <Text
                 style={[
                   Theme.BodyText,
-                  { color: Colors.light, textAlign: "center", padding: 10 },
+                  { color: Colors.light, textAlign: "center" },
                 ]}
               >
-                Follow
+                Find
               </Text>
+              <AntDesign name="plus" size={20} color={Colors.light} />
             </TouchableOpacity>
           </View>
 
@@ -110,7 +81,7 @@ const ProfileDetails = () => {
             }}
           >
             <Image
-              source={{ uri: profile.image ?? undefined }}
+              source={{ uri: undefined }}
               style={{ width: 70, height: 70, borderRadius: 99 }}
             />
 
@@ -121,18 +92,18 @@ const ProfileDetails = () => {
                 gap: 5,
               }}
             >
-              <Text style={Theme.Title}>{profile.firstname}</Text>
+              <Text style={Theme.Title}>{id}</Text>
               <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-                @{profile.username}
+                location
               </Text>
               <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-                1.4k followers
+                address
               </Text>
             </View>
           </View>
         </View>
 
-        <View
+        {/* <View
           style={{
             flex: 1,
           }}
@@ -160,7 +131,7 @@ const ProfileDetails = () => {
                   }}
                 >
                   <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-                    That's all {profile.firstname}'s finds so far
+                    That's all place name's finds so far
                   </Text>
                 </View>
               }
@@ -185,10 +156,10 @@ const ProfileDetails = () => {
           ) : (
             <Text>Loading...</Text>
           )}
-        </View>
+        </View> */}
       </View>
     </View>
   );
 };
 
-export default ProfileDetails;
+export default PlaceDetails;

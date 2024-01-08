@@ -1,17 +1,20 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import Colors from "@/constants/Colors";
 import ProfileCard from "@/components/ProfileCard/ProfileCard";
-import ReviewPreviewCard from "@/components/FindDetailsOverview/FindDetailsOverview";
 import FindReviews from "@/components/FindReviews/FindReviews";
 import { SingleFindDetailsDto, FindDetailsQuery } from "@/types/queries";
 import { supabase } from "@/utils/supabase";
 import FindDetailsOverview from "@/components/FindDetailsOverview/FindDetailsOverview";
+import { Theme } from "@/constants/Styles";
+import { AntDesign } from "@expo/vector-icons";
 
 const FindDetails = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
+
+  const router = useRouter();
 
   const {
     data: find,
@@ -54,6 +57,7 @@ const FindDetails = () => {
       }}
     >
       <TouchableOpacity
+        onPress={() => router.replace(`/place/[id goes here]}`)} // TODO: replace with actual place id
         style={{
           position: "absolute",
           zIndex: 10,
@@ -63,15 +67,14 @@ const FindDetails = () => {
           padding: 10,
           borderRadius: 10,
           overflow: "hidden",
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 5,
         }}
       >
-        <Text
-          style={{
-            fontFamily: "font-m",
-          }}
-        >
-          {"Add to my finds"}
-        </Text>
+        <Text style={Theme.BodyText}>See more info</Text>
+        <AntDesign name="arrowright" size={20} color={Colors.dark} />
       </TouchableOpacity>
 
       <FindDetailsOverview find={find} />
@@ -81,8 +84,6 @@ const FindDetails = () => {
           <ProfileCard profile={find.profile} />
         </View>
       )}
-
-      {find?.places?.id && <FindReviews id={find?.places?.id} />}
     </View>
   );
 };

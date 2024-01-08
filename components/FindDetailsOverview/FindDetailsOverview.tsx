@@ -13,7 +13,7 @@ const FindDetailsOverview = ({ find }: FindDetailsOverviewProps) => {
   return (
     <View>
       <Image
-        style={{ width: "100%", height: 200, objectFit: "cover" }}
+        style={{ width: "100%", height: 300, objectFit: "cover" }}
         source={{ uri: find.photos[0] }}
       />
       <View

@@ -124,7 +124,13 @@ const Search = () => {
               );
             } else {
               // This is a place item
-              return <PlaceSearchResult place={item} />;
+              return (
+                <TouchableOpacity
+                  onPress={() => router.replace(`/place/${item.id}`)}
+                >
+                  <PlaceSearchResult place={item} />
+                </TouchableOpacity>
+              );
             }
           }}
         />

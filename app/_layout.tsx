@@ -97,6 +97,10 @@ function RootLayoutNav() {
         name="profile/[id]"
         options={{ headerShown: false, gestureDirection: "horizontal" }}
       />
+      <Stack.Screen
+        name="place/[id]"
+        options={{ headerShown: false, gestureDirection: "horizontal" }}
+      />
     </Stack>
   );
 }
