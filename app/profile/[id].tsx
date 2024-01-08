@@ -64,20 +64,34 @@ const ProfileDetails = () => {
             gap: 20,
           }}
         >
-          <View>
+          <View
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              flexDirection: "row",
+            }}
+          >
             <TouchableOpacity
               onPress={() => router.back()}
               style={{
-                backgroundColor: "#FFF",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                width: 35,
-                height: 35,
+                backgroundColor: Colors.grey,
+                padding: 10,
+                gap: 5,
                 borderRadius: 99,
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
               }}
             >
-              <Ionicons name="arrow-back-outline" size={24} color="black" />
+              <Ionicons name="arrow-back-outline" size={24} color="white" />
+              <Text
+                style={[
+                  Theme.BodyText,
+                  { color: Colors.light, textAlign: "center" },
+                ]}
+              >
+                Back
+              </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -85,9 +99,6 @@ const ProfileDetails = () => {
                 backgroundColor: Colors.dark,
                 padding: 5,
                 borderRadius: 99,
-                position: "absolute",
-                right: 0,
-                top: 0,
               }}
             >
               <Text

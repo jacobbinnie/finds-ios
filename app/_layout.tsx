@@ -87,13 +87,6 @@ function RootLayoutNav() {
         }}
       />
       <Stack.Screen
-        name="find/[id]"
-        options={{
-          presentation: "modal",
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
         name="profile/[id]"
         options={{ headerShown: false, gestureDirection: "horizontal" }}
       />
