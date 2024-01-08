@@ -74,8 +74,10 @@ const ProfileDetails = () => {
             <TouchableOpacity
               onPress={() => router.back()}
               style={{
-                backgroundColor: Colors.grey,
-                padding: 10,
+                borderColor: Colors.grey,
+                borderWidth: 1,
+                paddingHorizontal: 15,
+                paddingVertical: 10,
                 gap: 5,
                 borderRadius: 99,
                 display: "flex",
@@ -83,28 +85,30 @@ const ProfileDetails = () => {
                 alignItems: "center",
               }}
             >
-              <Ionicons name="arrow-back-outline" size={24} color="white" />
-              <Text
-                style={[
-                  Theme.BodyText,
-                  { color: Colors.light, textAlign: "center" },
-                ]}
-              >
-                Back
-              </Text>
+              <Ionicons
+                name="arrow-back-outline"
+                size={24}
+                color={Colors.grey}
+              />
+              <Text style={[Theme.BodyText, { color: Colors.grey }]}>Back</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={{
                 backgroundColor: Colors.dark,
-                padding: 5,
+                paddingHorizontal: 15,
+                paddingVertical: 10,
+                gap: 5,
                 borderRadius: 99,
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
               }}
             >
               <Text
                 style={[
                   Theme.BodyText,
-                  { color: Colors.light, textAlign: "center", padding: 10 },
+                  { color: Colors.light, textAlign: "center" },
                 ]}
               >
                 Follow

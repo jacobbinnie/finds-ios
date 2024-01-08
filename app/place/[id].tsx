@@ -39,8 +39,10 @@ const PlaceDetails = () => {
             <TouchableOpacity
               onPress={() => router.back()}
               style={{
-                backgroundColor: Colors.grey,
-                padding: 10,
+                borderColor: Colors.grey,
+                borderWidth: 1,
+                paddingHorizontal: 15,
+                paddingVertical: 10,
                 gap: 5,
                 borderRadius: 99,
                 display: "flex",
@@ -48,35 +50,28 @@ const PlaceDetails = () => {
                 alignItems: "center",
               }}
             >
-              <Ionicons name="arrow-back-outline" size={24} color="white" />
-              <Text
-                style={[
-                  Theme.BodyText,
-                  { color: Colors.light, textAlign: "center" },
-                ]}
-              >
-                Back
-              </Text>
+              <Ionicons
+                name="arrow-back-outline"
+                size={24}
+                color={Colors.grey}
+              />
+              <Text style={[Theme.BodyText, { color: Colors.grey }]}>Back</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={{
                 backgroundColor: Colors.dark,
-                padding: 10,
-
+                paddingHorizontal: 15,
+                paddingVertical: 10,
+                gap: 5,
                 borderRadius: 99,
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
               }}
             >
-              <AntDesign name="plus" size={24} color="white" />
-              <Text
-                style={[
-                  Theme.BodyText,
-                  { color: Colors.light, textAlign: "center", padding: 10 },
-                ]}
-              >
+              <Ionicons name="add" size={24} color={Colors.light} />
+              <Text style={[Theme.BodyText, { color: Colors.light }]}>
                 Find
               </Text>
             </TouchableOpacity>
