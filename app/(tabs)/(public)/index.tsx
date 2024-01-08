@@ -15,6 +15,7 @@ import Categories from "@/components/Categories/Categories";
 import { useSupabase } from "@/providers/SupabaseProvider";
 import { AllFindsDto, AllFindsQuery, SingleFindDto } from "@/types/queries";
 import { supabase } from "@/utils/supabase";
+import Colors from "@/constants/Colors";
 
 const Page = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
@@ -78,8 +79,23 @@ const Page = () => {
       >
         {findHeight && (
           <FlatList
+            ListFooterComponent={
+              <View
+                style={{
+                  height: 30,
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <Text style={[Theme.BodyText, { color: Colors.grey }]}>
+                  You're up to date!
+                </Text>
+              </View>
+            }
             style={{
-              borderRadius: 10,
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
               overflow: "hidden",
               flexGrow: 1,
             }}
@@ -91,9 +107,9 @@ const Page = () => {
             data={finds}
             keyExtractor={(item) => item.id}
             showsVerticalScrollIndicator={false}
-            snapToInterval={findHeight}
+            snapToInterval={findHeight - 30}
             renderItem={({ item }) => (
-              <Find findHeight={findHeight} find={item} />
+              <Find findHeight={findHeight - 30} find={item} />
             )}
           />
         )}

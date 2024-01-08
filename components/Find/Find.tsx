@@ -20,7 +20,7 @@ import {
 import { Divider } from "react-native-elements";
 
 interface FindProps {
-  profileFind: boolean;
+  profileFind?: boolean;
   findHeight: number;
   find: SingleFindDto;
 }

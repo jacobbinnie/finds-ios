@@ -56,12 +56,12 @@ const ProfileDetails = () => {
     <View style={Theme.Container}>
       <SafeAreaView />
 
-      <View style={{ gap: 10, flex: 1 }}>
+      <View style={{ gap: 20, flex: 1 }}>
         <View
           style={{
             display: "flex",
             justifyContent: "space-between",
-            gap: 10,
+            gap: 20,
           }}
         >
           <TouchableOpacity
@@ -148,9 +148,20 @@ const ProfileDetails = () => {
         >
           {findHeight ? (
             <FlatList
-              contentContainerStyle={{
-                paddingBottom: 30,
-              }}
+              ListFooterComponent={
+                <View
+                  style={{
+                    height: 40,
+                    width: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text style={[Theme.BodyText, { color: Colors.grey }]}>
+                    That's all {profile.firstname}'s finds so far
+                  </Text>
+                </View>
+              }
               style={{
                 borderRadius: 10,
                 overflow: "hidden",
@@ -164,9 +175,9 @@ const ProfileDetails = () => {
               data={profile.finds}
               keyExtractor={(item) => item.id}
               showsVerticalScrollIndicator={false}
-              snapToInterval={findHeight - 30}
+              snapToInterval={findHeight - 40}
               renderItem={({ item }) => (
-                <Find profileFind findHeight={findHeight - 30} find={item} />
+                <Find profileFind findHeight={findHeight - 40} find={item} />
               )}
             />
           ) : (
