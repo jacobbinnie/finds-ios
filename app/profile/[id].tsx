@@ -52,13 +52,11 @@ const ProfileDetails = () => {
     return <Text>Profile not found</Text>;
   }
 
-  const finds = profile.finds;
-
   return (
     <View style={Theme.Container}>
       <SafeAreaView />
 
-      <View style={{ gap: 10 }}>
+      <View style={{ gap: 10, flex: 1 }}>
         <View
           style={{
             display: "flex",
@@ -99,7 +97,9 @@ const ProfileDetails = () => {
         </View>
 
         <View
-          style={Theme.Container}
+          style={{
+            flex: 1,
+          }}
           onLayout={(e) => {
             if (findHeight) {
               e.nativeEvent.layout.height < findHeight &&
@@ -112,8 +112,11 @@ const ProfileDetails = () => {
             }
           }}
         >
-          {/* {findHeight && (
+          {findHeight ? (
             <FlatList
+              contentContainerStyle={{
+                paddingBottom: 30,
+              }}
               style={{
                 borderRadius: 10,
                 overflow: "hidden",
@@ -124,15 +127,17 @@ const ProfileDetails = () => {
               pagingEnabled={true}
               onRefresh={() => refetch()}
               refreshing={isLoading}
-              data={finds}
+              data={profile.finds}
               keyExtractor={(item) => item.id}
               showsVerticalScrollIndicator={false}
-              snapToInterval={findHeight}
+              snapToInterval={findHeight - 30}
               renderItem={({ item }) => (
-                <Find findHeight={findHeight} find={item} />
+                <Find profileFind findHeight={findHeight - 30} find={item} />
               )}
             />
-          )} */}
+          ) : (
+            <Text>Loading...</Text>
+          )}
         </View>
       </View>
     </View>

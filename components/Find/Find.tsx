@@ -20,11 +20,12 @@ import {
 import { Divider } from "react-native-elements";
 
 interface FindProps {
+  profileFind: boolean;
   findHeight: number;
   find: SingleFindDto;
 }
 
-const Find = ({ findHeight, find }: FindProps) => {
+const Find = ({ profileFind, findHeight, find }: FindProps) => {
   const router = useRouter();
   const { profile } = useSupabase();
 
@@ -116,7 +117,7 @@ const Find = ({ findHeight, find }: FindProps) => {
         <TouchableOpacity onPress={() => router.push(`/find/${find.id}`)}>
           <View
             style={{
-              display: "flex",
+              display: profileFind ? "none" : "flex",
               flexDirection: "row",
               position: "absolute",
               zIndex: 10,
