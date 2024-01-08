@@ -35,10 +35,9 @@ const Search = () => {
         <TouchableOpacity
           onPress={() => router.push("/(modals)/search")}
           style={{
-            height: deviceHeight * 0.07,
-            width: deviceHeight * 0.07,
+            height: deviceHeight * 0.065,
+            width: deviceHeight * 0.065,
             backgroundColor: "#FFF",
-
             elevation: 4,
             borderRadius: 99,
             flexDirection: "row",

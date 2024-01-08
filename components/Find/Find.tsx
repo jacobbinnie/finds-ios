@@ -114,7 +114,10 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
           elevation: 4,
         }}
       >
-        <TouchableOpacity onPress={() => router.push(`/find/${find.id}`)}>
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => router.push(`/find/${find.id}`)}
+        >
           <View
             style={{
               display: profileFind ? "none" : "flex",
@@ -125,7 +128,7 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
               backgroundColor: Colors.light,
               paddingHorizontal: 10,
               paddingVertical: 10,
-              borderRadius: 10,
+              borderRadius: 99,
               overflow: "hidden",
             }}
           >
