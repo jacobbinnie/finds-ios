@@ -123,8 +123,8 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
               display: profileFind ? "none" : "flex",
               position: "absolute",
               zIndex: 10,
-              top: 10,
-              left: 10,
+              top: 15,
+              left: 15,
               backgroundColor: Colors.light,
               paddingHorizontal: 10,
               paddingVertical: 10,
@@ -161,7 +161,7 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
           <Image
             style={{
               width: "100%",
-              height: findHeight * 0.6,
+              height: findHeight * 0.7,
               objectFit: "cover",
             }}
             source={{ uri: find.photos[0] }}
@@ -171,7 +171,7 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
               height: findHeight * 0.25,
               display: "flex",
               justifyContent: "space-evenly",
-              paddingHorizontal: 10,
+              paddingHorizontal: 15,
               backgroundColor: "#FFF",
               borderEndStartRadius: 10,
               borderEndEndRadius: 10,
@@ -209,7 +209,14 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
 
             <Divider />
 
-            <View>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
               <Text style={Theme.BodyText}>
                 {isThisMinute(find.created_at)
                   ? "Just now"
@@ -221,68 +228,33 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
                   ? "Yesterday"
                   : format(new Date(find.created_at), "MMM dd, yyyy")}
               </Text>
+
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "row",
+                  gap: 20,
+                }}
+              >
+                <TouchableOpacity onPress={() => handleAction(FindAction.SAVE)}>
+                  <Ionicons
+                    name="ios-heart"
+                    size={findHeight * 0.05}
+                    color={existingSave ? Colors.primary : Colors.light}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => handleAction(FindAction.FIND)}>
+                  <Entypo
+                    name="loop"
+                    size={findHeight * 0.05}
+                    color={Colors.light}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </TouchableOpacity>
-
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "row",
-            gap: 20,
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => handleAction(FindAction.SAVE)}
-            style={{
-              backgroundColor: existingSave ? Colors.primary : "#FFF",
-              display: "flex",
-              width: findHeight * 0.1,
-              height: findHeight * 0.1,
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: 99,
-              shadowColor: Colors.light,
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.1,
-              shadowRadius: 2.62,
-              elevation: 4,
-            }}
-          >
-            <Ionicons
-              name="ios-heart"
-              size={findHeight * 0.05}
-              color={Colors.light}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => handleAction(FindAction.FIND)}
-            style={{
-              backgroundColor: "#FFF",
-              display: "flex",
-              width: findHeight * 0.1,
-              height: findHeight * 0.1,
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: 99,
-              shadowColor: Colors.light,
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.1,
-              shadowRadius: 2.62,
-              elevation: 4,
-            }}
-          >
-            <Entypo name="loop" size={findHeight * 0.05} color={Colors.light} />
-          </TouchableOpacity>
-        </View>
       </View>
     </View>
   );

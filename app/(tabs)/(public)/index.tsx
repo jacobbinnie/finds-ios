@@ -82,7 +82,7 @@ const Page = () => {
             ListFooterComponent={
               <View
                 style={{
-                  height: 30,
+                  height: 40,
                   width: "100%",
                   display: "flex",
                   alignItems: "center",
@@ -107,9 +107,9 @@ const Page = () => {
             data={finds}
             keyExtractor={(item) => item.id}
             showsVerticalScrollIndicator={false}
-            snapToInterval={findHeight - 30}
+            snapToInterval={findHeight - 40}
             renderItem={({ item }) => (
-              <Find findHeight={findHeight - 30} find={item} />
+              <Find findHeight={findHeight - 40} find={item} />
             )}
           />
         )}
