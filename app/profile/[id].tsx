@@ -61,8 +61,7 @@ const ProfileDetails = () => {
           style={{
             display: "flex",
             justifyContent: "space-between",
-            flexDirection: "row",
-            alignItems: "center",
+            gap: 10,
           }}
         >
           <TouchableOpacity
@@ -79,21 +78,56 @@ const ProfileDetails = () => {
           >
             <Ionicons name="arrow-back-outline" size={24} color="black" />
           </TouchableOpacity>
-          <Image
-            source={{ uri: profile.image ?? undefined }}
-            style={{ width: 100, height: 100, borderRadius: 99 }}
-          />
-          <View style={{ width: 35, height: 35 }} />
-        </View>
 
-        <View style={{ display: "flex", alignItems: "center", gap: 5 }}>
-          <Text style={Theme.Title}>{profile.firstname}</Text>
-          <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-            @{profile.username}
-          </Text>
-          <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-            1.4k followers
-          </Text>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 10,
+            }}
+          >
+            <Image
+              source={{ uri: profile.image ?? undefined }}
+              style={{ width: 70, height: 70, borderRadius: 99 }}
+            />
+
+            <View
+              style={{
+                flex: 1,
+                position: "relative",
+                gap: 5,
+              }}
+            >
+              <Text style={Theme.Title}>{profile.firstname}</Text>
+              <Text style={[Theme.BodyText, { color: Colors.grey }]}>
+                @{profile.username}
+              </Text>
+              <Text style={[Theme.BodyText, { color: Colors.grey }]}>
+                1.4k followers
+              </Text>
+
+              <TouchableOpacity
+                style={{
+                  backgroundColor: Colors.dark,
+                  padding: 5,
+                  borderRadius: 99,
+                  position: "absolute",
+                  right: 0,
+                  top: 0,
+                }}
+              >
+                <Text
+                  style={[
+                    Theme.BodyText,
+                    { color: Colors.light, textAlign: "center", padding: 10 },
+                  ]}
+                >
+                  Follow
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
 
         <View

@@ -118,7 +118,6 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
           <View
             style={{
               display: profileFind ? "none" : "flex",
-              flexDirection: "row",
               position: "absolute",
               zIndex: 10,
               top: 10,
@@ -128,24 +127,32 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
               paddingVertical: 10,
               borderRadius: 10,
               overflow: "hidden",
-              gap: 10,
-              alignItems: "center",
             }}
           >
-            {find.profile?.image && (
-              <Image
-                source={{ uri: find.profile?.image }}
-                style={{ width: 25, height: 25, borderRadius: 99 }}
-              />
-            )}
-            <Text
+            <TouchableOpacity
+              onPress={() => router.push(`/profile/${find.profile?.id}`)}
               style={{
-                fontFamily: "font-m",
-                fontSize: 16,
+                display: "flex",
+                flexDirection: "row",
+                gap: 10,
+                alignItems: "center",
               }}
             >
-              {`Find by @${find.profile?.username}`}
-            </Text>
+              {find.profile?.image && (
+                <Image
+                  source={{ uri: find.profile?.image }}
+                  style={{ width: 25, height: 25, borderRadius: 99 }}
+                />
+              )}
+              <Text
+                style={{
+                  fontFamily: "font-m",
+                  fontSize: 16,
+                }}
+              >
+                {`Find by @${find.profile?.username}`}
+              </Text>
+            </TouchableOpacity>
           </View>
 
           <Image
