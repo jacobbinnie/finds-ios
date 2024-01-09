@@ -161,14 +161,13 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
           <Image
             style={{
               width: "100%",
-              height: findHeight * 0.7,
+              height: findHeight * 0.675,
               objectFit: "cover",
             }}
             source={{ uri: find.photos[0] }}
           />
           <View
             style={{
-              height: findHeight * 0.25,
               display: "flex",
               justifyContent: "space-evenly",
               paddingHorizontal: 15,
@@ -178,7 +177,7 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
               overflow: "hidden",
             }}
           >
-            <View style={{ gap: 10 }}>
+            <View style={{ gap: 10, paddingVertical: 15 }}>
               <View
                 style={{
                   display: "flex",
@@ -204,7 +203,9 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
                 <Text style={Theme.Title}>{find.places?.name}</Text>
                 <Text style={Theme.Title}>{find.rating}</Text>
               </View>
-              <Text style={Theme.BodyText}>{find.review}</Text>
+              <Text numberOfLines={2} style={Theme.BodyText}>
+                {find.review}
+              </Text>
             </View>
 
             <Divider />
@@ -215,6 +216,7 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
                 flexDirection: "row",
                 justifyContent: "space-between",
                 alignItems: "center",
+                paddingVertical: 10,
               }}
             >
               <Text style={Theme.BodyText}>

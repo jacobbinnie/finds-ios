@@ -282,7 +282,7 @@ INSERT INTO "public"."places" ("created_at", "lat", "lng", "name", "full_address
 --
 
 INSERT INTO "public"."profile" ("id", "created_at", "username", "firstname", "image") VALUES
-	('2d0ef82e-b61b-4ec0-b830-462044785ad6', '2023-08-30 03:57:20.733218+00', 'jacobbinnie', 'Jacob', 'https://pbs.twimg.com/profile_images/1712912818142433281/ZERmqIL9_400x400.jpg');
+	('2d0ef82e-b61b-4ec0-b830-462044785ad6', '2023-08-30 03:57:20.733218+00', 'jacobbinnie', 'Jacob', '/Users/jacobbinnie/Downloads/IMG_3016.jpg');
 
 
 --
