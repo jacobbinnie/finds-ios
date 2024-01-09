@@ -149,15 +149,12 @@ const FindDetails = () => {
           }}
           source={{ uri: find.photos[0] }}
         />
+
         <View
           style={{
-            display: "flex",
-            justifyContent: "space-evenly",
-            paddingHorizontal: 15,
             backgroundColor: "#FFF",
-            borderEndStartRadius: 10,
-            borderEndEndRadius: 10,
-            overflow: "hidden",
+            paddingHorizontal: 10,
+            paddingTop: 10,
           }}
         >
           <View
@@ -168,8 +165,7 @@ const FindDetails = () => {
               borderWidth: 1,
               borderColor: Colors.light,
               borderRadius: 10,
-              padding: 15,
-              marginTop: 15,
+              padding: 10,
             }}
           >
             <TouchableOpacity
@@ -209,7 +205,19 @@ const FindDetails = () => {
               </View>
             </TouchableOpacity>
           </View>
+        </View>
 
+        <View
+          style={{
+            display: "flex",
+            justifyContent: "space-evenly",
+            paddingHorizontal: 15,
+            backgroundColor: "#FFF",
+            borderEndStartRadius: 10,
+            borderEndEndRadius: 10,
+            overflow: "hidden",
+          }}
+        >
           <View style={{ gap: 10, paddingVertical: 15 }}>
             <View
               style={{
