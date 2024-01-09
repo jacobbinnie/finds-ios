@@ -116,7 +116,14 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
       >
         <TouchableOpacity
           activeOpacity={1}
-          onPress={() => router.push(`/place/${find.id}`)}
+          onPress={() =>
+            router.push({
+              pathname: `/find-details/${find.id}`,
+              params: {
+                data: JSON.stringify(find),
+              },
+            })
+          }
         >
           <View
             style={{
@@ -219,7 +226,7 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
                 paddingVertical: 10,
               }}
             >
-              <Text style={Theme.BodyText}>
+              <Text style={[Theme.BodyText, { color: Colors.grey }]}>
                 {isThisMinute(find.created_at)
                   ? "Just now"
                   : isThisHour(find.created_at)

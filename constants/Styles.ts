@@ -28,5 +28,6 @@ export const Theme = StyleSheet.create({
   BodyText: {
     fontFamily: "font-m",
     fontSize: 16,
+    color: Colors.dark,
   },
 });
