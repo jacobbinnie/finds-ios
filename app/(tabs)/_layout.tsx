@@ -19,11 +19,9 @@ const Layout = () => {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors.primary,
+        tabBarActiveTintColor: Colors.dark,
         tabBarInactiveTintColor: Colors.grey,
-        tabBarLabelStyle: {
-          fontFamily: "font-b",
-        },
+        tabBarShowLabel: false,
       }}
     >
       <Tabs.Screen
@@ -32,16 +30,15 @@ const Layout = () => {
           headerShown: false,
           tabBarLabel: "Explore",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="search" size={size} color={color} />
+            <Ionicons name="compass" size={30} color={color} />
           ),
         }}
       />
       <Tabs.Screen
         name="(auth)/finds"
         options={{
-          tabBarLabel: "Finds",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="heart-outline" size={size} color={color} />
+            <Ionicons name="heart" size={30} color={color} />
           ),
         }}
         listeners={{
@@ -60,13 +57,8 @@ const Layout = () => {
         options={{
           headerShown: false,
           tabBarLabel: "Profile",
-          title: "Account",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="face-man-profile"
-              size={size}
-              color={color}
-            />
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="account" size={30} color={color} />
           ),
         }}
         listeners={{
