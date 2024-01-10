@@ -1,16 +1,41 @@
-import { View, Text, TouchableOpacity, LayoutAnimation } from "react-native";
-import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  LayoutAnimation,
+  TextInput,
+  Button,
+} from "react-native";
+import React from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import Colors from "@/constants/Colors";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { Theme } from "@/constants/Styles";
+import { GooglePlace } from "@/types/types";
+import { useForm, Controller } from "react-hook-form";
+
+type FormData = {
+  review: string;
+  rating: string;
+};
 
 const CreateFind = () => {
   const { id, data } = useLocalSearchParams<{ id: string; data: string }>();
-  const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
 
   const router = useRouter();
-  const place = JSON.parse(data); // needs type
+  const place = JSON.parse(data) as GooglePlace;
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    defaultValues: {
+      review: "",
+      rating: "",
+    },
+  });
+  const onSubmit = handleSubmit((data: FormData) => console.log(data));
 
   return (
     <View
@@ -22,7 +47,7 @@ const CreateFind = () => {
         },
       ]}
     >
-      <View>
+      <View style={{ gap: 10 }}>
         <View
           style={{
             display: "flex",
@@ -34,9 +59,49 @@ const CreateFind = () => {
         >
           <FontAwesome name="map-marker" size={15} color={Colors.primary} />
           <Text numberOfLines={1} style={Theme.BodyText}>
-            address
+            {place.shortFormattedAddress}
           </Text>
         </View>
+        <Text style={Theme.Title}>{place.displayName.text}</Text>
+      </View>
+
+      <View>
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              placeholder="Review"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+            />
+          )}
+          name="review"
+        />
+        {errors.review && <Text>Please write a review</Text>}
+
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+            min: 1,
+            max: 10,
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              keyboardType="numeric"
+              placeholder="Rating"
+              onBlur={onBlur}
+              onChangeText={(text) => onChange(text)}
+              value={value}
+            />
+          )}
+          name="rating"
+        />
+        {errors.rating && <Text>Please rate your find</Text>}
       </View>
 
       <View
@@ -64,6 +129,7 @@ const CreateFind = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
+          onPress={handleSubmit(onSubmit as any)}
           style={{
             backgroundColor: Colors.primary,
             width: "50%",

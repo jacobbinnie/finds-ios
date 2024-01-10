@@ -17,10 +17,13 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/utils/supabase";
 import { AllFindsDto, AllFindsQuery } from "@/types/queries";
 import Find from "@/components/Find/Find";
+import { useSupabase } from "@/providers/SupabaseProvider";
 
 const PlaceDetails = () => {
   const { id, data } = useLocalSearchParams<{ id: string; data: string }>();
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
+
+  const { profile } = useSupabase();
 
   const router = useRouter();
   const place = JSON.parse(data) as GooglePlace;
@@ -90,7 +93,16 @@ const PlaceDetails = () => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => router.push(`/create-find/${id}`)}
+              onPress={() => {
+                if (!profile) {
+                  return router.push("/(modals)/login");
+                } else {
+                  router.push({
+                    pathname: `/create-find/${id}`,
+                    params: { data: JSON.stringify(place) },
+                  });
+                }
+              }}
               style={{
                 backgroundColor: Colors.dark,
                 paddingHorizontal: 15,
@@ -157,7 +169,7 @@ const PlaceDetails = () => {
                   }}
                 >
                   <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-                    That's all place name's finds so far
+                    That's all {place.displayName.text}'s finds so far
                   </Text>
                 </View>
               }
