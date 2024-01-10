@@ -11,8 +11,12 @@ import Colors from "@/constants/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { Theme } from "@/constants/Styles";
-import { Image } from "react-native-elements";
 import { GooglePlace } from "@/types/types";
+import { FlatList } from "react-native-gesture-handler";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/utils/supabase";
+import { AllFindsDto, AllFindsQuery } from "@/types/queries";
+import Find from "@/components/Find/Find";
 
 const PlaceDetails = () => {
   const { id, data } = useLocalSearchParams<{ id: string; data: string }>();
@@ -24,6 +28,25 @@ const PlaceDetails = () => {
   if (!place) {
     return <Text>Loading...</Text>;
   }
+
+  const {
+    data: finds,
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery<AllFindsDto>({
+    queryKey: ["finds", "explore"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("finds")
+        .select(AllFindsQuery)
+        .eq("place_id", id)
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+      return data;
+    },
+  });
 
   return (
     <View style={Theme.Container}>
@@ -106,7 +129,7 @@ const PlaceDetails = () => {
           </View>
         </View>
 
-        {/* <View
+        <View
           style={{
             flex: 1,
           }}
@@ -148,7 +171,7 @@ const PlaceDetails = () => {
               pagingEnabled={true}
               onRefresh={() => refetch()}
               refreshing={isLoading}
-              data={profile.finds}
+              data={finds}
               keyExtractor={(item) => item.id}
               showsVerticalScrollIndicator={false}
               snapToInterval={findHeight - 40}
@@ -159,7 +182,7 @@ const PlaceDetails = () => {
           ) : (
             <Text>Loading...</Text>
           )}
-        </View> */}
+        </View>
       </View>
     </View>
   );
