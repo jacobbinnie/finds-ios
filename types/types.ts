@@ -16,6 +16,7 @@ export interface GooglePlace {
   };
   shortFormattedAddress: string;
   types: string[];
+  googleMapsUri: string;
 }
 
 export interface GooglePlacesResponse {

@@ -92,6 +92,10 @@ function RootLayoutNav() {
         name="find-details/[id]"
         options={{ headerShown: false, presentation: "modal" }}
       />
+      <Stack.Screen
+        name="create-find/[id]"
+        options={{ headerShown: false, presentation: "modal" }}
+      />
     </Stack>
   );
 }

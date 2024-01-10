@@ -79,8 +79,6 @@ const Search = () => {
     }
   });
 
-  console.log(places);
-
   return (
     <View style={{ flex: 1 }}>
       <TextInput
@@ -128,7 +126,14 @@ const Search = () => {
               // This is a place item
               return (
                 <TouchableOpacity
-                  onPress={() => router.replace(`/place/${item.id}`)}
+                  onPress={() =>
+                    router.replace({
+                      pathname: `/place/${item.id}`,
+                      params: {
+                        data: JSON.stringify(item),
+                      },
+                    })
+                  }
                 >
                   <PlaceSearchResult place={item} />
                 </TouchableOpacity>

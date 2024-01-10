@@ -1,21 +1,29 @@
-import { View, Text, TouchableOpacity, LayoutAnimation } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  LayoutAnimation,
+  Linking,
+} from "react-native";
 import React, { useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useQuery } from "@tanstack/react-query";
 import Colors from "@/constants/Colors";
-import { supabase } from "@/utils/supabase";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { Theme } from "@/constants/Styles";
 import { Image } from "react-native-elements";
-import { FlatList } from "react-native-gesture-handler";
-import Find from "@/components/Find/Find";
+import { GooglePlace } from "@/types/types";
 
 const PlaceDetails = () => {
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { id, data } = useLocalSearchParams<{ id: string; data: string }>();
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
 
   const router = useRouter();
+  const place = JSON.parse(data) as GooglePlace;
+
+  if (!place) {
+    return <Text>Loading...</Text>;
+  }
 
   return (
     <View style={Theme.Container}>
@@ -59,6 +67,7 @@ const PlaceDetails = () => {
             </TouchableOpacity>
 
             <TouchableOpacity
+              onPress={() => router.push(`/create-find/${id}`)}
               style={{
                 backgroundColor: Colors.dark,
                 paddingHorizontal: 15,
@@ -77,34 +86,23 @@ const PlaceDetails = () => {
             </TouchableOpacity>
           </View>
 
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 10,
-            }}
-          >
-            <Image
-              source={{ uri: undefined }}
-              style={{ width: 70, height: 70, borderRadius: 99 }}
-            />
-
-            <View
+          <View style={{ display: "flex", gap: 10 }}>
+            <TouchableOpacity
+              onPress={() => Linking.openURL(place.googleMapsUri)}
               style={{
-                flex: 1,
-                position: "relative",
-                gap: 5,
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "baseline",
+                gap: 10,
+                maxWidth: "75%",
               }}
             >
-              <Text style={Theme.Title}>{id}</Text>
-              <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-                location
+              <FontAwesome name="map-marker" size={15} color={Colors.primary} />
+              <Text numberOfLines={1} style={Theme.BodyText}>
+                {place.shortFormattedAddress}
               </Text>
-              <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-                address
-              </Text>
-            </View>
+            </TouchableOpacity>
+            <Text style={Theme.Title}>{place.displayName.text}</Text>
           </View>
         </View>
 
