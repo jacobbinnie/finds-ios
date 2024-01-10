@@ -192,6 +192,7 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
                     flexDirection: "row",
                     alignItems: "baseline",
                     gap: 10,
+                    maxWidth: "75%",
                   }}
                 >
                   <FontAwesome
@@ -199,7 +200,9 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
                     size={15}
                     color={Colors.primary}
                   />
-                  <Text style={Theme.BodyText}>{find.places?.locality}</Text>
+                  <Text numberOfLines={1} style={Theme.BodyText}>
+                    {find.places?.short_formatted_address}
+                  </Text>
                 </View>
                 <View
                   style={{

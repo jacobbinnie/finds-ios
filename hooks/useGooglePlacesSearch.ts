@@ -37,7 +37,7 @@ const useGooglePlacesSearch = (query?: string): UseGooglePlacesSearchProps => {
       "Content-Type": "application/json",
       "X-Goog-Api-Key": apiKey,
       "X-Goog-FieldMask":
-        "places.id,places.displayName,places.shortFormattedAddress,places.types",
+        "places.id,places.displayName,places.shortFormattedAddress,places.types,places.googleMapsUri",
     };
 
     const acceptableTypes = ["bar", "restaurant", "food"];

@@ -56,46 +56,34 @@ export interface Database {
       }
       places: {
         Row: {
-          categories: string[] | null
-          country: string | null
+          categories: string[]
           created_at: string
-          full_address: string
-          hashed_mapbox_id: string
+          google_maps_uri: string
+          google_places_id: string
           id: string
-          lat: number
-          lng: number
-          locality: string | null
           name: string
-          postcode: string | null
-          region: string | null
+          short_formatted_address: string
+          updated_at: string
         }
         Insert: {
-          categories?: string[] | null
-          country?: string | null
+          categories: string[]
           created_at?: string
-          full_address: string
-          hashed_mapbox_id: string
+          google_maps_uri: string
+          google_places_id: string
           id?: string
-          lat: number
-          lng: number
-          locality?: string | null
           name: string
-          postcode?: string | null
-          region?: string | null
+          short_formatted_address: string
+          updated_at?: string
         }
         Update: {
-          categories?: string[] | null
-          country?: string | null
+          categories?: string[]
           created_at?: string
-          full_address?: string
-          hashed_mapbox_id?: string
+          google_maps_uri?: string
+          google_places_id?: string
           id?: string
-          lat?: number
-          lng?: number
-          locality?: string | null
           name?: string
-          postcode?: string | null
-          region?: string | null
+          short_formatted_address?: string
+          updated_at?: string
         }
         Relationships: []
       }

@@ -79,6 +79,8 @@ const Search = () => {
     }
   });
 
+  console.log(places);
+
   return (
     <View style={{ flex: 1 }}>
       <TextInput

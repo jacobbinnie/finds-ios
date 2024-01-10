@@ -13,9 +13,9 @@ export const AllFindsQuery = `
       photos,
       user_id,
       places (
-        name,
         id,
-        locality
+        name,
+        short_formatted_address
       ),
       profile (
         id,
@@ -37,9 +37,9 @@ rating,
 review,
 photos,
 places (
-  name,
   id,
-  locality
+  name,
+  short_formatted_address
 ),
 profile (
   id,
@@ -73,7 +73,7 @@ rating,
 places (
   id,
   name,
-  locality
+  short_formatted_address
 )
 `;
 
@@ -115,9 +115,9 @@ finds (
   review,
   photos,
   places (
-    name,
     id,
-    locality
+    name,
+    short_formatted_address
   ),
   profile (
   id,
