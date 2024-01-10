@@ -185,21 +185,42 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
             }}
           >
             <View style={{ gap: 10, paddingVertical: 15 }}>
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "baseline",
-                  gap: 10,
-                }}
-              >
-                <FontAwesome
-                  name="map-marker"
-                  size={15}
-                  color={Colors.primary}
-                />
-                <Text style={Theme.BodyText}>{find.places?.locality}</Text>
+              <View>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "baseline",
+                    gap: 10,
+                  }}
+                >
+                  <FontAwesome
+                    name="map-marker"
+                    size={15}
+                    color={Colors.primary}
+                  />
+                  <Text style={Theme.BodyText}>{find.places?.locality}</Text>
+                </View>
+                <View
+                  style={{
+                    width: 35,
+                    height: 35,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: Colors.primary,
+                    borderRadius: 99,
+                    position: "absolute",
+                    right: 0,
+                    top: 0,
+                  }}
+                >
+                  <Text style={[Theme.Title, { color: Colors.light }]}>
+                    {find.rating}
+                  </Text>
+                </View>
               </View>
+
               <View
                 style={{
                   display: "flex",
@@ -208,7 +229,6 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
                 }}
               >
                 <Text style={Theme.Title}>{find.places?.name}</Text>
-                <Text style={Theme.Title}>{find.rating}</Text>
               </View>
               <Text numberOfLines={2} style={Theme.BodyText}>
                 {find.review}

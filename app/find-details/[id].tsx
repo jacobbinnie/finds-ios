@@ -22,6 +22,7 @@ import {
 } from "date-fns";
 import { FindAction } from "@/types/types";
 import { useSupabase } from "@/providers/SupabaseProvider";
+import { ScrollView } from "react-native-gesture-handler";
 
 const FindDetails = () => {
   const { id, data } = useLocalSearchParams<{ id: string; data: string }>();
@@ -91,11 +92,11 @@ const FindDetails = () => {
   };
 
   return (
-    <View
+    <ScrollView
       id={id}
       style={{
         width: "100%",
-        height: deviceHeight ?? 0,
+        minHeight: deviceHeight * 1.5 ?? 0,
       }}
     >
       <View
@@ -169,7 +170,7 @@ const FindDetails = () => {
             }}
           >
             <TouchableOpacity
-              onPress={() => router.push(`/profile/${find.profile?.id}`)}
+              onPress={() => router.replace(`/profile/${find.profile?.id}`)}
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -201,7 +202,21 @@ const FindDetails = () => {
                     style={[Theme.BodyText, { color: Colors.grey }]}
                   >{`@${find.profile?.username}`}</Text>
                 </View>
-                <Text style={Theme.BodyText}>{`21 finds`}</Text>
+                <View
+                  style={{
+                    width: 35,
+                    height: 35,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: Colors.primary,
+                    borderRadius: 99,
+                  }}
+                >
+                  <Text style={[Theme.Title, { color: Colors.light }]}>
+                    {find.rating}
+                  </Text>
+                </View>
               </View>
             </TouchableOpacity>
           </View>
@@ -210,15 +225,16 @@ const FindDetails = () => {
         <View
           style={{
             display: "flex",
-            justifyContent: "space-evenly",
-            paddingHorizontal: 15,
+            flex: 1,
+            padding: 15,
             backgroundColor: "#FFF",
             borderEndStartRadius: 10,
             borderEndEndRadius: 10,
             overflow: "hidden",
+            gap: 15,
           }}
         >
-          <View style={{ gap: 10, paddingVertical: 15 }}>
+          <View style={{ gap: 10 }}>
             <View
               style={{
                 display: "flex",
@@ -238,14 +254,29 @@ const FindDetails = () => {
               }}
             >
               <Text style={Theme.Title}>{find.places?.name}</Text>
-              <Text style={Theme.Title}>{find.rating}</Text>
             </View>
             <Text style={Theme.BodyText}>{find.review}</Text>
           </View>
 
-          <Divider />
+          <View>
+            <Text style={[Theme.BodyText, { fontFamily: "font-b" }]}>
+              Vibe:
+            </Text>
+          </View>
 
-          <View
+          <View>
+            <Text style={[Theme.BodyText, { fontFamily: "font-b" }]}>
+              Staff:
+            </Text>
+          </View>
+
+          <View>
+            <Text style={[Theme.BodyText, { fontFamily: "font-b" }]}>
+              Prices:
+            </Text>
+          </View>
+
+          {/* <View
             style={{
               display: "flex",
               flexDirection: "row",
@@ -289,10 +320,10 @@ const FindDetails = () => {
                 />
               </TouchableOpacity>
             </View>
-          </View>
+          </View> */}
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
