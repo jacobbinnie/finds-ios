@@ -98,7 +98,7 @@ const PlaceDetails = () => {
                   return router.push("/(modals)/login");
                 } else {
                   router.push({
-                    pathname: `/create-find/${id}`,
+                    pathname: `/new-find/${id}`,
                     params: { data: JSON.stringify(place) },
                   });
                 }
