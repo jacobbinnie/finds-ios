@@ -70,7 +70,7 @@ const NewFind = () => {
       <Marquee
         spacing={20}
         speed={0.5}
-        style={{ backgroundColor: Colors.dark, paddingVertical: 15 }}
+        style={{ backgroundColor: Colors.primary, paddingVertical: 15 }}
       >
         <Text
           style={[
@@ -80,7 +80,7 @@ const NewFind = () => {
             },
           ]}
         >
-          new find
+          {place.displayName.text}
         </Text>
       </Marquee>
       <View
@@ -93,7 +93,10 @@ const NewFind = () => {
           },
         ]}
       >
-        <View style={{ gap: 10, marginTop: 15 }}>
+        <Text style={[Theme.Title, { fontSize: 32, paddingVertical: 15 }]}>
+          Share your find
+        </Text>
+        <View style={{ gap: 10 }}>
           <Text style={Theme.Title}>{place.displayName.text}</Text>
           <View
             style={{
@@ -328,7 +331,9 @@ const NewFind = () => {
               alignItems: "center",
             }}
           >
-            <Text style={[Theme.BodyText, { color: Colors.grey }]}>Cancel</Text>
+            <Text style={[Theme.ButtonText, { color: Colors.grey }]}>
+              Cancel
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -337,7 +342,7 @@ const NewFind = () => {
               backgroundColor: Colors.primary,
               width: "50%",
               paddingVertical: 15,
-              gap: 5,
+              gap: 10,
               borderRadius: 99,
               display: "flex",
               flexDirection: "row",
@@ -345,9 +350,10 @@ const NewFind = () => {
               justifyContent: "center",
             }}
           >
-            <Text style={[Theme.BodyText, { color: Colors.light }]}>
-              Publish
+            <Text style={[Theme.ButtonText, { color: Colors.light }]}>
+              Share find
             </Text>
+            <Ionicons name="send" size={20} color={Colors.light} />
           </TouchableOpacity>
         </View>
       </View>

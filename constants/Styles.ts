@@ -19,6 +19,7 @@ export const Theme = StyleSheet.create({
   ButtonText: {
     color: Colors.primary,
     fontFamily: "font-b",
+    fontSize: 16,
   },
   Title: {
     fontFamily: "font-b",

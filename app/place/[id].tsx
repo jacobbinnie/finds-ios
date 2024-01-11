@@ -89,7 +89,9 @@ const PlaceDetails = () => {
                 size={24}
                 color={Colors.grey}
               />
-              <Text style={[Theme.BodyText, { color: Colors.grey }]}>Back</Text>
+              <Text style={[Theme.ButtonText, { color: Colors.grey }]}>
+                Back
+              </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -115,7 +117,7 @@ const PlaceDetails = () => {
               }}
             >
               <Ionicons name="add" size={24} color={Colors.light} />
-              <Text style={[Theme.BodyText, { color: Colors.light }]}>
+              <Text style={[Theme.ButtonText, { color: Colors.light }]}>
                 Find
               </Text>
             </TouchableOpacity>
