@@ -5,18 +5,29 @@ import {
   LayoutAnimation,
   TextInput,
   Button,
+  ScrollView,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import Colors from "@/constants/Colors";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { Theme } from "@/constants/Styles";
 import { GooglePlace } from "@/types/types";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, useWatch } from "react-hook-form";
+import { Slider } from "react-native-elements";
+import { types } from "@babel/core";
 
 type FormData = {
   review: string;
   rating: string;
+  vibe: string;
+  place: {
+    name: string;
+    google_place_id: string;
+    short_formatted_address: string;
+    google_maps_uri: string;
+    types: string[];
+  };
 };
 
 const CreateFind = () => {
@@ -25,17 +36,35 @@ const CreateFind = () => {
   const router = useRouter();
   const place = JSON.parse(data) as GooglePlace;
 
+  const [rating, setRating] = useState("");
+
+  const handleSelectRating = (value: number) => {
+    setRating(value.toString());
+  };
+
   const {
     control,
+    watch,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
       review: "",
       rating: "",
+      vibe: "",
+      place: {
+        name: place.displayName.text,
+        google_place_id: place.id,
+        short_formatted_address: place.shortFormattedAddress,
+        google_maps_uri: place.googleMapsUri,
+        types: place.types,
+      },
     },
   });
   const onSubmit = handleSubmit((data: FormData) => console.log(data));
+
+  const currentRating = watch("rating");
+  const currentVibe = watch("vibe");
 
   return (
     <View
@@ -47,7 +76,19 @@ const CreateFind = () => {
         },
       ]}
     >
-      <View style={{ gap: 10 }}>
+      <Text
+        style={[
+          Theme.Title,
+          {
+            fontSize: 32,
+          },
+        ]}
+      >
+        New find
+      </Text>
+
+      <View style={{ gap: 10, marginTop: 15 }}>
+        <Text style={Theme.Title}>{place.displayName.text}</Text>
         <View
           style={{
             display: "flex",
@@ -62,10 +103,9 @@ const CreateFind = () => {
             {place.shortFormattedAddress}
           </Text>
         </View>
-        <Text style={Theme.Title}>{place.displayName.text}</Text>
       </View>
 
-      <View>
+      <View style={{ gap: 10 }}>
         <Controller
           control={control}
           rules={{
@@ -73,7 +113,16 @@ const CreateFind = () => {
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
-              placeholder="Review"
+              style={[
+                Theme.BodyText,
+                {
+                  borderWidth: 1,
+                  borderColor: errors.review ? "red" : Colors.grey,
+                  borderRadius: 10,
+                  padding: 15,
+                },
+              ]}
+              placeholder="Write a review"
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
@@ -81,8 +130,10 @@ const CreateFind = () => {
           )}
           name="review"
         />
-        {errors.review && <Text>Please write a review</Text>}
+      </View>
 
+      <View style={{ gap: 10 }}>
+        <Text style={Theme.BodyText}>Overall rating</Text>
         <Controller
           control={control}
           rules={{
@@ -90,18 +141,143 @@ const CreateFind = () => {
             min: 1,
             max: 10,
           }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              keyboardType="numeric"
-              placeholder="Rating"
-              onBlur={onBlur}
-              onChangeText={(text) => onChange(text)}
-              value={value}
-            />
+          render={({ field: { onChange, onBlur } }) => (
+            <ScrollView
+              style={{
+                gap: 10,
+                display: "flex",
+              }}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+            >
+              {Array.from({ length: 19 }, (_, index) => 10 - index * 0.5).map(
+                (number) => (
+                  <TouchableOpacity
+                    onBlur={onBlur}
+                    style={{
+                      width: 70,
+                      borderWidth: Number(currentRating) === number ? 0 : 1,
+                      backgroundColor:
+                        Number(currentRating) === number
+                          ? Colors.dark
+                          : Colors.light,
+                      borderColor: Colors.grey,
+                      padding: 15,
+                      marginRight: 5,
+                      borderRadius: 10,
+                      justifyContent: "center",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                    key={number}
+                    onPress={() => onChange(number)}
+                  >
+                    <Text
+                      style={[
+                        Theme.BodyText,
+                        {
+                          color:
+                            Number(currentRating) === number
+                              ? Colors.light
+                              : Colors.dark,
+                        },
+                      ]}
+                    >
+                      {number}
+                    </Text>
+                  </TouchableOpacity>
+                )
+              )}
+            </ScrollView>
           )}
           name="rating"
         />
-        {errors.rating && <Text>Please rate your find</Text>}
+        {errors.rating && (
+          <Text
+            style={[
+              Theme.BodyText,
+              {
+                color: "red",
+              },
+            ]}
+          >
+            Please rate your find
+          </Text>
+        )}
+      </View>
+
+      <View style={{ gap: 10 }}>
+        <Text style={Theme.BodyText}>Vibe</Text>
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+            min: 1,
+            max: 10,
+          }}
+          render={({ field: { onChange, onBlur } }) => (
+            <ScrollView
+              style={{
+                gap: 10,
+                display: "flex",
+              }}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+            >
+              {Array.from({ length: 19 }, (_, index) => 10 - index * 0.5).map(
+                (number) => (
+                  <TouchableOpacity
+                    onBlur={onBlur}
+                    style={{
+                      width: 70,
+                      borderWidth: Number(currentVibe) === number ? 0 : 1,
+                      backgroundColor:
+                        Number(currentVibe) === number
+                          ? Colors.dark
+                          : Colors.light,
+                      borderColor: Colors.grey,
+                      padding: 15,
+                      marginRight: 5,
+                      borderRadius: 10,
+                      justifyContent: "center",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                    key={number}
+                    onPress={() => onChange(number)}
+                  >
+                    <Text
+                      style={[
+                        Theme.BodyText,
+                        {
+                          color:
+                            Number(currentVibe) === number
+                              ? Colors.light
+                              : Colors.dark,
+                        },
+                      ]}
+                    >
+                      {number}
+                    </Text>
+                  </TouchableOpacity>
+                )
+              )}
+            </ScrollView>
+          )}
+          name="vibe"
+        />
+        {errors.vibe && (
+          <Text
+            style={[
+              Theme.BodyText,
+              {
+                color: "red",
+              },
+            ]}
+          >
+            Please rate the vibe
+          </Text>
+        )}
       </View>
 
       <View
@@ -109,6 +285,10 @@ const CreateFind = () => {
           display: "flex",
           justifyContent: "space-between",
           flexDirection: "row",
+          position: "absolute",
+          bottom: 30,
+          left: 15,
+          width: "100%",
         }}
       >
         <TouchableOpacity

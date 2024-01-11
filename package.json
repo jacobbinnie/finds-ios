@@ -25,6 +25,7 @@
     "expo": "~49.0.15",
     "expo-apple-authentication": "~6.1.0",
     "expo-font": "~11.4.0",
+    "expo-image-picker": "~14.3.2",
     "expo-linking": "~5.0.2",
     "expo-module-scripts": "^3.1.0",
     "expo-router": "^2.0.0",
