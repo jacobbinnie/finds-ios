@@ -37,10 +37,11 @@ const PlaceDetails = () => {
 
   const place: Place = isGooglePlace(parsed)
     ? {
-        id: parsed.id,
         name: parsed.displayName.text,
         google_maps_uri: parsed.googleMapsUri,
         short_formatted_address: parsed.shortFormattedAddress,
+        categories: parsed.types,
+        google_places_id: parsed.id,
       }
     : parsed;
 
@@ -63,7 +64,7 @@ const PlaceDetails = () => {
       const { data, error } = await supabase
         .from("finds")
         .select(AllFindsQuery)
-        .eq("place_id", id)
+        .eq("place", id)
         .order("created_at", { ascending: false });
 
       if (error) throw error;
@@ -151,12 +152,15 @@ const PlaceDetails = () => {
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "baseline",
-                gap: 10,
+                gap: 5,
                 maxWidth: "75%",
               }}
             >
               <FontAwesome name="map-marker" size={15} color={Colors.primary} />
-              <Text numberOfLines={1} style={Theme.BodyText}>
+              <Text
+                numberOfLines={1}
+                style={[Theme.Caption, { color: Colors.grey }]}
+              >
                 {place?.short_formatted_address}
               </Text>
             </TouchableOpacity>

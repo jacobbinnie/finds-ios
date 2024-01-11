@@ -30,6 +30,7 @@ export const Theme = StyleSheet.create({
     fontFamily: "font-m",
     fontSize: 16,
     color: Colors.dark,
+    lineHeight: 20,
   },
   Caption: {
     fontFamily: "font-m",

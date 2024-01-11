@@ -188,24 +188,6 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
               <View>
                 <View
                   style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "baseline",
-                    gap: 10,
-                    maxWidth: "75%",
-                  }}
-                >
-                  <FontAwesome
-                    name="map-marker"
-                    size={15}
-                    color={Colors.primary}
-                  />
-                  <Text numberOfLines={1} style={Theme.BodyText}>
-                    {find.places?.short_formatted_address}
-                  </Text>
-                </View>
-                <View
-                  style={{
                     width: 35,
                     height: 35,
                     display: "flex",
@@ -227,11 +209,32 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
               <View
                 style={{
                   display: "flex",
-                  flexDirection: "row",
+                  gap: 5,
                   justifyContent: "space-between",
                 }}
               >
                 <Text style={Theme.Title}>{find.places?.name}</Text>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "baseline",
+                    gap: 5,
+                    maxWidth: "75%",
+                  }}
+                >
+                  <FontAwesome
+                    name="map-marker"
+                    size={15}
+                    color={Colors.primary}
+                  />
+                  <Text
+                    numberOfLines={1}
+                    style={[Theme.Caption, { color: Colors.grey }]}
+                  >
+                    {find.places?.short_formatted_address}
+                  </Text>
+                </View>
               </View>
               <Text numberOfLines={2} style={Theme.BodyText}>
                 {find.review}

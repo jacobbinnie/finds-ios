@@ -86,7 +86,9 @@ const NewFind = () => {
       setError(newFindError.message);
     }
 
-    await queryClient.refetchQueries({ queryKey: ["finds", "place", id] });
+    await queryClient.refetchQueries({
+      queryKey: ["finds", "place", place.id],
+    });
 
     router.back();
   };
@@ -114,7 +116,7 @@ const NewFind = () => {
           google_maps_uri: place.google_maps_uri,
           short_formatted_address: place.short_formatted_address,
           name: place.name,
-          google_places_id: place.id,
+          google_places_id: place.google_places_id,
         })
         .select("*")
         .single();
@@ -135,7 +137,7 @@ const NewFind = () => {
           google_maps_uri: place.google_maps_uri,
           short_formatted_address: place.short_formatted_address,
           name: place.name,
-          google_places_id: place.id,
+          google_places_id: place.google_places_id,
         })
         .select("*")
         .single();
