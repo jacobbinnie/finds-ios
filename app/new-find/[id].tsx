@@ -12,7 +12,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import Colors from "@/constants/Colors";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { Theme } from "@/constants/Styles";
-import { GooglePlace } from "@/types/types";
+import { GooglePlace, Place } from "@/types/types";
 import { useForm, Controller } from "react-hook-form";
 import { Marquee } from "@animatereactnative/marquee";
 import { supabase } from "@/utils/supabase";
@@ -36,7 +36,7 @@ const NewFind = () => {
   const { id, data } = useLocalSearchParams<{ id: string; data: string }>();
 
   const router = useRouter();
-  const place = JSON.parse(data) as GooglePlace;
+  const place = JSON.parse(data) as Place;
   const { profile } = useSupabase();
 
   const [error, setError] = useState<string | undefined>();
@@ -56,11 +56,11 @@ const NewFind = () => {
       rating: "",
       vibe: "",
       place: {
-        name: place.displayName.text,
+        name: place.name,
         google_place_id: place.id,
-        short_formatted_address: place.shortFormattedAddress,
-        google_maps_uri: place.googleMapsUri,
-        types: place.types,
+        short_formatted_address: place.short_formatted_address,
+        google_maps_uri: place.google_maps_uri,
+        types: place.categories,
       },
     },
   });
@@ -110,10 +110,10 @@ const NewFind = () => {
       const { data: updatePlace, error: upsertPlaceError } = await supabase
         .from("places")
         .update({
-          categories: place.types,
-          google_maps_uri: place.googleMapsUri,
-          short_formatted_address: place.shortFormattedAddress,
-          name: place.displayName.text,
+          categories: place.categories,
+          google_maps_uri: place.google_maps_uri,
+          short_formatted_address: place.short_formatted_address,
+          name: place.name,
           google_places_id: place.id,
         })
         .select("*")
@@ -131,10 +131,10 @@ const NewFind = () => {
       const { data: insertPlace, error: insertPlaceError } = await supabase
         .from("places")
         .insert({
-          categories: place.types,
-          google_maps_uri: place.googleMapsUri,
-          short_formatted_address: place.shortFormattedAddress,
-          name: place.displayName.text,
+          categories: place.categories,
+          google_maps_uri: place.google_maps_uri,
+          short_formatted_address: place.short_formatted_address,
+          name: place.name,
           google_places_id: place.id,
         })
         .select("*")
@@ -169,7 +169,7 @@ const NewFind = () => {
             },
           ]}
         >
-          {place.displayName.text}
+          {place.name}
         </Text>
       </Marquee>
       <View
@@ -186,7 +186,7 @@ const NewFind = () => {
           Share your find
         </Text>
         <View style={{ gap: 10 }}>
-          <Text style={Theme.Title}>{place.displayName.text}</Text>
+          <Text style={Theme.Title}>{place.name}</Text>
           <View
             style={{
               display: "flex",
@@ -198,7 +198,7 @@ const NewFind = () => {
           >
             <FontAwesome name="map-marker" size={15} color={Colors.primary} />
             <Text numberOfLines={1} style={Theme.BodyText}>
-              {place.shortFormattedAddress}
+              {place.short_formatted_address}
             </Text>
           </View>
         </View>
