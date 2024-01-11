@@ -249,7 +249,7 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
                 paddingVertical: 10,
               }}
             >
-              <Text style={[Theme.BodyText, { color: Colors.grey }]}>
+              <Text style={[Theme.Caption, { color: Colors.grey }]}>
                 {isThisMinute(find.created_at)
                   ? "Just now"
                   : isThisHour(find.created_at)

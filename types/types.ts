@@ -2,6 +2,7 @@ import { Database } from "@/libs/database.types";
 
 export type Profile = Database["public"]["Tables"]["profile"]["Row"];
 export type Find = Database["public"]["Tables"]["finds"]["Row"];
+export type Place = Database["public"]["Tables"]["places"]["Row"];
 
 export enum FindAction {
   FIND = "FIND",

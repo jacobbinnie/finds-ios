@@ -15,6 +15,9 @@ import { Theme } from "@/constants/Styles";
 import { GooglePlace } from "@/types/types";
 import { useForm, Controller } from "react-hook-form";
 import { Marquee } from "@animatereactnative/marquee";
+import { supabase } from "@/utils/supabase";
+import { useSupabase } from "@/providers/SupabaseProvider";
+import { useQueryClient } from "@tanstack/react-query";
 
 type FormData = {
   review: string;
@@ -34,17 +37,18 @@ const NewFind = () => {
 
   const router = useRouter();
   const place = JSON.parse(data) as GooglePlace;
+  const { profile } = useSupabase();
 
-  const [rating, setRating] = useState("");
+  const [error, setError] = useState<string | undefined>();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSelectRating = (value: number) => {
-    setRating(value.toString());
-  };
+  const queryClient = useQueryClient();
 
   const {
     control,
     watch,
     handleSubmit,
+
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
@@ -60,7 +64,92 @@ const NewFind = () => {
       },
     },
   });
-  const onSubmit = handleSubmit((data: FormData) => console.log(data));
+
+  const finaliseFindSubmission = async (
+    placeId: string,
+    data: FormData,
+    profileId: string
+  ) => {
+    const { data: newFind, error: newFindError } = await supabase
+      .from("finds")
+      .insert({
+        review: data.review,
+        rating: data.rating,
+        photos: [],
+        place: placeId,
+        user_id: profileId,
+        vibe: data.vibe,
+      })
+      .select();
+
+    if (newFindError) {
+      setError(newFindError.message);
+    }
+
+    await queryClient.refetchQueries({ queryKey: ["finds", "place", id] });
+
+    router.back();
+  };
+
+  const onSubmit = handleSubmit(async (data: FormData) => {
+    setIsSubmitting(true);
+
+    if (!profile) {
+      router.push("/login");
+      setIsSubmitting(false);
+      return;
+    }
+
+    const { data: existingPlace, error: existingPlaceError } = await supabase
+      .from("places")
+      .select("id")
+      .eq("google_places_id", place.id)
+      .single();
+
+    if (existingPlace) {
+      const { data: updatePlace, error: upsertPlaceError } = await supabase
+        .from("places")
+        .update({
+          categories: place.types,
+          google_maps_uri: place.googleMapsUri,
+          short_formatted_address: place.shortFormattedAddress,
+          name: place.displayName.text,
+          google_places_id: place.id,
+        })
+        .select("*")
+        .single();
+
+      if (upsertPlaceError) {
+        console.error(upsertPlaceError.message);
+        setIsSubmitting(false);
+        setError(upsertPlaceError.message);
+        return;
+      }
+
+      await finaliseFindSubmission(updatePlace.id, data, profile.id);
+    } else {
+      const { data: insertPlace, error: insertPlaceError } = await supabase
+        .from("places")
+        .insert({
+          categories: place.types,
+          google_maps_uri: place.googleMapsUri,
+          short_formatted_address: place.shortFormattedAddress,
+          name: place.displayName.text,
+          google_places_id: place.id,
+        })
+        .select("*")
+        .single();
+
+      if (insertPlaceError) {
+        console.error(insertPlaceError.message);
+        setIsSubmitting(false);
+        setError(insertPlaceError.message);
+        return;
+      }
+
+      await finaliseFindSubmission(insertPlace.id, data, profile.id);
+    }
+  });
 
   const currentRating = watch("rating");
   const currentVibe = watch("vibe");

@@ -11,7 +11,7 @@ import Colors from "@/constants/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { Theme } from "@/constants/Styles";
-import { GooglePlace } from "@/types/types";
+import { GooglePlace, Place } from "@/types/types";
 import { FlatList } from "react-native-gesture-handler";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/utils/supabase";
@@ -20,13 +20,33 @@ import Find from "@/components/Find/Find";
 import { useSupabase } from "@/providers/SupabaseProvider";
 
 const PlaceDetails = () => {
-  const { id, data } = useLocalSearchParams<{ id: string; data: string }>();
+  const { id, data } = useLocalSearchParams<{
+    id: string;
+    data: string;
+    searchData: string;
+  }>();
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
 
   const { profile } = useSupabase();
 
   const router = useRouter();
-  const place = JSON.parse(data) as GooglePlace;
+  const parsed = JSON.parse(data);
+
+  const isGooglePlace = (parsed: any): parsed is GooglePlace =>
+    parsed && typeof parsed.shortFormattedAddress !== "undefined";
+
+  const place: Place = isGooglePlace(parsed)
+    ? {
+        id: parsed.id,
+        name: parsed.displayName.text,
+        google_maps_uri: parsed.googleMapsUri,
+        short_formatted_address: parsed.shortFormattedAddress,
+      }
+    : parsed;
+
+  if (!place) {
+    return <Text>Loading...</Text>;
+  }
 
   if (!place) {
     return <Text>Loading...</Text>;
@@ -38,7 +58,7 @@ const PlaceDetails = () => {
     isError,
     refetch,
   } = useQuery<AllFindsDto>({
-    queryKey: ["finds", "explore"],
+    queryKey: ["finds", "place", place.id],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("finds")
@@ -124,8 +144,9 @@ const PlaceDetails = () => {
           </View>
 
           <View style={{ display: "flex", gap: 10 }}>
+            <Text style={Theme.Title}>{place?.name ?? place?.name}</Text>
             <TouchableOpacity
-              onPress={() => Linking.openURL(place.googleMapsUri)}
+              onPress={() => Linking.openURL(place?.google_maps_uri)}
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -136,10 +157,9 @@ const PlaceDetails = () => {
             >
               <FontAwesome name="map-marker" size={15} color={Colors.primary} />
               <Text numberOfLines={1} style={Theme.BodyText}>
-                {place.shortFormattedAddress}
+                {place?.short_formatted_address}
               </Text>
             </TouchableOpacity>
-            <Text style={Theme.Title}>{place.displayName.text}</Text>
           </View>
         </View>
 
@@ -171,7 +191,7 @@ const PlaceDetails = () => {
                   }}
                 >
                   <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-                    That's all {place.displayName.text}'s finds so far
+                    That's all {place.name}'s finds so far
                   </Text>
                 </View>
               }

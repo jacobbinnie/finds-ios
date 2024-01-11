@@ -10,12 +10,18 @@ export const AllFindsQuery = `
       created_at,
       rating,
       review,
+      vibe,
       photos,
       user_id,
       places (
         id,
         name,
-        short_formatted_address
+        short_formatted_address,
+        google_maps_uri,
+        google_places_id,
+        categories,
+        created_at,
+        updated_at
       ),
       profile (
         id,
@@ -35,11 +41,17 @@ export const FindDetailsQuery = `
 id,
 rating,
 review,
+vibe,
 photos,
 places (
   id,
-  name,
-  short_formatted_address
+    name,
+    short_formatted_address,
+    google_maps_uri,
+    google_places_id,
+    categories,
+    created_at,
+    updated_at
 ),
 profile (
   id,
@@ -70,10 +82,16 @@ profile (
 ),
 review,
 rating,
+vibe,
 places (
   id,
-  name,
-  short_formatted_address
+    name,
+    short_formatted_address,
+    google_maps_uri,
+    google_places_id,
+    categories,
+    created_at,
+    updated_at
 )
 `;
 
@@ -113,11 +131,17 @@ finds (
   user_id,
   rating,
   review,
+  vibe,
   photos,
   places (
     id,
     name,
-    short_formatted_address
+    short_formatted_address,
+    google_maps_uri,
+    google_places_id,
+    categories,
+    created_at,
+    updated_at
   ),
   profile (
   id,

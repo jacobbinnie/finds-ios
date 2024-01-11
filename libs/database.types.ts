@@ -14,28 +14,31 @@ export interface Database {
           created_at: string
           id: string
           photos: string[]
-          place: string | null
-          rating: number
+          place: string
+          rating: string
           review: string
           user_id: string
+          vibe: string
         }
         Insert: {
           created_at?: string
           id?: string
           photos: string[]
-          place?: string | null
-          rating: number
+          place: string
+          rating: string
           review: string
           user_id: string
+          vibe: string
         }
         Update: {
           created_at?: string
           id?: string
           photos?: string[]
-          place?: string | null
-          rating?: number
+          place?: string
+          rating?: string
           review?: string
           user_id?: string
+          vibe?: string
         }
         Relationships: [
           {

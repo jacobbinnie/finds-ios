@@ -31,4 +31,9 @@ export const Theme = StyleSheet.create({
     fontSize: 16,
     color: Colors.dark,
   },
+  Caption: {
+    fontFamily: "font-m",
+    fontSize: 14,
+    color: Colors.dark,
+  },
 });

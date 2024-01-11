@@ -118,7 +118,14 @@ const FindDetails = () => {
         }}
       >
         <TouchableOpacity
-          onPress={() => router.replace(`/place/${find.places?.id}`)}
+          onPress={() =>
+            router.replace({
+              pathname: `/place/${find.places?.id}`,
+              params: {
+                data: JSON.stringify(find.places),
+              },
+            })
+          }
           style={{
             backgroundColor: Colors.light,
             paddingHorizontal: 15,
@@ -234,18 +241,7 @@ const FindDetails = () => {
             gap: 15,
           }}
         >
-          <View style={{ gap: 10 }}>
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "baseline",
-                gap: 10,
-              }}
-            >
-              <FontAwesome name="map-marker" size={15} color={Colors.primary} />
-              <Text style={Theme.BodyText}>{find.places?.locality}</Text>
-            </View>
+          <View style={{ gap: 5 }}>
             <View
               style={{
                 display: "flex",
@@ -255,26 +251,25 @@ const FindDetails = () => {
             >
               <Text style={Theme.Title}>{find.places?.name}</Text>
             </View>
-            <Text style={Theme.BodyText}>{find.review}</Text>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "baseline",
+                gap: 5,
+              }}
+            >
+              <FontAwesome name="map-marker" size={15} color={Colors.primary} />
+              <Text style={[Theme.Caption, { color: Colors.grey }]}>
+                {find.places?.short_formatted_address}
+              </Text>
+            </View>
           </View>
 
-          <View>
-            <Text style={[Theme.BodyText, { fontFamily: "font-b" }]}>
-              Vibe:
-            </Text>
-          </View>
-
-          <View>
-            <Text style={[Theme.BodyText, { fontFamily: "font-b" }]}>
-              Staff:
-            </Text>
-          </View>
-
-          <View>
-            <Text style={[Theme.BodyText, { fontFamily: "font-b" }]}>
-              Prices:
-            </Text>
-          </View>
+          <Text style={Theme.BodyText}>{find.review}</Text>
+          <Text style={[Theme.BodyText, { fontFamily: "font-b" }]}>
+            Vibe Rating: {find.vibe}
+          </Text>
 
           {/* <View
             style={{
