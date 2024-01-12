@@ -1,4 +1,10 @@
-import { View, Text, TouchableOpacity, LayoutAnimation } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  LayoutAnimation,
+  FlatList,
+} from "react-native";
 import React, { useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
@@ -9,7 +15,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { Theme } from "@/constants/Styles";
 import { Image } from "react-native-elements";
-import { FlatList } from "react-native-gesture-handler";
 import Find from "@/components/Find/Find";
 
 const ProfileDetails = () => {

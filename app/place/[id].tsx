@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   LayoutAnimation,
   Linking,
+  FlatList,
 } from "react-native";
 import React, { useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -12,7 +13,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { Theme } from "@/constants/Styles";
 import { GooglePlace, Place } from "@/types/types";
-import { FlatList } from "react-native-gesture-handler";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/utils/supabase";
 import { AllFindsDto, AllFindsQuery } from "@/types/queries";
@@ -59,7 +59,7 @@ const PlaceDetails = () => {
     isError,
     refetch,
   } = useQuery<AllFindsDto>({
-    queryKey: ["finds", "place", place.id],
+    queryKey: ["finds", "place", place.google_places_id],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("finds")
@@ -185,6 +185,7 @@ const PlaceDetails = () => {
         >
           {findHeight ? (
             <FlatList
+              ListEmptyComponent={<Text>No finds yet</Text>}
               ListFooterComponent={
                 <View
                   style={{
@@ -207,8 +208,8 @@ const PlaceDetails = () => {
               decelerationRate={"fast"}
               viewabilityConfig={{ itemVisiblePercentThreshold: 80 }}
               pagingEnabled={true}
-              onRefresh={() => refetch()}
               refreshing={isLoading}
+              onRefresh={() => refetch()}
               data={finds}
               keyExtractor={(item) => item.id}
               showsVerticalScrollIndicator={false}

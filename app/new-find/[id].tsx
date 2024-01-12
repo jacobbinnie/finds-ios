@@ -104,12 +104,12 @@ const NewFind = () => {
     console.log("Added new find");
 
     await queryClient.refetchQueries({
-      queryKey: ["finds", "place", place.id],
+      queryKey: ["finds", "place", place.google_places_id],
     });
 
-    console.log("Refetched queries");
-
     router.back();
+
+    console.log("Refetched queries");
   };
 
   const onSubmit = handleSubmit(async (data: FormData) => {
