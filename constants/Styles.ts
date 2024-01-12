@@ -17,7 +17,7 @@ export const Theme = StyleSheet.create({
     borderRadius: 99,
   },
   ButtonText: {
-    color: Colors.primary,
+    color: Colors.dark,
     fontFamily: "font-b",
     fontSize: 16,
   },

@@ -18,6 +18,7 @@ import { Marquee } from "@animatereactnative/marquee";
 import { supabase } from "@/utils/supabase";
 import { useSupabase } from "@/providers/SupabaseProvider";
 import { useQueryClient } from "@tanstack/react-query";
+import * as Crypto from "expo-crypto";
 
 type FormData = {
   review: string;
@@ -43,6 +44,20 @@ const NewFind = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const queryClient = useQueryClient();
+
+  const generateMD5Hash = async (inputString: string) => {
+    try {
+      // Generate MD5 hash
+      const digest = await Crypto.digestStringAsync(
+        Crypto.CryptoDigestAlgorithm.MD5,
+        inputString
+      );
+
+      return digest;
+    } catch (error) {
+      console.error("Error generating MD5 hash:", error);
+    }
+  };
 
   const {
     control,
@@ -86,15 +101,20 @@ const NewFind = () => {
       setError(newFindError.message);
     }
 
+    console.log("Added new find");
+
     await queryClient.refetchQueries({
       queryKey: ["finds", "place", place.id],
     });
+
+    console.log("Refetched queries");
 
     router.back();
   };
 
   const onSubmit = handleSubmit(async (data: FormData) => {
     setIsSubmitting(true);
+    console.log("Submitting");
 
     if (!profile) {
       router.push("/login");
@@ -102,55 +122,39 @@ const NewFind = () => {
       return;
     }
 
-    const { data: existingPlace, error: existingPlaceError } = await supabase
+    const hashedGooglePlaceId = await generateMD5Hash(place.google_places_id);
+
+    if (!hashedGooglePlaceId) {
+      setIsSubmitting(false);
+      setError("Error hashing Google Place ID");
+      return;
+    }
+
+    const { data: upsertPlace, error: upsertPlaceError } = await supabase
       .from("places")
-      .select("id")
-      .eq("google_places_id", place.id)
+      .upsert([
+        {
+          id: hashedGooglePlaceId,
+          categories: place.categories,
+          google_maps_uri: place.google_maps_uri,
+          short_formatted_address: place.short_formatted_address,
+          name: place.name,
+          google_places_id: place.google_places_id,
+        },
+      ])
+      .select("*")
       .single();
 
-    if (existingPlace) {
-      const { data: updatePlace, error: upsertPlaceError } = await supabase
-        .from("places")
-        .update({
-          categories: place.categories,
-          google_maps_uri: place.google_maps_uri,
-          short_formatted_address: place.short_formatted_address,
-          name: place.name,
-          google_places_id: place.google_places_id,
-        })
-        .select("*")
-        .single();
-
-      if (upsertPlaceError) {
-        console.error(upsertPlaceError.message);
-        setIsSubmitting(false);
-        setError(upsertPlaceError.message);
-        return;
-      }
-
-      await finaliseFindSubmission(updatePlace.id, data, profile.id);
-    } else {
-      const { data: insertPlace, error: insertPlaceError } = await supabase
-        .from("places")
-        .insert({
-          categories: place.categories,
-          google_maps_uri: place.google_maps_uri,
-          short_formatted_address: place.short_formatted_address,
-          name: place.name,
-          google_places_id: place.google_places_id,
-        })
-        .select("*")
-        .single();
-
-      if (insertPlaceError) {
-        console.error(insertPlaceError.message);
-        setIsSubmitting(false);
-        setError(insertPlaceError.message);
-        return;
-      }
-
-      await finaliseFindSubmission(insertPlace.id, data, profile.id);
+    if (upsertPlaceError) {
+      console.error(upsertPlaceError.message);
+      setIsSubmitting(false);
+      setError(upsertPlaceError.message);
+      return;
     }
+
+    console.log("Upserted place");
+
+    await finaliseFindSubmission(upsertPlace.id, data, profile.id);
   });
 
   const currentRating = watch("rating");
@@ -199,7 +203,10 @@ const NewFind = () => {
             }}
           >
             <FontAwesome name="map-marker" size={15} color={Colors.primary} />
-            <Text numberOfLines={1} style={Theme.BodyText}>
+            <Text
+              numberOfLines={1}
+              style={[Theme.Caption, { color: Colors.grey }]}
+            >
               {place.short_formatted_address}
             </Text>
           </View>

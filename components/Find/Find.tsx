@@ -200,7 +200,7 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
                     top: 0,
                   }}
                 >
-                  <Text style={[Theme.Title, { color: Colors.light }]}>
+                  <Text style={[Theme.ButtonText, { color: Colors.light }]}>
                     {find.rating}
                   </Text>
                 </View>
@@ -236,7 +236,7 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
                   </Text>
                 </View>
               </View>
-              <Text numberOfLines={2} style={Theme.BodyText}>
+              <Text numberOfLines={1} style={Theme.BodyText}>
                 {find.review}
               </Text>
             </View>

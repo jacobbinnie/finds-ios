@@ -141,7 +141,7 @@ const FindDetails = () => {
             zIndex: 20,
           }}
         >
-          <Text style={Theme.BodyText}>See place details</Text>
+          <Text style={Theme.ButtonText}>See place details</Text>
           <Ionicons
             name="arrow-forward-outline"
             size={24}
@@ -220,7 +220,7 @@ const FindDetails = () => {
                     borderRadius: 99,
                   }}
                 >
-                  <Text style={[Theme.Title, { color: Colors.light }]}>
+                  <Text style={[Theme.ButtonText, { color: Colors.light }]}>
                     {find.rating}
                   </Text>
                 </View>

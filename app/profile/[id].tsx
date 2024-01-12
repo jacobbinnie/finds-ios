@@ -90,7 +90,9 @@ const ProfileDetails = () => {
                 size={24}
                 color={Colors.grey}
               />
-              <Text style={[Theme.BodyText, { color: Colors.grey }]}>Back</Text>
+              <Text style={[Theme.ButtonText, { color: Colors.grey }]}>
+                Back
+              </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -105,12 +107,7 @@ const ProfileDetails = () => {
                 alignItems: "center",
               }}
             >
-              <Text
-                style={[
-                  Theme.BodyText,
-                  { color: Colors.light, textAlign: "center" },
-                ]}
-              >
+              <Text style={[Theme.ButtonText, { color: Colors.light }]}>
                 Follow
               </Text>
             </TouchableOpacity>
