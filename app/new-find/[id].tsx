@@ -6,6 +6,8 @@ import {
   TextInput,
   Button,
   ScrollView,
+  Image,
+  useWindowDimensions,
 } from "react-native";
 import React, { useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -19,6 +21,7 @@ import { supabase } from "@/utils/supabase";
 import { useSupabase } from "@/providers/SupabaseProvider";
 import { useQueryClient } from "@tanstack/react-query";
 import * as Crypto from "expo-crypto";
+import * as ImagePicker from "expo-image-picker";
 
 type FormData = {
   review: string;
@@ -35,6 +38,8 @@ type FormData = {
 
 const NewFind = () => {
   const { id, data } = useLocalSearchParams<{ id: string; data: string }>();
+
+  const dimensions = useWindowDimensions();
 
   const router = useRouter();
   const place = JSON.parse(data) as Place;
@@ -140,6 +145,7 @@ const NewFind = () => {
           short_formatted_address: place.short_formatted_address,
           name: place.name,
           google_places_id: place.google_places_id,
+          updated_at: new Date().toISOString(),
         },
       ])
       .select("*")
@@ -160,8 +166,49 @@ const NewFind = () => {
   const currentRating = watch("rating");
   const currentVibe = watch("vibe");
 
+  const [images, setImages] = useState<{ uri: string; base64: string }[]>();
+
+  console.log(images);
+
+  const handlePickImage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (status !== "granted") {
+      alert("Sorry, we need camera roll permissions to make this work!");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 1,
+      base64: true,
+      allowsMultipleSelection: true,
+    });
+
+    if (!result.canceled) {
+      // Extract base64 data from each selected image
+      if (!result.canceled) {
+        // Extract base64 data from each selected image
+        const selectedImages =
+          result?.assets?.map((asset) => ({
+            uri: asset.uri,
+            base64: asset.base64,
+          })) || [];
+
+        // Update the images state with the new base64 images
+        setImages(
+          (prevImages) =>
+            [...(prevImages ?? []), ...selectedImages] as {
+              uri: string;
+              base64: string;
+            }[]
+        );
+      }
+    }
+  };
+
   return (
-    <>
+    <ScrollView style={{ flex: 1, backgroundColor: "#FFF" }}>
       <Marquee
         spacing={20}
         speed={0.5}
@@ -212,19 +259,40 @@ const NewFind = () => {
           </View>
         </View>
 
-        <TouchableOpacity
-          style={{
-            width: "100%",
-            height: 100,
-            backgroundColor: Colors.light,
-            borderRadius: 10,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Ionicons name="images-outline" size={24} color={Colors.grey} />
-        </TouchableOpacity>
+        <View>
+          <ScrollView
+            style={{ height: 250 }}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+          >
+            <TouchableOpacity
+              onPress={handlePickImage}
+              style={{
+                width:
+                  images && images?.length > 0 ? 200 : dimensions.width - 30,
+                height: "100%",
+                backgroundColor: Colors.light,
+                borderRadius: 10,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginRight: 10,
+              }}
+            >
+              <Ionicons name="images-outline" size={24} color={Colors.grey} />
+            </TouchableOpacity>
+
+            {images &&
+              images.map((image, index) => (
+                <TouchableOpacity key={index} style={{ marginRight: 10 }}>
+                  <Image
+                    source={{ uri: image.uri }}
+                    style={{ width: 200, flex: 1, borderRadius: 10 }}
+                  />
+                </TouchableOpacity>
+              ))}
+          </ScrollView>
+        </View>
 
         <View style={{ gap: 10 }}>
           <Text style={[Theme.BodyText, { fontFamily: "font-b" }]}>Review</Text>
@@ -409,10 +477,8 @@ const NewFind = () => {
             display: "flex",
             justifyContent: "space-between",
             flexDirection: "row",
-            position: "absolute",
-            bottom: 30,
-            left: 15,
             width: "100%",
+            paddingVertical: 15,
           }}
         >
           <TouchableOpacity
@@ -455,7 +521,7 @@ const NewFind = () => {
           </TouchableOpacity>
         </View>
       </View>
-    </>
+    </ScrollView>
   );
 };
 
