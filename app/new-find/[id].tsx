@@ -14,7 +14,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import Colors from "@/constants/Colors";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { Theme } from "@/constants/Styles";
-import { GooglePlace, Place } from "@/types/types";
+import { Place } from "@/types/types";
 import { useForm, Controller } from "react-hook-form";
 import { Marquee } from "@animatereactnative/marquee";
 import { supabase } from "@/utils/supabase";
@@ -22,6 +22,7 @@ import { useSupabase } from "@/providers/SupabaseProvider";
 import { useQueryClient } from "@tanstack/react-query";
 import * as Crypto from "expo-crypto";
 import * as ImagePicker from "expo-image-picker";
+import { decode, encode } from "base64-arraybuffer";
 
 type FormData = {
   review: string;
@@ -34,6 +35,12 @@ type FormData = {
     google_maps_uri: string;
     types: string[];
   };
+};
+
+type Images = {
+  uri: string;
+  base64: string | null | undefined;
+  url?: string;
 };
 
 const NewFind = () => {
@@ -166,9 +173,7 @@ const NewFind = () => {
   const currentRating = watch("rating");
   const currentVibe = watch("vibe");
 
-  const [images, setImages] = useState<{ uri: string; base64: string }[]>();
-
-  console.log(images);
+  const [images, setImages] = useState<Images[]>([]);
 
   const handlePickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -180,12 +185,12 @@ const NewFind = () => {
 
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      quality: 1,
+      quality: 0.5,
       base64: true,
       allowsMultipleSelection: true,
     });
 
-    if (!result.canceled) {
+    if (result !== null) {
       // Extract base64 data from each selected image
       if (!result.canceled) {
         // Extract base64 data from each selected image
@@ -195,14 +200,41 @@ const NewFind = () => {
             base64: asset.base64,
           })) || [];
 
-        // Update the images state with the new base64 images
-        setImages(
-          (prevImages) =>
-            [...(prevImages ?? []), ...selectedImages] as {
-              uri: string;
-              base64: string;
-            }[]
-        );
+        // Update the images state with the local images
+        setImages((prevImages) => [...(prevImages ?? []), ...selectedImages]);
+
+        // Upload the images to Supabase
+        try {
+          await Promise.all(
+            selectedImages.map(async (image) => {
+              if (image.base64) {
+                const { data, error } = await supabase.storage
+                  .from("images")
+                  .upload(
+                    `images/${Date.now()}` +
+                      Math.floor(Math.random() * 100) +
+                      ".jpg",
+                    decode(image.base64),
+                    {
+                      cacheControl: "3600",
+                      upsert: false,
+                      contentType: "image/jpeg",
+                    }
+                  );
+
+                console.log(data?.path);
+
+                if (error) {
+                  throw error;
+                }
+              }
+            })
+          );
+
+          // Update the images state with the uploaded images
+        } catch (error) {
+          console.error("Error uploading images to Supabase:", error);
+        }
       }
     }
   };
