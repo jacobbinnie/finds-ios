@@ -18,6 +18,7 @@ import {
   isYesterday,
 } from "date-fns";
 import { Divider } from "react-native-elements";
+import ImageSwiper from "../ImageSwiper/ImageSwiper";
 
 interface FindProps {
   profileFind?: boolean;
@@ -165,14 +166,8 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
             </TouchableOpacity>
           </View>
 
-          <Image
-            style={{
-              width: "100%",
-              height: findHeight * 0.675,
-              objectFit: "cover",
-            }}
-            source={{ uri: find.photos[0] }}
-          />
+          <ImageSwiper images={find.photos} height={findHeight * 0.675} />
+
           <View
             style={{
               display: "flex",
