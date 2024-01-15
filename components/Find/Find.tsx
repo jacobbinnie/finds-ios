@@ -89,6 +89,14 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
     }
   };
 
+  const onPressCallback = () =>
+    router.push({
+      pathname: `/find-details/${find.id}`,
+      params: {
+        data: JSON.stringify(find),
+      },
+    });
+
   return (
     <View
       id={find.id}
@@ -115,17 +123,7 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
           elevation: 4,
         }}
       >
-        <TouchableOpacity
-          activeOpacity={1}
-          onPress={() =>
-            router.push({
-              pathname: `/find-details/${find.id}`,
-              params: {
-                data: JSON.stringify(find),
-              },
-            })
-          }
-        >
+        <TouchableOpacity activeOpacity={1} onPress={onPressCallback}>
           <View
             style={{
               display: profileFind ? "none" : "flex",
@@ -141,7 +139,7 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
             }}
           >
             <TouchableOpacity
-              onPress={() => router.push(`/profile/${find.profile?.id}`)}
+              onPress={onPressCallback}
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -166,7 +164,30 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
             </TouchableOpacity>
           </View>
 
-          <ImageSwiper images={find.photos} height={findHeight * 0.675} />
+          <ImageSwiper
+            images={find.photos}
+            height={findHeight * 0.675}
+            onPressCallback={onPressCallback}
+          />
+
+          <View
+            style={{
+              width: 45,
+              height: 45,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: Colors.primary,
+              borderRadius: 99,
+              position: "absolute",
+              right: 15,
+              top: 15,
+            }}
+          >
+            <Text style={[Theme.ButtonText, { color: Colors.light }]}>
+              {find.rating}
+            </Text>
+          </View>
 
           <View
             style={{
@@ -180,27 +201,6 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
             }}
           >
             <View style={{ gap: 10, paddingVertical: 15 }}>
-              <View>
-                <View
-                  style={{
-                    width: 35,
-                    height: 35,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    backgroundColor: Colors.primary,
-                    borderRadius: 99,
-                    position: "absolute",
-                    right: 0,
-                    top: 0,
-                  }}
-                >
-                  <Text style={[Theme.ButtonText, { color: Colors.light }]}>
-                    {find.rating}
-                  </Text>
-                </View>
-              </View>
-
               <View
                 style={{
                   display: "flex",

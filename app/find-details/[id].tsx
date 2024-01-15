@@ -23,6 +23,7 @@ import {
 import { FindAction } from "@/types/types";
 import { useSupabase } from "@/providers/SupabaseProvider";
 import { ScrollView } from "react-native-gesture-handler";
+import ImageSwiper from "@/components/ImageSwiper/ImageSwiper";
 
 const FindDetails = () => {
   const { id, data } = useLocalSearchParams<{ id: string; data: string }>();
@@ -149,14 +150,7 @@ const FindDetails = () => {
           />
         </TouchableOpacity>
 
-        <Image
-          style={{
-            width: "100%",
-            height: deviceHeight * 0.5,
-            objectFit: "cover",
-          }}
-          source={{ uri: find.photos[0] }}
-        />
+        <ImageSwiper images={find.photos} height={deviceHeight * 0.5} />
 
         <View
           style={{

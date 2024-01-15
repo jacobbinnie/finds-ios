@@ -191,7 +191,11 @@ const ProfileDetails = () => {
               pagingEnabled={true}
               onRefresh={() => refetch()}
               refreshing={isLoading}
-              data={profile.finds}
+              data={profile.finds.sort(
+                (a, b) =>
+                  new Date(b.created_at).getTime() -
+                  new Date(a.created_at).getTime()
+              )}
               keyExtractor={(item) => item.id}
               showsVerticalScrollIndicator={false}
               snapToInterval={findHeight - 40}

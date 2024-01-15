@@ -10,7 +10,7 @@ export const Theme = StyleSheet.create({
 
   Button: {
     borderWidth: 1,
-    borderColor: Colors.primary,
+    borderColor: Colors.dark,
     height: 50,
     justifyContent: "center",
     alignItems: "center",

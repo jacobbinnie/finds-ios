@@ -5,6 +5,7 @@ import {
   ScrollView,
   useWindowDimensions,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
 import Colors from "@/constants/Colors";
@@ -12,9 +13,10 @@ import Colors from "@/constants/Colors";
 interface ImageSwiperProps {
   images: string[];
   height: number;
+  onPressCallback?: () => void;
 }
 
-const ImageSwiper = ({ images, height }: ImageSwiperProps) => {
+const ImageSwiper = ({ images, height, onPressCallback }: ImageSwiperProps) => {
   const [displayWidth, setDisplayWidth] = useState<number>();
   const dimensions = useWindowDimensions();
 
@@ -39,7 +41,12 @@ const ImageSwiper = ({ images, height }: ImageSwiperProps) => {
       showsHorizontalScrollIndicator={false}
     >
       {images.map((image, key) => (
-        <View key={key} style={{ position: "relative" }}>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          onPress={onPressCallback}
+          key={key}
+          style={{ position: "relative" }}
+        >
           <View
             style={{
               position: "absolute",
@@ -54,12 +61,12 @@ const ImageSwiper = ({ images, height }: ImageSwiperProps) => {
           >
             <ActivityIndicator size="large" color="#FFF" />
           </View>
+
           <Image
             style={{
               width: displayWidth,
               height: height,
               objectFit: "cover",
-              borderRadius: 10,
             }}
             source={{ uri: image }}
             onLoadStart={() =>
@@ -76,7 +83,7 @@ const ImageSwiper = ({ images, height }: ImageSwiperProps) => {
               )
             }
           />
-        </View>
+        </TouchableOpacity>
       ))}
     </ScrollView>
   );
