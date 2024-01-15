@@ -8,6 +8,7 @@ import {
   ScrollView,
   Image,
   useWindowDimensions,
+  ActivityIndicator,
 } from "react-native";
 import React, { useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -40,11 +41,13 @@ type FormData = {
 type Images = {
   uri: string;
   base64: string | null | undefined;
-  url?: string;
+  publicUrl?: string;
 };
 
 const NewFind = () => {
   const { id, data } = useLocalSearchParams<{ id: string; data: string }>();
+
+  const [images, setImages] = useState<Images[]>([]);
 
   const dimensions = useWindowDimensions();
 
@@ -97,12 +100,18 @@ const NewFind = () => {
     data: FormData,
     profileId: string
   ) => {
+    const uploadedImages: string[] = [];
+
+    images.map(
+      (image) => image.publicUrl && uploadedImages.push(image.publicUrl)
+    );
+
     const { data: newFind, error: newFindError } = await supabase
       .from("finds")
       .insert({
         review: data.review,
         rating: data.rating,
-        photos: [],
+        photos: uploadedImages,
         place: placeId,
         user_id: profileId,
         vibe: data.vibe,
@@ -173,7 +182,10 @@ const NewFind = () => {
   const currentRating = watch("rating");
   const currentVibe = watch("vibe");
 
-  const [images, setImages] = useState<Images[]>([]);
+  const handleGetPublicUrl = async (path: string) => {
+    const { data } = supabase.storage.from("images").getPublicUrl(path);
+    return data.publicUrl;
+  };
 
   const handlePickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -203,6 +215,8 @@ const NewFind = () => {
         // Update the images state with the local images
         setImages((prevImages) => [...(prevImages ?? []), ...selectedImages]);
 
+        const updatedImages: Images[] = [];
+
         // Upload the images to Supabase
         try {
           await Promise.all(
@@ -211,9 +225,9 @@ const NewFind = () => {
                 const { data, error } = await supabase.storage
                   .from("images")
                   .upload(
-                    `images/${Date.now()}` +
-                      Math.floor(Math.random() * 100) +
-                      ".jpg",
+                    `${profile?.id}${Date.now()}/${
+                      Date.now().toString() + Math.floor(Math.random() * 100)
+                    }.jpg`,
                     decode(image.base64),
                     {
                       cacheControl: "3600",
@@ -222,14 +236,22 @@ const NewFind = () => {
                     }
                   );
 
-                console.log(data?.path);
-
                 if (error) {
                   throw error;
                 }
+
+                const publicUrl = await handleGetPublicUrl(data.path);
+
+                updatedImages.push({
+                  uri: image.uri,
+                  base64: image.base64,
+                  publicUrl: publicUrl,
+                });
               }
             })
           );
+
+          setImages(updatedImages);
 
           // Update the images state with the uploaded images
         } catch (error) {
@@ -316,11 +338,39 @@ const NewFind = () => {
 
             {images &&
               images.map((image, index) => (
-                <TouchableOpacity key={index} style={{ marginRight: 10 }}>
+                <TouchableOpacity
+                  style={{
+                    marginRight: 10,
+                    position: "relative",
+                    alignItems: "center", // Center horizontally
+                    justifyContent: "center", // Center vertically
+                  }}
+                >
                   <Image
                     source={{ uri: image.uri }}
-                    style={{ width: 200, flex: 1, borderRadius: 10 }}
+                    style={{
+                      width: 200,
+                      flex: 1,
+                      borderRadius: 10,
+                      opacity: image.publicUrl ? 1 : 0.5,
+                    }}
                   />
+                  {!image.publicUrl && (
+                    <View
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        backgroundColor: "rgba(255, 255, 255, 0.483)", // Adjust the background color and opacity as needed
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <ActivityIndicator size="large" color="#FFF" />
+                    </View>
+                  )}
                 </TouchableOpacity>
               ))}
           </ScrollView>
