@@ -42,7 +42,7 @@ const ImageSwiper = ({ images, height, onPressCallback }: ImageSwiperProps) => {
     >
       {images.map((image, key) => (
         <TouchableOpacity
-          activeOpacity={0.5}
+          activeOpacity={1}
           onPress={onPressCallback}
           key={key}
           style={{ position: "relative" }}
