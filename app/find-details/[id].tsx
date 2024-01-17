@@ -40,7 +40,7 @@ const FindDetails = () => {
   } = useQuery({
     queryKey: ["saves", "find", find.id],
     queryFn: async () => {
-      if (!profile) return null;
+      if (!profile) return undefined;
 
       const { data, error } = await supabase
         .from("saves")
@@ -150,7 +150,11 @@ const FindDetails = () => {
           />
         </TouchableOpacity>
 
-        <ImageSwiper images={find.photos} height={deviceHeight * 0.5} />
+        <ImageSwiper
+          isSwipable={find.photos.length > 1}
+          images={find.photos}
+          height={deviceHeight * 0.5}
+        />
 
         <View
           style={{
