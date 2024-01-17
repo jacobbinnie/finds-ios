@@ -24,6 +24,7 @@ export default function RootLayout() {
   const [loaded, error] = useFonts({
     "font-b": require("../assets/fonts/Gilroy-Bold.ttf"),
     "font-s": require("../assets/fonts/Gilroy-SemiBold.ttf"),
+    "font-mi": require("../assets/fonts/Gilroy-MediumItalic.ttf"),
     "font-m": require("../assets/fonts/Gilroy-Medium.ttf"),
   });
 

@@ -231,7 +231,7 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
                   </Text>
                 </View>
               </View>
-              <Text numberOfLines={1} style={Theme.BodyText}>
+              <Text numberOfLines={1} style={Theme.ReviewText}>
                 {find.review}
               </Text>
             </View>

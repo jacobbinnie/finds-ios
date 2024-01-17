@@ -36,7 +36,9 @@ const FindDetailsOverview = ({ find }: FindDetailsOverviewProps) => {
           }}
         >
           <FontAwesome name="map-marker" size={15} color={Colors.primary} />
-          <Text style={Theme.BodyText}>{find.places?.locality}</Text>
+          <Text style={Theme.BodyText}>
+            {find.places?.short_formatted_address}
+          </Text>
         </View>
         <View
           style={{

@@ -264,7 +264,7 @@ const FindDetails = () => {
             </View>
           </View>
 
-          <Text style={Theme.BodyText}>{find.review}</Text>
+          <Text style={Theme.ReviewText}>{find.review}</Text>
 
           {/* <View
             style={{

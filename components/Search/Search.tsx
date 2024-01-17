@@ -31,7 +31,6 @@ const Search = () => {
           alignItems: "center",
         }}
       >
-        <Feather name="bell" size={deviceHeight * 0.03} color={Colors.dark} />
         <TouchableOpacity
           onPress={() => router.push("/(modals)/search")}
           style={{
