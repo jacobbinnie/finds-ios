@@ -258,7 +258,17 @@ const NewFind = () => {
   };
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: "#FFF" }}>
+    <ScrollView
+      style={{
+        flex: 1,
+        backgroundColor: "#FFF",
+      }}
+      contentContainerStyle={{
+        display: "flex",
+        justifyContent: "space-between",
+        height: "100%",
+      }}
+    >
       <Marquee
         spacing={20}
         speed={0.5}
@@ -311,7 +321,7 @@ const NewFind = () => {
 
         <View>
           <ScrollView
-            style={{ height: 250 }}
+            style={{ height: 150 }}
             horizontal
             showsHorizontalScrollIndicator={false}
           >
@@ -475,55 +485,57 @@ const NewFind = () => {
             </Text>
           )}
         </View>
+      </View>
 
-        <View
+      <View
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          flexDirection: "row",
+          width: "100%",
+          paddingVertical: 15,
+          flex: 1,
+          position: "absolute",
+          bottom: 15,
+          paddingHorizontal: 15,
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => router.back()}
           style={{
-            display: "flex",
-            justifyContent: "space-between",
-            flexDirection: "row",
-            width: "100%",
+            borderColor: Colors.grey,
+            borderWidth: 1,
+            paddingHorizontal: 15,
             paddingVertical: 15,
+            gap: 5,
+            borderRadius: 99,
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
           }}
         >
-          <TouchableOpacity
-            onPress={() => router.back()}
-            style={{
-              borderColor: Colors.grey,
-              borderWidth: 1,
-              paddingHorizontal: 15,
-              paddingVertical: 15,
-              gap: 5,
-              borderRadius: 99,
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <Text style={[Theme.ButtonText, { color: Colors.grey }]}>
-              Cancel
-            </Text>
-          </TouchableOpacity>
+          <Text style={[Theme.ButtonText, { color: Colors.grey }]}>Cancel</Text>
+        </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={handleSubmit(onSubmit as any)}
-            style={{
-              backgroundColor: Colors.primary,
-              width: "50%",
-              paddingVertical: 15,
-              gap: 10,
-              borderRadius: 99,
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Text style={[Theme.ButtonText, { color: Colors.light }]}>
-              Share find
-            </Text>
-            <Ionicons name="send" size={20} color={Colors.light} />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          onPress={handleSubmit(onSubmit as any)}
+          style={{
+            backgroundColor: Colors.primary,
+            width: "50%",
+            paddingVertical: 15,
+            gap: 10,
+            borderRadius: 99,
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Text style={[Theme.ButtonText, { color: Colors.light }]}>
+            Share find
+          </Text>
+          <Ionicons name="send" size={20} color={Colors.light} />
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
