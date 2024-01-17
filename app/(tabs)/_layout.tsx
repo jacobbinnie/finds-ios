@@ -35,11 +35,12 @@ const Layout = () => {
         }}
       />
       <Tabs.Screen
-        name="(auth)/finds"
+        name="(auth)/saves"
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="heart" size={30} color={color} />
           ),
+          headerShown: false,
         }}
         listeners={{
           tabPress: (e) => {
@@ -47,7 +48,7 @@ const Layout = () => {
             if (!profile) {
               router.push("/(modals)/login");
             } else {
-              router.push("/finds");
+              router.push("/saves");
             }
           },
         }}
