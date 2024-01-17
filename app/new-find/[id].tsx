@@ -28,7 +28,6 @@ import { decode, encode } from "base64-arraybuffer";
 type FormData = {
   review: string;
   rating: string;
-  vibe: string;
   place: {
     name: string;
     google_place_id: string;
@@ -84,7 +83,6 @@ const NewFind = () => {
     defaultValues: {
       review: "",
       rating: "",
-      vibe: "",
       place: {
         name: place.name,
         google_place_id: place.id,
@@ -114,7 +112,6 @@ const NewFind = () => {
         photos: uploadedImages,
         place: placeId,
         user_id: profileId,
-        vibe: data.vibe,
       })
       .select();
 
@@ -180,7 +177,6 @@ const NewFind = () => {
   });
 
   const currentRating = watch("rating");
-  const currentVibe = watch("vibe");
 
   const handleGetPublicUrl = async (path: string) => {
     const { data } = supabase.storage.from("images").getPublicUrl(path);
@@ -476,80 +472,6 @@ const NewFind = () => {
               ]}
             >
               Please rate your find
-            </Text>
-          )}
-        </View>
-
-        <View style={{ gap: 10 }}>
-          <Text style={[Theme.BodyText, { fontFamily: "font-b" }]}>Vibe</Text>
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-              min: 1,
-              max: 10,
-            }}
-            render={({ field: { onChange, onBlur } }) => (
-              <ScrollView
-                style={{
-                  gap: 10,
-                  display: "flex",
-                }}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-              >
-                {Array.from({ length: 19 }, (_, index) => 10 - index * 0.5).map(
-                  (number) => (
-                    <TouchableOpacity
-                      onBlur={onBlur}
-                      style={{
-                        width: 70,
-                        borderWidth: Number(currentVibe) === number ? 0 : 1,
-                        backgroundColor:
-                          Number(currentVibe) === number
-                            ? Colors.dark
-                            : Colors.light,
-                        borderColor: Colors.light,
-                        padding: 15,
-                        marginRight: 5,
-                        borderRadius: 10,
-                        justifyContent: "center",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                      key={number}
-                      onPress={() => onChange(number)}
-                    >
-                      <Text
-                        style={[
-                          Theme.BodyText,
-                          {
-                            color:
-                              Number(currentVibe) === number
-                                ? Colors.light
-                                : Colors.dark,
-                          },
-                        ]}
-                      >
-                        {number}
-                      </Text>
-                    </TouchableOpacity>
-                  )
-                )}
-              </ScrollView>
-            )}
-            name="vibe"
-          />
-          {errors.vibe && (
-            <Text
-              style={[
-                Theme.BodyText,
-                {
-                  color: "red",
-                },
-              ]}
-            >
-              Please rate the vibe
             </Text>
           )}
         </View>

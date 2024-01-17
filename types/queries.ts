@@ -10,7 +10,6 @@ export const AllFindsQuery = `
       created_at,
       rating,
       review,
-      vibe,
       photos,
       user_id,
       places (
@@ -41,7 +40,6 @@ export const FindDetailsQuery = `
 id,
 rating,
 review,
-vibe,
 photos,
 places (
   id,
@@ -82,7 +80,6 @@ profile (
 ),
 review,
 rating,
-vibe,
 places (
   id,
     name,
@@ -131,7 +128,6 @@ finds (
   user_id,
   rating,
   review,
-  vibe,
   photos,
   places (
     id,

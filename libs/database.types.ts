@@ -18,7 +18,6 @@ export interface Database {
           rating: string
           review: string
           user_id: string
-          vibe: string
         }
         Insert: {
           created_at?: string
@@ -28,7 +27,6 @@ export interface Database {
           rating: string
           review: string
           user_id: string
-          vibe: string
         }
         Update: {
           created_at?: string
@@ -38,7 +36,6 @@ export interface Database {
           rating?: string
           review?: string
           user_id?: string
-          vibe?: string
         }
         Relationships: [
           {

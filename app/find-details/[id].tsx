@@ -98,6 +98,7 @@ const FindDetails = () => {
       style={{
         width: "100%",
         minHeight: deviceHeight * 1.5 ?? 0,
+        backgroundColor: "#FFF",
       }}
     >
       <View
@@ -114,7 +115,7 @@ const FindDetails = () => {
           },
           shadowOpacity: 0.2,
           shadowRadius: 2.62,
-          backgroundColor: Colors.light,
+
           elevation: 4,
         }}
       >
@@ -142,7 +143,7 @@ const FindDetails = () => {
             zIndex: 20,
           }}
         >
-          <Text style={Theme.ButtonText}>See place details</Text>
+          <Text style={Theme.ButtonText}>Place details</Text>
           <Ionicons
             name="arrow-forward-outline"
             size={24}
@@ -158,7 +159,6 @@ const FindDetails = () => {
 
         <View
           style={{
-            backgroundColor: "#FFF",
             paddingHorizontal: 10,
             paddingTop: 10,
           }}
@@ -265,9 +265,6 @@ const FindDetails = () => {
           </View>
 
           <Text style={Theme.BodyText}>{find.review}</Text>
-          <Text style={[Theme.BodyText, { fontFamily: "font-b" }]}>
-            Vibe Rating: {find.vibe}
-          </Text>
 
           {/* <View
             style={{
