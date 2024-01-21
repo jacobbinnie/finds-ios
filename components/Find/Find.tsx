@@ -135,7 +135,7 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
             }}
           >
             <TouchableOpacity
-              onPress={onPressCallback}
+              onPress={() => router.push(`/profile/${find.profile?.id}`)}
               style={{
                 display: "flex",
                 flexDirection: "row",

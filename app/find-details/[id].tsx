@@ -6,22 +6,11 @@ import {
 } from "react-native";
 import React from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useQuery } from "@tanstack/react-query";
 import Colors from "@/constants/Colors";
-import { supabase } from "@/utils/supabase";
-import { Entypo, FontAwesome, Ionicons } from "@expo/vector-icons";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { Theme } from "@/constants/Styles";
-import { Divider, Image } from "react-native-elements";
+import { Image } from "react-native-elements";
 import { SingleFindDto } from "@/types/queries";
-import {
-  format,
-  isThisHour,
-  isThisMinute,
-  isToday,
-  isYesterday,
-} from "date-fns";
-import { FindAction } from "@/types/types";
-import { useSupabase } from "@/providers/SupabaseProvider";
 import { ScrollView } from "react-native-gesture-handler";
 import ImageSwiper from "@/components/ImageSwiper/ImageSwiper";
 
@@ -31,66 +20,6 @@ const FindDetails = () => {
 
   const deviceHeight = useWindowDimensions().height;
   const find = JSON.parse(data) as SingleFindDto;
-  const { profile } = useSupabase();
-
-  const {
-    data: existingSave,
-    refetch: refetchSave,
-    isLoading: isLoadingSave,
-  } = useQuery({
-    queryKey: ["saves", "find", find.id],
-    queryFn: async () => {
-      if (!profile) return undefined;
-
-      const { data, error } = await supabase
-        .from("saves")
-        .select("id")
-        .eq("find", find.id)
-        .eq("profile", profile.id);
-
-      if (error) throw error;
-
-      return data?.[0] ?? null;
-    },
-  });
-
-  const handleAction = async (action: FindAction) => {
-    try {
-      if (!profile) {
-        return router.push("/(modals)/login");
-      }
-
-      if (action === FindAction.FIND) {
-        // do something
-      }
-
-      if (action === FindAction.SAVE) {
-        if (existingSave) {
-          const { error } = await supabase
-            .from("saves")
-            .delete()
-            .eq("id", existingSave.id);
-
-          if (error) throw error;
-
-          await refetchSave();
-        } else {
-          const { error } = await supabase.from("saves").insert([
-            {
-              profile: profile.id,
-              find: find.id,
-            },
-          ]);
-
-          if (error) throw error;
-
-          await refetchSave();
-        }
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   return (
     <ScrollView
