@@ -13,7 +13,7 @@ import { useQuery } from "@tanstack/react-query";
 import Find from "@/components/Find/Find";
 import { useAuth } from "@/providers/AuthProvider";
 import Colors from "@/constants/Colors";
-import { findsApi } from "@/types/apis";
+import { findsQuery } from "@/types/queries";
 
 const Page = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
@@ -29,18 +29,16 @@ const Page = () => {
     data: finds,
     isLoading,
     isError,
+    error,
     refetch,
-  } = useQuery({
-    queryKey: ["finds", profile?.id],
-    queryFn: findsApi.findsControllerAllFinds,
-  });
+  } = useQuery(findsQuery.findsControllerAllFinds());
 
   if (isLoading) {
     return <Text>Loading...</Text>;
   }
 
   if (isError) {
-    return <Text>Error fetching data</Text>;
+    return <Text style={{ paddingTop: 100 }}>{error.message}</Text>;
   }
 
   return (
@@ -94,7 +92,7 @@ const Page = () => {
             pagingEnabled={true}
             onRefresh={() => refetch()}
             refreshing={isLoading}
-            data={finds?.data}
+            data={finds}
             keyExtractor={(item) => item.id.toString()}
             showsVerticalScrollIndicator={false}
             snapToInterval={findHeight - 40}

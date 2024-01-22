@@ -16,7 +16,7 @@ import { GooglePlace, Place } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import Find from "@/components/Find/Find";
 import { useAuth } from "@/providers/AuthProvider";
-import { placesApi } from "@/types/apis";
+import { placesQuery } from "@/types/queries";
 
 const PlaceDetails = () => {
   const { id, data } = useLocalSearchParams<{
@@ -57,10 +57,9 @@ const PlaceDetails = () => {
     isLoading,
     isError,
     refetch,
-  } = useQuery({
-    queryKey: ["place", id],
-    queryFn: () => placesApi.placesControllerGetPlaceByGoogleId(id),
-  });
+  } = useQuery(
+    placesQuery.placesControllerGetPlaceByGoogleId(place.google_places_id)
+  );
 
   return (
     <View style={Theme.Container}>

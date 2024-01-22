@@ -14,7 +14,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { Theme } from "@/constants/Styles";
 import { Image } from "react-native-elements";
 import Find from "@/components/Find/Find";
-import { usersApi } from "@/types/apis";
+import { usersApi } from "@/types";
+import { usersQuery } from "@/types/queries";
 
 const ProfileDetails = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -27,10 +28,7 @@ const ProfileDetails = () => {
     isLoading,
     isError,
     refetch,
-  } = useQuery({
-    queryKey: ["profile", id],
-    queryFn: () => usersApi.usersControllerGetProfile(id),
-  });
+  } = useQuery(usersQuery.usersControllerGetProfile(id));
 
   if (isLoading) {
     return <Text>Loading...</Text>;
