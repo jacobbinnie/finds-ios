@@ -1,5 +1,4 @@
 import { Theme } from "@/constants/Styles";
-import { SupabaseProvider } from "@/providers/SupabaseProvider";
 import { Ionicons } from "@expo/vector-icons";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
@@ -47,9 +46,7 @@ export default function RootLayout() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <SupabaseProvider>
-        <RootLayoutNav />
-      </SupabaseProvider>
+      <RootLayoutNav />
     </QueryClientProvider>
   );
 }

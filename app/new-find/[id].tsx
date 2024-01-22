@@ -19,7 +19,7 @@ import { Place } from "@/types/types";
 import { useForm, Controller } from "react-hook-form";
 import { Marquee } from "@animatereactnative/marquee";
 import { supabase } from "@/utils/supabase";
-import { useSupabase } from "@/providers/SupabaseProvider";
+import { useAuth } from "@/providers/AuthProvider";
 import { useQueryClient } from "@tanstack/react-query";
 import * as Crypto from "expo-crypto";
 import * as ImagePicker from "expo-image-picker";
@@ -52,7 +52,7 @@ const NewFind = () => {
 
   const router = useRouter();
   const place = JSON.parse(data) as Place;
-  const { profile } = useSupabase();
+  const { profile } = useAuth();
 
   const [error, setError] = useState<string | undefined>();
   const [isSubmitting, setIsSubmitting] = useState(false);

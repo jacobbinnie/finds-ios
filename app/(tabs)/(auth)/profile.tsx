@@ -4,10 +4,10 @@ import { supabase } from "@/utils/supabase";
 import { Theme } from "@/constants/Styles";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
-import { useSupabase } from "@/providers/SupabaseProvider";
+import { useAuth } from "@/providers/AuthProvider";
 
 const Profile = () => {
-  const { profile } = useSupabase();
+  const { profile } = useAuth();
   const router = useRouter();
 
   if (!profile) {

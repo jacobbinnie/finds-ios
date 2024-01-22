@@ -8,7 +8,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "test": "jest --watchAll",
-    "gen-client": "supabase gen types typescript --project-id ypjwmiabnurvmvzysvkr > libs/database.types.ts"
+    "gen-client": "node utils/generateTypes.ts"
   },
   "jest": {
     "preset": "jest-expo"
@@ -23,7 +23,7 @@
     "@supabase/supabase-js": "^2.39.3",
     "@tanstack/react-query": "^5.14.6",
     "add": "^2.0.6",
-    "axios": "^1.6.4",
+    "axios": "^1.6.5",
     "base64-arraybuffer": "^1.0.2",
     "date-fns": "^3.0.6",
     "expo": "~49.0.15",
@@ -52,11 +52,11 @@
     "react-native-screens": "~3.22.0",
     "react-native-url-polyfill": "^2.0.0",
     "react-native-web": "~0.19.6",
-    "supabase": "^1.127.3",
     "yarn": "^1.22.21"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@openapitools/openapi-generator-cli": "^2.9.0",
     "@types/react": "~18.2.14",
     "jest": "^29.2.1",
     "jest-expo": "~49.0.0",

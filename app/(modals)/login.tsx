@@ -1,12 +1,12 @@
 import { View, Text } from "react-native";
 import React, { useEffect } from "react";
 import { Auth } from "@/components/Auth.native";
-import { useSupabase } from "@/providers/SupabaseProvider";
 import { useRouter } from "expo-router";
 import { Theme } from "@/constants/Styles";
+import { useAuth } from "@/providers/AuthProvider";
 
 const Login = () => {
-  const { profile } = useSupabase();
+  const { profile } = useAuth();
   const router = useRouter();
 
   useEffect(() => {

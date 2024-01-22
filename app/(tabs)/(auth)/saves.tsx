@@ -10,9 +10,7 @@ import React, { useEffect, useState } from "react";
 import { Theme } from "@/constants/Styles";
 import Search from "@/components/Search/Search";
 import { useQuery } from "@tanstack/react-query";
-import Find from "@/components/Find/Find";
-import Categories from "@/components/Categories/Categories";
-import { useSupabase } from "@/providers/SupabaseProvider";
+import { useAuth } from "@/providers/AuthProvider";
 import { AllFindsDto, AllFindsQuery, SingleFindDto } from "@/types/queries";
 import { supabase } from "@/utils/supabase";
 import Colors from "@/constants/Colors";
@@ -20,7 +18,7 @@ import Save from "@/components/Save/Save";
 
 const Saves = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
-  const { profile } = useSupabase();
+  const { profile } = useAuth();
 
   useEffect(() => {
     // Enable layout animation

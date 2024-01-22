@@ -6,8 +6,6 @@ import { FontAwesome } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
 import { SingleFindDto } from "@/types/queries";
-import { useSupabase } from "@/providers/SupabaseProvider";
-
 import ImageSwiper from "../ImageSwiper/ImageSwiper";
 
 interface FindProps {

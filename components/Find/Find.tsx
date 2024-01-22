@@ -7,7 +7,6 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
 import { SingleFindDto } from "@/types/queries";
 import { FindAction } from "@/types/types";
-import { useSupabase } from "@/providers/SupabaseProvider";
 import { supabase } from "@/utils/supabase";
 import { Query, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -19,6 +18,7 @@ import {
 } from "date-fns";
 import { Divider } from "react-native-elements";
 import ImageSwiper from "../ImageSwiper/ImageSwiper";
+import { useAuth } from "@/providers/AuthProvider";
 
 interface FindProps {
   profileFind?: boolean;
@@ -28,7 +28,7 @@ interface FindProps {
 
 const Find = ({ profileFind, findHeight, find }: FindProps) => {
   const router = useRouter();
-  const { profile } = useSupabase();
+  const { profile } = useAuth();
 
   const { data: existingSave, refetch: refetchSave } = useQuery({
     queryKey: ["saves", "find", find.id],

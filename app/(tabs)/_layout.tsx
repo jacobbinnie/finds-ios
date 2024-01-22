@@ -3,11 +3,11 @@ import { Tabs, useRouter, useSegments } from "expo-router";
 import Colors from "@/constants/Colors";
 
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { useSupabase } from "@/providers/SupabaseProvider";
+import { useAuth } from "@/providers/AuthProvider";
 
 const Layout = () => {
   const segments = useSegments();
-  const { profile } = useSupabase();
+  const { profile } = useAuth();
   const router = useRouter();
 
   useEffect(() => {

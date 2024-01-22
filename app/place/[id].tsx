@@ -17,7 +17,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/utils/supabase";
 import { AllFindsDto, AllFindsQuery } from "@/types/queries";
 import Find from "@/components/Find/Find";
-import { useSupabase } from "@/providers/SupabaseProvider";
+import { useAuth } from "@/providers/AuthProvider";
 
 const PlaceDetails = () => {
   const { id, data } = useLocalSearchParams<{
@@ -27,7 +27,7 @@ const PlaceDetails = () => {
   }>();
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
 
-  const { profile } = useSupabase();
+  const { profile } = useAuth();
 
   const router = useRouter();
   const parsed = JSON.parse(data);
