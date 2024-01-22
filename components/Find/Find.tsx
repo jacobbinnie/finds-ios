@@ -5,9 +5,7 @@ import { Theme } from "@/constants/Styles";
 import { AntDesign, Entypo, FontAwesome, Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
-import { SingleFindDto } from "@/types/queries";
 import { FindAction } from "@/types/types";
-import { supabase } from "@/utils/supabase";
 import { Query, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   format,
@@ -19,71 +17,72 @@ import {
 import { Divider } from "react-native-elements";
 import ImageSwiper from "../ImageSwiper/ImageSwiper";
 import { useAuth } from "@/providers/AuthProvider";
+import { FindDto } from "@/generated";
 
 interface FindProps {
   profileFind?: boolean;
   findHeight: number;
-  find: SingleFindDto;
+  find: FindDto;
 }
 
 const Find = ({ profileFind, findHeight, find }: FindProps) => {
   const router = useRouter();
   const { profile } = useAuth();
 
-  const { data: existingSave, refetch: refetchSave } = useQuery({
-    queryKey: ["saves", "find", find.id],
-    queryFn: async () => {
-      if (!profile) return null;
+  // const { data: existingSave, refetch: refetchSave } = useQuery({
+  //   queryKey: ["saves", "find", find.id],
+  //   queryFn: async () => {
+  //     if (!profile) return null;
 
-      const { data, error } = await supabase
-        .from("saves")
-        .select("id")
-        .eq("find", find.id)
-        .eq("profile", profile.id);
+  //     const { data, error } = await supabase
+  //       .from("saves")
+  //       .select("id")
+  //       .eq("find", find.id)
+  //       .eq("profile", profile.id);
 
-      if (error) throw error;
+  //     if (error) throw error;
 
-      return data?.[0] ?? null;
-    },
-  });
+  //     return data?.[0] ?? null;
+  //   },
+  // });
 
-  const handleAction = async (action: FindAction) => {
-    try {
-      if (!profile) {
-        return router.push("/(modals)/login");
-      }
+  // const handleAction = async (action: FindAction) => {
+  //   try {
+  //     if (!profile) {
+  //       return router.push("/(modals)/login");
+  //     }
 
-      if (action === FindAction.FIND) {
-        // do something
-      }
+  //     if (action === FindAction.FIND) {
+  //       // do something
+  //     }
 
-      if (action === FindAction.SAVE) {
-        if (existingSave) {
-          const { error } = await supabase
-            .from("saves")
-            .delete()
-            .eq("id", existingSave.id);
+  //     if (action === FindAction.SAVE) {
+  //       if (existingSave) {
+  //         const { error } = await supabase
+  //           .from("saves")
+  //           .delete()
+  //           .eq("id", existingSave.id);
 
-          if (error) throw error;
+  //         if (error) throw error;
 
-          await refetchSave();
-        } else {
-          const { error } = await supabase.from("saves").insert([
-            {
-              profile: profile.id,
-              find: find.id,
-            },
-          ]);
+  //         await refetchSave();
+  //       } else {
+  //         const { error } = await supabase.from("saves").insert([
+  //           {
+  //             profile: profile.id,
+  //             find: find.id,
+  //           },
+  //         ]);
 
-          if (error) throw error;
+  //         if (error) throw error;
 
-          await refetchSave();
-        }
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  //         await refetchSave();
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const onPressCallback = () =>
     router.push({
@@ -95,7 +94,6 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
 
   return (
     <View
-      id={find.id}
       style={{
         width: "100%",
         height: findHeight ?? 0,
@@ -135,7 +133,7 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
             }}
           >
             <TouchableOpacity
-              onPress={() => router.push(`/profile/${find.profile?.id}`)}
+              onPress={() => router.push(`/profile/${find.user.id}`)}
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -143,9 +141,9 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
                 alignItems: "center",
               }}
             >
-              {find.profile?.image && (
+              {find.user.avatar && (
                 <Image
-                  source={{ uri: find.profile?.image }}
+                  source={{ uri: find.user.avatar }}
                   style={{ width: 25, height: 25, borderRadius: 99 }}
                 />
               )}
@@ -155,18 +153,18 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
                   fontSize: 16,
                 }}
               >
-                {`Find by @${find.profile?.username}`}
+                {`Find by @${find.user.username}`}
               </Text>
             </TouchableOpacity>
           </View>
 
           <ImageSwiper
-            images={find.photos}
+            images={find.images}
             height={findHeight * 0.675}
             onPressCallback={onPressCallback}
           />
 
-          <View
+          {/* <View
             style={{
               width: 45,
               height: 45,
@@ -183,7 +181,7 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
             <Text style={[Theme.ButtonText, { color: Colors.light }]}>
               {find.rating}
             </Text>
-          </View>
+          </View> */}
 
           <View
             style={{
@@ -204,7 +202,7 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
                   justifyContent: "space-between",
                 }}
               >
-                <Text style={Theme.Title}>{find.places?.name}</Text>
+                <Text style={Theme.Title}>{"Place name"}</Text>
                 <View
                   style={{
                     display: "flex",
@@ -223,7 +221,7 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
                     numberOfLines={1}
                     style={[Theme.Caption, { color: Colors.grey }]}
                   >
-                    {find.places?.short_formatted_address}
+                    {"Place address"}
                   </Text>
                 </View>
               </View>
@@ -234,7 +232,7 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
 
             <Divider />
 
-            <View
+            {/* <View
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -278,7 +276,7 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
                   />
                 </TouchableOpacity>
               </View>
-            </View>
+            </View> */}
           </View>
         </TouchableOpacity>
       </View>

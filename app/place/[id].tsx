@@ -14,10 +14,9 @@ import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { Theme } from "@/constants/Styles";
 import { GooglePlace, Place } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/utils/supabase";
-import { AllFindsDto, AllFindsQuery } from "@/types/queries";
 import Find from "@/components/Find/Find";
 import { useAuth } from "@/providers/AuthProvider";
+import { placesApi } from "@/types/apis";
 
 const PlaceDetails = () => {
   const { id, data } = useLocalSearchParams<{
@@ -54,22 +53,13 @@ const PlaceDetails = () => {
   }
 
   const {
-    data: finds,
+    data: placeData,
     isLoading,
     isError,
     refetch,
-  } = useQuery<AllFindsDto>({
-    queryKey: ["finds", "place", place.google_places_id],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("finds")
-        .select(AllFindsQuery)
-        .eq("place", id)
-        .order("created_at", { ascending: false });
-
-      if (error) throw error;
-      return data;
-    },
+  } = useQuery({
+    queryKey: ["place", id],
+    queryFn: () => placesApi.placesControllerGetPlaceByGoogleId(id),
   });
 
   return (
@@ -210,8 +200,8 @@ const PlaceDetails = () => {
               pagingEnabled={true}
               refreshing={isLoading}
               onRefresh={() => refetch()}
-              data={finds}
-              keyExtractor={(item) => item.id}
+              data={placeData?.data.finds}
+              keyExtractor={(item) => item.id.toString()}
               showsVerticalScrollIndicator={false}
               snapToInterval={findHeight - 40}
               renderItem={({ item }) => (

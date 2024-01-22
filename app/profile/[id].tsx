@@ -9,13 +9,12 @@ import React, { useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import Colors from "@/constants/Colors";
-import { ProfileDetailsQuery, ProfileDetailsDto } from "@/types/queries";
-import { supabase } from "@/utils/supabase";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { Theme } from "@/constants/Styles";
 import { Image } from "react-native-elements";
 import Find from "@/components/Find/Find";
+import { usersApi } from "@/types/apis";
 
 const ProfileDetails = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -28,21 +27,9 @@ const ProfileDetails = () => {
     isLoading,
     isError,
     refetch,
-  } = useQuery<ProfileDetailsDto>({
+  } = useQuery({
     queryKey: ["profile", id],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("profile")
-        .select(ProfileDetailsQuery)
-        .eq("id", id)
-        .single();
-
-      if (error) {
-        console.log(error);
-        throw error;
-      }
-      return data;
-    },
+    queryFn: () => usersApi.usersControllerGetProfile(id),
   });
 
   if (isLoading) {
@@ -127,7 +114,7 @@ const ProfileDetails = () => {
             }}
           >
             <Image
-              source={{ uri: profile.image ?? undefined }}
+              source={{ uri: profile.data.avatar ?? undefined }}
               style={{ width: 70, height: 70, borderRadius: 99 }}
             />
 
@@ -138,9 +125,9 @@ const ProfileDetails = () => {
                 gap: 5,
               }}
             >
-              <Text style={Theme.Title}>{profile.firstname}</Text>
+              <Text style={Theme.Title}>{"First name here"}</Text>
               <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-                @{profile.username}
+                @{profile.data.username}
               </Text>
               <Text style={[Theme.BodyText, { color: Colors.grey }]}>
                 1.4k followers
@@ -177,7 +164,7 @@ const ProfileDetails = () => {
                   }}
                 >
                   <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-                    That's all {profile.firstname}'s finds so far
+                    That's all {"User's name here"}'s finds so far
                   </Text>
                 </View>
               }
@@ -191,12 +178,8 @@ const ProfileDetails = () => {
               pagingEnabled={true}
               onRefresh={() => refetch()}
               refreshing={isLoading}
-              data={profile.finds.sort(
-                (a, b) =>
-                  new Date(b.created_at).getTime() -
-                  new Date(a.created_at).getTime()
-              )}
-              keyExtractor={(item) => item.id}
+              data={profile.data.finds}
+              keyExtractor={(item) => item.id.toString()}
               showsVerticalScrollIndicator={false}
               snapToInterval={findHeight - 40}
               renderItem={({ item }) => (

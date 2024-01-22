@@ -11,11 +11,9 @@ import { Theme } from "@/constants/Styles";
 import Search from "@/components/Search/Search";
 import { useQuery } from "@tanstack/react-query";
 import Find from "@/components/Find/Find";
-import Categories from "@/components/Categories/Categories";
 import { useAuth } from "@/providers/AuthProvider";
-import { AllFindsDto, AllFindsQuery, SingleFindDto } from "@/types/queries";
-import { supabase } from "@/utils/supabase";
 import Colors from "@/constants/Colors";
+import { findsApi } from "@/types/apis";
 
 const Page = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
@@ -32,17 +30,9 @@ const Page = () => {
     isLoading,
     isError,
     refetch,
-  } = useQuery<AllFindsDto>({
-    queryKey: ["finds", "explore"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("finds")
-        .select(AllFindsQuery)
-        .order("created_at", { ascending: false });
-
-      if (error) throw error;
-      return data;
-    },
+  } = useQuery({
+    queryKey: ["finds", profile?.id],
+    queryFn: findsApi.findsControllerAllFinds,
   });
 
   if (isLoading) {
@@ -104,8 +94,8 @@ const Page = () => {
             pagingEnabled={true}
             onRefresh={() => refetch()}
             refreshing={isLoading}
-            data={finds}
-            keyExtractor={(item) => item.id}
+            data={finds?.data}
+            keyExtractor={(item) => item.id.toString()}
             showsVerticalScrollIndicator={false}
             snapToInterval={findHeight - 40}
             renderItem={({ item }) => (

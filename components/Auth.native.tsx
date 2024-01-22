@@ -1,6 +1,5 @@
 import { Platform } from "react-native";
 import * as AppleAuthentication from "expo-apple-authentication";
-import { supabase } from "@/utils/supabase";
 
 export function Auth() {
   if (Platform.OS === "ios")
@@ -20,16 +19,8 @@ export function Auth() {
             });
             // Sign in via Supabase Auth.
             if (credential.identityToken) {
-              const {
-                error,
-                data: { user },
-              } = await supabase.auth.signInWithIdToken({
-                provider: "apple",
-                token: credential.identityToken,
-              });
-              if (!error) {
-                // User is signed in.
-              }
+              console.log(credential);
+              // do something here
             } else {
               throw new Error("No identityToken.");
             }
