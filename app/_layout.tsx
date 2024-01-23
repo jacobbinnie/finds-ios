@@ -5,6 +5,7 @@ import { useFonts } from "expo-font";
 import { SplashScreen, Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import "react-native-url-polyfill/auto";
 
 export {
   // Catch any errors thrown by the Layout component.

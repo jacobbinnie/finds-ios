@@ -3,7 +3,7 @@ import { FindsApi, PlacesApi, UsersApi } from "./generated";
 
 const instance = axios.create();
 
-const BASE_URL = "http://localhost:4499";
+const BASE_URL = process.env.EXPO_PUBLIC_API_URL;
 
 export const findsApi = new FindsApi(undefined, BASE_URL, instance);
 
