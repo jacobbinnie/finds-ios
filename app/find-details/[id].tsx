@@ -75,7 +75,7 @@ const FindDetails = () => {
           <Text style={Theme.ButtonText}>Place details</Text>
           <Ionicons
             name="arrow-forward-outline"
-            size={24}
+            size={20}
             color={Colors.dark}
           />
         </TouchableOpacity>
@@ -147,7 +147,7 @@ const FindDetails = () => {
                   }}
                 >
                   <Text style={[Theme.ButtonText, { color: Colors.light }]}>
-                    {"Rating here"}
+                    {find.rating}
                   </Text>
                 </View>
               </View>

@@ -68,10 +68,10 @@ export interface FindDto {
     'review': string;
     /**
      * 
-     * @type {object}
+     * @type {string}
      * @memberof FindDto
      */
-    'rating': object;
+    'rating': string;
     /**
      * 
      * @type {PlaceDto}

@@ -125,14 +125,7 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
                   style={{ width: 25, height: 25, borderRadius: 99 }}
                 />
               )}
-              <Text
-                style={{
-                  fontFamily: "font-m",
-                  fontSize: 16,
-                }}
-              >
-                {`Find by @${find.user.username}`}
-              </Text>
+              <Text style={Theme.ButtonText}>{`@${find.user.username}`}</Text>
             </TouchableOpacity>
           </View>
 
