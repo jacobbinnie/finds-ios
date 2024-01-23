@@ -62,13 +62,14 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
     }
   };
 
-  const onPressCallback = () =>
+  const onPressCallback = () => {
     router.push({
       pathname: `/find-details/${find.id}`,
       params: {
         data: JSON.stringify(find),
       },
     });
+  };
 
   return (
     <View
@@ -115,7 +116,7 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
               style={{
                 display: "flex",
                 flexDirection: "row",
-                gap: 10,
+                gap: 5,
                 alignItems: "center",
               }}
             >
@@ -135,7 +136,7 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
             onPressCallback={onPressCallback}
           />
 
-          {/* <View
+          <View
             style={{
               width: 45,
               height: 45,
@@ -149,10 +150,15 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
               top: 15,
             }}
           >
-            <Text style={[Theme.ButtonText, { color: Colors.light }]}>
+            <Text
+              style={[
+                Theme.ButtonText,
+                { color: Colors.light, fontFamily: "font-b" },
+              ]}
+            >
               {find.rating}
             </Text>
-          </View> */}
+          </View>
 
           <View
             style={{

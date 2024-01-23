@@ -146,7 +146,12 @@ const FindDetails = () => {
                     borderRadius: 99,
                   }}
                 >
-                  <Text style={[Theme.ButtonText, { color: Colors.light }]}>
+                  <Text
+                    style={[
+                      Theme.ButtonText,
+                      { color: Colors.light, fontFamily: "font-b" },
+                    ]}
+                  >
                     {find.rating}
                   </Text>
                 </View>
