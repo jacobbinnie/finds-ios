@@ -14,8 +14,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { Theme } from "@/constants/Styles";
 import { Image } from "react-native-elements";
 import Find from "@/components/Find/Find";
-import { usersApi } from "@/types";
 import { usersQuery } from "@/types/queries";
+import { kFormatter } from "@/utils/kFormatter";
 
 const ProfileDetails = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -27,15 +27,16 @@ const ProfileDetails = () => {
     data: profile,
     isLoading,
     isError,
+    error,
     refetch,
-  } = useQuery(usersQuery.usersControllerGetProfile(id));
+  } = useQuery(usersQuery.usersControllerGetProfileAndFinds(id));
 
   if (isLoading) {
     return <Text>Loading...</Text>;
   }
 
   if (isError) {
-    return <Text>Error fetching data</Text>;
+    return <Text>{error.message}</Text>;
   }
 
   if (!profile) {
@@ -112,7 +113,7 @@ const ProfileDetails = () => {
             }}
           >
             <Image
-              source={{ uri: profile.data.avatar ?? undefined }}
+              source={{ uri: profile.avatar }}
               style={{ width: 70, height: 70, borderRadius: 99 }}
             />
 
@@ -123,12 +124,12 @@ const ProfileDetails = () => {
                 gap: 5,
               }}
             >
-              <Text style={Theme.Title}>{"First name here"}</Text>
+              <Text style={Theme.Title}>{profile.firstname}</Text>
               <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-                @{profile.data.username}
+                @{profile.username}
               </Text>
               <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-                1.4k followers
+                {`${kFormatter(profile.followers)} followers`}
               </Text>
             </View>
           </View>
@@ -176,12 +177,12 @@ const ProfileDetails = () => {
               pagingEnabled={true}
               onRefresh={() => refetch()}
               refreshing={isLoading}
-              data={profile.data.finds}
+              data={profile.finds}
               keyExtractor={(item) => item.id.toString()}
               showsVerticalScrollIndicator={false}
               snapToInterval={findHeight - 40}
               renderItem={({ item }) => (
-                <Find profileFind findHeight={findHeight - 40} find={item} />
+                <Find isProfileFind findHeight={findHeight - 40} find={item} />
               )}
             />
           ) : (
