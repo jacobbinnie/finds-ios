@@ -20,12 +20,13 @@ import { useAuth } from "@/providers/AuthProvider";
 import { FindDto } from "@/types/generated";
 
 interface FindProps {
-  profileFind?: boolean;
+  isProfileFind?: boolean;
+  isPlaceFind?: boolean;
   findHeight: number;
   find: FindDto;
 }
 
-const Find = ({ profileFind, findHeight, find }: FindProps) => {
+const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
   const router = useRouter();
   const { profile } = useAuth();
 
@@ -99,7 +100,7 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
         <TouchableOpacity activeOpacity={1} onPress={onPressCallback}>
           <View
             style={{
-              display: profileFind ? "none" : "flex",
+              display: isProfileFind ? "none" : "flex",
               position: "absolute",
               zIndex: 10,
               top: 15,
@@ -172,37 +173,42 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
             }}
           >
             <View style={{ gap: 10, paddingVertical: 15 }}>
-              <View
-                style={{
-                  display: "flex",
-                  gap: 5,
-                  justifyContent: "space-between",
-                }}
-              >
-                <Text style={Theme.Title}>{find.place.name}</Text>
+              {!isPlaceFind && (
                 <View
                   style={{
                     display: "flex",
-                    flexDirection: "row",
-                    alignItems: "baseline",
                     gap: 5,
-                    maxWidth: "75%",
+                    justifyContent: "space-between",
                   }}
                 >
-                  <FontAwesome
-                    name="map-marker"
-                    size={15}
-                    color={Colors.primary}
-                  />
-                  <Text
-                    numberOfLines={1}
-                    style={[Theme.Caption, { color: Colors.grey }]}
+                  <Text style={Theme.Title}>{find.place.name}</Text>
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "baseline",
+                      gap: 5,
+                      maxWidth: "75%",
+                    }}
                   >
-                    {find.place.address}
-                  </Text>
+                    <FontAwesome
+                      name="map-marker"
+                      size={15}
+                      color={Colors.primary}
+                    />
+                    <Text
+                      numberOfLines={1}
+                      style={[Theme.Caption, { color: Colors.grey }]}
+                    >
+                      {find.place.address}
+                    </Text>
+                  </View>
                 </View>
-              </View>
-              <Text numberOfLines={1} style={Theme.ReviewText}>
+              )}
+              <Text
+                numberOfLines={isPlaceFind ? 2 : 1}
+                style={Theme.ReviewText}
+              >
                 {find.review}
               </Text>
             </View>

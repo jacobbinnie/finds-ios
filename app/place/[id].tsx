@@ -17,6 +17,7 @@ import { useQuery } from "@tanstack/react-query";
 import Find from "@/components/Find/Find";
 import { useAuth } from "@/providers/AuthProvider";
 import { placesQuery } from "@/types/queries";
+import { PlaceDto } from "@/types/generated";
 
 const PlaceDetails = () => {
   const { id, data } = useLocalSearchParams<{
@@ -34,7 +35,7 @@ const PlaceDetails = () => {
   const isGooglePlace = (parsed: any): parsed is GooglePlace =>
     parsed && typeof parsed.shortFormattedAddress !== "undefined";
 
-  const place: Place = isGooglePlace(parsed)
+  const place: PlaceDto = isGooglePlace(parsed)
     ? {
         name: parsed.displayName.text,
         google_maps_uri: parsed.googleMapsUri,
@@ -58,7 +59,7 @@ const PlaceDetails = () => {
     isError,
     refetch,
   } = useQuery(
-    placesQuery.placesControllerGetPlaceByGoogleId(place.google_places_id)
+    placesQuery.placesControllerGetPlaceByGoogleId(place.googlePlaceId)
   );
 
   return (
@@ -136,7 +137,7 @@ const PlaceDetails = () => {
           <View style={{ display: "flex", gap: 10 }}>
             <Text style={Theme.Title}>{place?.name ?? place?.name}</Text>
             <TouchableOpacity
-              onPress={() => Linking.openURL(place?.google_maps_uri)}
+              onPress={() => Linking.openURL(place?.googleMapsUri)}
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -150,7 +151,7 @@ const PlaceDetails = () => {
                 numberOfLines={1}
                 style={[Theme.Caption, { color: Colors.grey }]}
               >
-                {place?.short_formatted_address}
+                {place?.address}
               </Text>
             </TouchableOpacity>
           </View>
@@ -199,12 +200,12 @@ const PlaceDetails = () => {
               pagingEnabled={true}
               refreshing={isLoading}
               onRefresh={() => refetch()}
-              data={placeData?.data.finds}
+              data={placeData?.finds}
               keyExtractor={(item) => item.id.toString()}
               showsVerticalScrollIndicator={false}
               snapToInterval={findHeight - 40}
               renderItem={({ item }) => (
-                <Find profileFind findHeight={findHeight - 40} find={item} />
+                <Find isPlaceFind findHeight={findHeight - 40} find={item} />
               )}
             />
           ) : (
