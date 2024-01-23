@@ -17,7 +17,7 @@ import {
 import { Divider } from "react-native-elements";
 import ImageSwiper from "../ImageSwiper/ImageSwiper";
 import { useAuth } from "@/providers/AuthProvider";
-import { FindDto } from "@/generated";
+import { FindDto } from "@/types/generated";
 
 interface FindProps {
   profileFind?: boolean;
@@ -46,43 +46,21 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
   //   },
   // });
 
-  // const handleAction = async (action: FindAction) => {
-  //   try {
-  //     if (!profile) {
-  //       return router.push("/(modals)/login");
-  //     }
+  const handleAction = async (action: FindAction) => {
+    try {
+      if (!profile) {
+        return router.push("/(modals)/login");
+      }
 
-  //     if (action === FindAction.FIND) {
-  //       // do something
-  //     }
-
-  //     if (action === FindAction.SAVE) {
-  //       if (existingSave) {
-  //         const { error } = await supabase
-  //           .from("saves")
-  //           .delete()
-  //           .eq("id", existingSave.id);
-
-  //         if (error) throw error;
-
-  //         await refetchSave();
-  //       } else {
-  //         const { error } = await supabase.from("saves").insert([
-  //           {
-  //             profile: profile.id,
-  //             find: find.id,
-  //           },
-  //         ]);
-
-  //         if (error) throw error;
-
-  //         await refetchSave();
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+      if (action === FindAction.SAVE) {
+        // do something here
+      } else {
+        // do something here
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const onPressCallback = () =>
     router.push({
@@ -202,7 +180,7 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
                   justifyContent: "space-between",
                 }}
               >
-                <Text style={Theme.Title}>{"Place name"}</Text>
+                <Text style={Theme.Title}>{find.place.name}</Text>
                 <View
                   style={{
                     display: "flex",
@@ -221,7 +199,7 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
                     numberOfLines={1}
                     style={[Theme.Caption, { color: Colors.grey }]}
                   >
-                    {"Place address"}
+                    {find.place.address}
                   </Text>
                 </View>
               </View>
@@ -232,7 +210,7 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
 
             <Divider />
 
-            {/* <View
+            <View
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -242,15 +220,15 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
               }}
             >
               <Text style={[Theme.Caption, { color: Colors.grey }]}>
-                {isThisMinute(find.created_at)
+                {isThisMinute(find.createdAt)
                   ? "Just now"
-                  : isThisHour(find.created_at)
+                  : isThisHour(find.createdAt)
                   ? "In the past hour"
-                  : isToday(find.created_at)
+                  : isToday(find.createdAt)
                   ? "Today"
-                  : isYesterday(find.created_at)
+                  : isYesterday(find.createdAt)
                   ? "Yesterday"
-                  : format(new Date(find.created_at), "MMM dd, yyyy")}
+                  : format(new Date(find.createdAt), "MMM dd, yyyy")}
               </Text>
 
               <View
@@ -265,7 +243,7 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
                   <Ionicons
                     name="ios-heart"
                     size={findHeight * 0.05}
-                    color={existingSave ? Colors.primary : Colors.light}
+                    color={Colors.light} // TODO: add existing save logic
                   />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => handleAction(FindAction.FIND)}>
@@ -276,7 +254,7 @@ const Find = ({ profileFind, findHeight, find }: FindProps) => {
                   />
                 </TouchableOpacity>
               </View>
-            </View> */}
+            </View>
           </View>
         </TouchableOpacity>
       </View>

@@ -11,13 +11,11 @@ import { Theme } from "@/constants/Styles";
 import Search from "@/components/Search/Search";
 import { useQuery } from "@tanstack/react-query";
 import Find from "@/components/Find/Find";
-import { useAuth } from "@/providers/AuthProvider";
 import Colors from "@/constants/Colors";
 import { findsQuery } from "@/types/queries";
 
 const Page = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
-  const { profile } = useAuth();
 
   useEffect(() => {
     // Enable layout animation

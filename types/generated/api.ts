@@ -74,10 +74,10 @@ export interface FindDto {
     'rating': object;
     /**
      * 
-     * @type {string}
+     * @type {PlaceDto}
      * @memberof FindDto
      */
-    'googlePlaceId': string;
+    'place': PlaceDto;
     /**
      * 
      * @type {Array<string>}
@@ -90,53 +90,66 @@ export interface FindDto {
      * @memberof FindDto
      */
     'user': ProfileDto;
+    /**
+     * 
+     * @type {string}
+     * @memberof FindDto
+     */
+    'createdAt': string;
 }
 /**
  * 
  * @export
- * @interface PlaceProfileDto
+ * @interface PlaceDto
  */
-export interface PlaceProfileDto {
+export interface PlaceDto {
     /**
      * 
      * @type {number}
-     * @memberof PlaceProfileDto
+     * @memberof PlaceDto
      */
     'id': number;
     /**
      * 
      * @type {string}
-     * @memberof PlaceProfileDto
+     * @memberof PlaceDto
      */
     'name': string;
     /**
      * 
      * @type {string}
-     * @memberof PlaceProfileDto
+     * @memberof PlaceDto
      */
     'address': string;
     /**
      * 
      * @type {Array<string>}
-     * @memberof PlaceProfileDto
+     * @memberof PlaceDto
      */
     'categories': Array<string>;
     /**
      * 
      * @type {string}
-     * @memberof PlaceProfileDto
+     * @memberof PlaceDto
      */
     'googleMapsUri': string;
     /**
      * 
      * @type {string}
-     * @memberof PlaceProfileDto
+     * @memberof PlaceDto
      */
     'googlePlaceId': string;
+}
+/**
+ * 
+ * @export
+ * @interface PlaceWithFindsDto
+ */
+export interface PlaceWithFindsDto {
     /**
      * 
      * @type {Array<FindDto>}
-     * @memberof PlaceProfileDto
+     * @memberof PlaceWithFindsDto
      */
     'finds': Array<FindDto>;
 }
@@ -158,6 +171,12 @@ export interface ProfileDto {
      * @memberof ProfileDto
      */
     'username': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProfileDto
+     */
+    'firstname': string;
     /**
      * 
      * @type {string}
@@ -577,7 +596,7 @@ export const PlacesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async placesControllerGetPlaceByGoogleId(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PlaceProfileDto>> {
+        async placesControllerGetPlaceByGoogleId(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PlaceWithFindsDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.placesControllerGetPlaceByGoogleId(id, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['PlacesApi.placesControllerGetPlaceByGoogleId']?.[index]?.url;
@@ -599,7 +618,7 @@ export const PlacesApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        placesControllerGetPlaceByGoogleId(id: string, options?: any): AxiosPromise<PlaceProfileDto> {
+        placesControllerGetPlaceByGoogleId(id: string, options?: any): AxiosPromise<PlaceWithFindsDto> {
             return localVarFp.placesControllerGetPlaceByGoogleId(id, options).then((request) => request(axios, basePath));
         },
     };

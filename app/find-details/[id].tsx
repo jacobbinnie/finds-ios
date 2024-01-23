@@ -10,16 +10,16 @@ import Colors from "@/constants/Colors";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { Theme } from "@/constants/Styles";
 import { Image } from "react-native-elements";
-import { SingleFindDto } from "@/types/queries";
 import { ScrollView } from "react-native-gesture-handler";
 import ImageSwiper from "@/components/ImageSwiper/ImageSwiper";
+import { FindDto } from "@/types/generated";
 
 const FindDetails = () => {
   const { id, data } = useLocalSearchParams<{ id: string; data: string }>();
   const router = useRouter();
 
   const deviceHeight = useWindowDimensions().height;
-  const find = JSON.parse(data) as SingleFindDto;
+  const find = JSON.parse(data) as FindDto;
 
   return (
     <ScrollView
@@ -51,9 +51,9 @@ const FindDetails = () => {
         <TouchableOpacity
           onPress={() =>
             router.replace({
-              pathname: `/place/${find.places?.id}`,
+              pathname: `/place/${find.place.googlePlaceId}`,
               params: {
-                data: JSON.stringify(find.places),
+                data: JSON.stringify(find.place),
               },
             })
           }
@@ -81,8 +81,8 @@ const FindDetails = () => {
         </TouchableOpacity>
 
         <ImageSwiper
-          isSwipable={find.photos.length > 1}
-          images={find.photos}
+          isSwipable={find.images.length > 1}
+          images={find.images}
           height={deviceHeight * 0.5}
         />
 
@@ -104,17 +104,18 @@ const FindDetails = () => {
             }}
           >
             <TouchableOpacity
-              onPress={() => router.replace(`/profile/${find.profile?.id}`)}
+              onPress={() => router.replace(`/profile/${find.user?.id}`)}
               style={{
                 display: "flex",
                 flexDirection: "row",
                 gap: 10,
+
                 alignItems: "center",
               }}
             >
-              {find.profile?.image && (
+              {find.user.avatar && (
                 <Image
-                  source={{ uri: find.profile?.image }}
+                  source={{ uri: find.user.avatar }}
                   style={{ width: 45, height: 45, borderRadius: 99 }}
                 />
               )}
@@ -129,12 +130,10 @@ const FindDetails = () => {
                 }}
               >
                 <View style={{ gap: 5 }}>
-                  <Text
-                    style={Theme.BodyText}
-                  >{`${find.profile?.firstname}`}</Text>
+                  <Text style={Theme.BodyText}>{`${find.user.firstname}`}</Text>
                   <Text
                     style={[Theme.BodyText, { color: Colors.grey }]}
-                  >{`@${find.profile?.username}`}</Text>
+                  >{`@${find.user.username}`}</Text>
                 </View>
                 <View
                   style={{
@@ -148,7 +147,7 @@ const FindDetails = () => {
                   }}
                 >
                   <Text style={[Theme.ButtonText, { color: Colors.light }]}>
-                    {find.rating}
+                    {"Rating here"}
                   </Text>
                 </View>
               </View>
@@ -176,7 +175,7 @@ const FindDetails = () => {
                 justifyContent: "space-between",
               }}
             >
-              <Text style={Theme.Title}>{find.places?.name}</Text>
+              <Text style={Theme.Title}>{find.place.name}</Text>
             </View>
             <View
               style={{
@@ -188,7 +187,7 @@ const FindDetails = () => {
             >
               <FontAwesome name="map-marker" size={15} color={Colors.primary} />
               <Text style={[Theme.Caption, { color: Colors.grey }]}>
-                {find.places?.short_formatted_address}
+                {find.place.address}
               </Text>
             </View>
           </View>
