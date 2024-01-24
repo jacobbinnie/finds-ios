@@ -7,14 +7,14 @@ import { useAuth } from "@/providers/AuthProvider";
 
 const Layout = () => {
   const segments = useSegments();
-  const { profile } = useAuth();
+  const { session } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!profile && segments[1] === "(auth)") {
+    if (!session && segments[1] === "(auth)") {
       router.push("/");
     }
-  }, [segments[1], profile]);
+  }, [segments[1], session]);
 
   return (
     <Tabs
@@ -45,7 +45,7 @@ const Layout = () => {
         listeners={{
           tabPress: (e) => {
             e.preventDefault();
-            if (!profile) {
+            if (!session) {
               router.push("/(modals)/login");
             } else {
               router.push("/saves");
@@ -65,7 +65,7 @@ const Layout = () => {
         listeners={{
           tabPress: (e) => {
             e.preventDefault();
-            if (!profile) {
+            if (!session) {
               router.push("/(modals)/login");
             } else {
               router.push("/profile");

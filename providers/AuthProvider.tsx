@@ -1,15 +1,21 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
-import { Session } from "@supabase/supabase-js";
 import { Profile } from "@/types/types";
 
+interface Session {
+  accessToken: string;
+  refreshToken: string;
+  profile: Profile;
+}
+
 interface AuthContextValues {
-  currentSession?: Session | null;
-  profile: Profile | null;
+  session: Session | null;
+  setSession: (session: Session) => void;
 }
 
 const AuthContext = createContext<AuthContextValues>({
-  profile: null,
+  session: null,
+  setSession: () => null,
 });
 
 interface AuthProviderOptions {
@@ -17,35 +23,24 @@ interface AuthProviderOptions {
 }
 
 export const AuthProvider = ({ children }: AuthProviderOptions) => {
-  const [profile, setProfile] = useState<Profile | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
 
   // useEffect(() => {
-  //   supabase.auth.onAuthStateChange((_event, session) => {
-  //     if (session?.user) {
-  //       supabase
-  //         .from("profile")
-  //         .select("*")
-  //         .single()
-  //         .then(({ data }) => {
-  //           if (!data?.username || !data.id) {
-  //             throw new Error("Profile details not found");
-  //           }
-  //           setProfile({
-  //             id: data.id,
-  //             username: data.username,
-  //             firstname: data.firstname,
-  //             image: data.image,
-  //             created_at: data.created_at,
-  //           });
-  //         });
-  //     } else {
-  //       setProfile(null);
-  //     }
-  //   });
+  // Add your authentication logic here using supabase.auth.onAuthStateChange
+  // Example:
+  // const supabase = createClient("your-supabase-url", "your-supabase-key");
+  // const authListener = supabase.auth.onAuthStateChange((_event, session) => {
+  //   setSession(session);
+  // });
+  // Cleanup the listener when component unmounts
+  // return () => {
+  //   authListener.unsubscribe();
+  // };
   // }, []);
 
   const value = {
-    profile,
+    session,
+    setSession,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

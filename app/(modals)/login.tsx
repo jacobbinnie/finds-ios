@@ -1,10 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { useRouter } from "expo-router";
 import { Theme } from "@/constants/Styles";
-import { useAuth } from "@/providers/AuthProvider";
+import { AuthProvider, useAuth } from "@/providers/AuthProvider";
 import Colors from "@/constants/Colors";
+import { set } from "date-fns";
+import axios from "axios";
+import { authApi } from "@/types";
 
 type FormInputs = {
   email: string;
@@ -13,16 +22,19 @@ type FormInputs = {
 };
 
 const Login = () => {
-  const { profile } = useAuth();
+  const { session, setSession } = useAuth();
   const router = useRouter();
 
   const [screen, setScreen] = useState<"login" | "signup">("login");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const BASE_URL = process.env.EXPO_PUBLIC_API_URL;
 
   useEffect(() => {
-    if (profile) {
+    if (session?.profile) {
       router.back();
     }
-  }, [profile]);
+  }, [session?.profile]);
 
   const {
     control,
@@ -37,9 +49,46 @@ const Login = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<FormInputs> = (data) => {
-    console.log("Form Data:", data);
-    // You can perform any further actions, such as API calls or navigation here
+  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+    setIsSubmitting(true);
+    try {
+      if (screen === "login") {
+        const res: any = await authApi.authControllerLogin({
+          data: {
+            username: data.email,
+            password: data.password,
+          },
+        });
+
+        if (
+          res.data.access_token !== null &&
+          res.data.refresh_token !== null &&
+          res.data.id
+        ) {
+          const session = {
+            accessToken: res.data.access_token,
+            refreshToken: res.data.refreshToken,
+            profile: {
+              firstname: res.data.firstname,
+              created_at: res.data.created_at,
+              id: res.data.id,
+              image: res.data.avatar,
+              username: res.data.username,
+            },
+          };
+
+          setSession(session);
+        }
+      } else {
+        // router.push("/api/auth/signup", {
+        //   method: "POST",
+        //   body: JSON.stringify(data),
+        // });
+      }
+    } catch (err) {
+      console.log(err);
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -100,8 +149,8 @@ const Login = () => {
         rules={{
           required: "Password is required",
           minLength: {
-            value: 8,
-            message: "Password must be at least 8 characters",
+            value: 7,
+            message: "Password must be at least 7 characters",
           },
         }}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -162,19 +211,26 @@ const Login = () => {
           height: 50,
           borderRadius: 10,
           marginTop: 15,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        <Text
-          style={{
-            fontFamily: "font-b",
-            fontSize: 16,
-            color: Colors.light,
-            textAlign: "center",
-            lineHeight: 50,
-          }}
-        >
-          {screen === "login" ? "Log in" : "Create account"}
-        </Text>
+        {isSubmitting ? (
+          <ActivityIndicator color={Colors.light} />
+        ) : (
+          <Text
+            style={{
+              fontFamily: "font-b",
+              fontSize: 16,
+              color: Colors.light,
+              textAlign: "center",
+              lineHeight: 50,
+            }}
+          >
+            {screen === "login" ? "Log in" : "Create account"}
+          </Text>
+        )}
       </TouchableOpacity>
 
       <View

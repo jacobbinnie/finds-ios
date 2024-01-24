@@ -16,12 +16,14 @@ import { Image } from "react-native-elements";
 import Find from "@/components/Find/Find";
 import { usersQuery } from "@/types/queries";
 import { kFormatter } from "@/utils/kFormatter";
+import { useAuth } from "@/providers/AuthProvider";
 
 const ProfileDetails = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
 
   const router = useRouter();
+  const { session } = useAuth();
 
   const {
     data: profile,
