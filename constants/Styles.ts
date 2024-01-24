@@ -43,4 +43,14 @@ export const Theme = StyleSheet.create({
     fontSize: 14,
     color: Colors.dark,
   },
+  InputStyle: {
+    fontFamily: "font-m",
+    fontSize: 16,
+    color: Colors.dark,
+    height: 50,
+    width: "100%",
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    backgroundColor: Colors.light,
+  },
 });

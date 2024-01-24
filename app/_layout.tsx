@@ -64,6 +64,7 @@ function RootLayoutNav() {
           presentation: "modal",
           title: "Sign in",
           headerTitleStyle: Theme.Title,
+          headerShown: false,
           headerLeft: () => (
             <TouchableOpacity onPress={() => router.replace("/")}>
               <Ionicons name="close-outline" size={24} />

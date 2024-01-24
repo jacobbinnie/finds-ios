@@ -3,7 +3,7 @@ import React from "react";
 import Colors from "@/constants/Colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
-import { Feather, Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { Theme } from "@/constants/Styles";
 
 const Search = () => {
