@@ -20,7 +20,7 @@ const Search = () => {
       }}
     >
       <Text style={[Theme.Title, { fontSize: 32, color: Colors.primary }]}>
-        finds
+        finds.nyc
       </Text>
 
       <View
