@@ -5,13 +5,13 @@ import { Theme } from "@/constants/Styles";
 import { FontAwesome } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
-import { SingleFindDto } from "@/types/queries";
 import ImageSwiper from "../ImageSwiper/ImageSwiper";
+import { FindDto } from "@/types/generated";
 
 interface FindProps {
   profileFind?: boolean;
   saveHeight: number;
-  find: SingleFindDto;
+  find: FindDto;
 }
 
 const Save = ({ profileFind, saveHeight, find }: FindProps) => {
@@ -27,7 +27,7 @@ const Save = ({ profileFind, saveHeight, find }: FindProps) => {
 
   return (
     <View
-      id={find.id}
+      id={find.id.toString()}
       style={{
         width: "100%",
         height: saveHeight ?? 0,
@@ -75,9 +75,9 @@ const Save = ({ profileFind, saveHeight, find }: FindProps) => {
                 alignItems: "center",
               }}
             >
-              {find.profile?.image && (
+              {find.user.avatar && (
                 <Image
-                  source={{ uri: find.profile?.image }}
+                  source={{ uri: find.user.avatar }}
                   style={{ width: 25, height: 25, borderRadius: 99 }}
                 />
               )}
@@ -87,13 +87,13 @@ const Save = ({ profileFind, saveHeight, find }: FindProps) => {
                   fontSize: 16,
                 }}
               >
-                {`Find by @${find.profile?.username}`}
+                {`Find by @${find.user.username}`}
               </Text>
             </TouchableOpacity>
           </View>
 
           <ImageSwiper
-            images={find.photos}
+            images={find.images}
             height={saveHeight * 0.675}
             onPressCallback={onPressCallback}
           />
@@ -136,7 +136,7 @@ const Save = ({ profileFind, saveHeight, find }: FindProps) => {
                   justifyContent: "space-between",
                 }}
               >
-                <Text style={Theme.Title}>{find.places?.name}</Text>
+                <Text style={Theme.Title}>{find.place.name}</Text>
                 <View
                   style={{
                     display: "flex",
@@ -155,7 +155,7 @@ const Save = ({ profileFind, saveHeight, find }: FindProps) => {
                     numberOfLines={1}
                     style={[Theme.Caption, { color: Colors.grey }]}
                   >
-                    {find.places?.short_formatted_address}
+                    {find.place.address}
                   </Text>
                 </View>
               </View>

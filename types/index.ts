@@ -1,21 +1,28 @@
 import axios from "axios";
 import { AuthApi, FindsApi, PlacesApi, SavesApi, UsersApi } from "./generated";
 import { useAuth } from "@/providers/AuthProvider";
+import { storage } from "@/utils/storage";
 
 const instance = axios.create();
 
+const getAccessToken = () => {
+  const session = storage.getString("auth");
+  if (session) {
+    return JSON.parse(session).accessToken as string;
+  }
+};
+
 // This handles adding auth to the request
-// instance.interceptors.request.use(
-//   (config) =>
-//     new Promise((resolve) => {
-//       void Auth.getToken().then((token) => {
-//         if (token && config.headers) {
-//           config.headers.Authorization = `Bearer ${token}`;
-//         }
-//         resolve(config);
-//       });
-//     })
-// );
+instance.interceptors.request.use(
+  (config) =>
+    new Promise((resolve) => {
+      const accessToken = getAccessToken();
+      if (accessToken && config.headers) {
+        config.headers.Authorization = `Bearer ${accessToken}`;
+      }
+      resolve(config);
+    })
+);
 
 const BASE_URL = process.env.EXPO_PUBLIC_API_URL;
 

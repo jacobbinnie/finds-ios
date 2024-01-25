@@ -35,6 +35,10 @@ const ImageSwiper = ({
     }[]
   >([]);
 
+  if (!images) {
+    return null;
+  }
+
   return (
     <View style={{ position: "relative" }}>
       {images.length > 1 && (

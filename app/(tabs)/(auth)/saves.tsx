@@ -68,20 +68,6 @@ const Saves = () => {
 
         {findHeight && (
           <FlatList
-            ListFooterComponent={
-              <View
-                style={{
-                  height: 40,
-                  width: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-                  You're up to date!
-                </Text>
-              </View>
-            }
             style={{
               borderTopLeftRadius: 10,
               borderTopRightRadius: 10,
@@ -101,7 +87,7 @@ const Saves = () => {
               <View style={{ paddingVertical: 10 }} />
             )}
             renderItem={({ item }) => (
-              <Save saveHeight={findHeight / 2} find={item} />
+              <Save saveHeight={findHeight / 2} find={item.find} />
             )}
           />
         )}
