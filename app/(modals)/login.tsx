@@ -28,6 +28,7 @@ const Login = () => {
 
   const [screen, setScreen] = useState<"login" | "signup">("login");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const BASE_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -52,6 +53,7 @@ const Login = () => {
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     setIsSubmitting(true);
+    setError(null);
     try {
       if (screen === "login") {
         const res: any = await authApi.authControllerLogin({
@@ -81,15 +83,48 @@ const Login = () => {
           storage.set("auth", JSON.stringify(session));
 
           setSession(session);
+          setIsSubmitting(false);
         }
       } else {
-        // router.push("/api/auth/signup", {
-        //   method: "POST",
-        //   body: JSON.stringify(data),
-        // });
+        if (data.firstname) {
+          const res: any = await authApi.authControllerRegisterUser({
+            email: data.email,
+            firstname: data.firstname,
+            password: data.password,
+          });
+
+          if (
+            res.data.access_token !== null &&
+            res.data.refresh_token !== null &&
+            res.data.id
+          ) {
+            const session = {
+              accessToken: res.data.access_token,
+              refreshToken: res.data.refreshToken,
+              profile: {
+                firstname: res.data.firstname,
+                created_at: res.data.created_at,
+                id: res.data.id,
+                image: res.data.avatar,
+                username: res.data.username,
+              },
+            };
+
+            storage.set("auth", JSON.stringify(session));
+
+            setSession(session);
+            setIsSubmitting(false);
+          }
+          setIsSubmitting(false);
+        }
       }
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      if (err.response.data.statusCode === 409) {
+        setError(err.response.data.message);
+      } else {
+        setError("Something went wrong");
+      }
+
       setIsSubmitting(false);
     }
   };
@@ -154,6 +189,13 @@ const Login = () => {
           minLength: {
             value: 7,
             message: "Password must be at least 7 characters",
+          },
+          validate: (value) => {
+            // Custom validation for at least one number
+            if (!/\d/.test(value)) {
+              return "Password must contain at least one number";
+            }
+            return true;
           },
         }}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -235,6 +277,17 @@ const Login = () => {
           </Text>
         )}
       </TouchableOpacity>
+
+      {error && (
+        <Text
+          style={[
+            Theme.Caption,
+            { color: "red", marginTop: 15, textAlign: "center" },
+          ]}
+        >
+          {error}
+        </Text>
+      )}
 
       <View
         style={{
