@@ -149,7 +149,7 @@ const Login = () => {
           { fontSize: 32, color: Colors.primary, marginBottom: 15 },
         ]}
       >
-        finds
+        finds.nyc
       </Text>
 
       <Controller
