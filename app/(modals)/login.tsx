@@ -14,6 +14,7 @@ import Colors from "@/constants/Colors";
 import { set } from "date-fns";
 import axios from "axios";
 import { authApi } from "@/types";
+import { storage } from "@/utils/storage";
 
 type FormInputs = {
   email: string;
@@ -76,6 +77,8 @@ const Login = () => {
               username: res.data.username,
             },
           };
+
+          storage.set("auth", JSON.stringify(session));
 
           setSession(session);
         }
