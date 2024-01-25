@@ -16,11 +16,13 @@ interface Session {
 interface AuthContextValues {
   session: Session | null;
   setSession: (session: Session | null) => void;
+  isCheckingAuth: boolean;
 }
 
 const AuthContext = createContext<AuthContextValues>({
   session: null,
   setSession: () => null,
+  isCheckingAuth: false,
 });
 
 interface AuthProviderOptions {
@@ -118,6 +120,7 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
   const value = {
     session,
     setSession,
+    isCheckingAuth,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
