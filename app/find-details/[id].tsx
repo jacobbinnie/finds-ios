@@ -44,7 +44,7 @@ const FindDetails = () => {
           },
           shadowOpacity: 0.2,
           shadowRadius: 2.62,
-
+          backgroundColor: "#FFF",
           elevation: 4,
         }}
       >
