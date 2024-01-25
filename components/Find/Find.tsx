@@ -28,7 +28,7 @@ interface FindProps {
 
 const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
   const router = useRouter();
-  const { profile } = useAuth();
+  const { session } = useAuth();
 
   // const { data: existingSave, refetch: refetchSave } = useQuery({
   //   queryKey: ["saves", "find", find.id],
@@ -49,7 +49,7 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
 
   const handleAction = async (action: FindAction) => {
     try {
-      if (!profile) {
+      if (!session) {
         return router.push("/(modals)/login");
       }
 
