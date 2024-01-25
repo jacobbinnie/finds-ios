@@ -5,11 +5,12 @@ import "core-js/stable/atob";
 import { Profile } from "@/types/types";
 import { storage } from "@/utils/storage";
 import { authApi } from "@/types";
+import { AuthUserDto } from "@/types/generated";
 
 interface Session {
   accessToken: string;
   refreshToken: string;
-  profile: Profile;
+  profile: AuthUserDto;
 }
 
 interface AuthContextValues {

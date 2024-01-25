@@ -69,12 +69,13 @@ const Login = () => {
           res.data.id
         ) {
           const session = {
-            accessToken: res.data.access_token,
+            accessToken: res.data.accessToken,
             refreshToken: res.data.refreshToken,
             profile: {
+              id: res.data.id,
               firstname: res.data.firstname,
               created_at: res.data.created_at,
-              id: res.data.id,
+              email: res.data.email,
               image: res.data.avatar,
               username: res.data.username,
             },
@@ -99,12 +100,13 @@ const Login = () => {
             res.data.id
           ) {
             const session = {
-              accessToken: res.data.access_token,
+              accessToken: res.data.accessToken,
               refreshToken: res.data.refreshToken,
               profile: {
+                id: res.data.id,
                 firstname: res.data.firstname,
                 created_at: res.data.created_at,
-                id: res.data.id,
+                email: res.data.email,
                 image: res.data.avatar,
                 username: res.data.username,
               },
