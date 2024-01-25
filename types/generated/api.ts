@@ -137,25 +137,25 @@ export interface FindDto {
 /**
  * 
  * @export
- * @interface LoginResponseDto
+ * @interface LoginResDto
  */
-export interface LoginResponseDto {
+export interface LoginResDto {
     /**
      * 
      * @type {string}
-     * @memberof LoginResponseDto
+     * @memberof LoginResDto
      */
     'accessToken': string;
     /**
      * 
      * @type {string}
-     * @memberof LoginResponseDto
+     * @memberof LoginResDto
      */
     'refreshToken': string;
     /**
      * 
      * @type {AuthUserDto}
-     * @memberof LoginResponseDto
+     * @memberof LoginResDto
      */
     'user': AuthUserDto;
 }
@@ -429,7 +429,7 @@ export const AuthApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async authControllerLogin(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LoginResponseDto>> {
+        async authControllerLogin(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LoginResDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.authControllerLogin(options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['AuthApi.authControllerLogin']?.[index]?.url;
@@ -452,7 +452,7 @@ export const AuthApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async authControllerRegisterUser(createUserDto: CreateUserDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LoginResponseDto>> {
+        async authControllerRegisterUser(createUserDto: CreateUserDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LoginResDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.authControllerRegisterUser(createUserDto, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['AuthApi.authControllerRegisterUser']?.[index]?.url;
@@ -473,7 +473,7 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        authControllerLogin(options?: any): AxiosPromise<LoginResponseDto> {
+        authControllerLogin(options?: any): AxiosPromise<LoginResDto> {
             return localVarFp.authControllerLogin(options).then((request) => request(axios, basePath));
         },
         /**
@@ -490,7 +490,7 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        authControllerRegisterUser(createUserDto: CreateUserDto, options?: any): AxiosPromise<LoginResponseDto> {
+        authControllerRegisterUser(createUserDto: CreateUserDto, options?: any): AxiosPromise<LoginResDto> {
             return localVarFp.authControllerRegisterUser(createUserDto, options).then((request) => request(axios, basePath));
         },
     };

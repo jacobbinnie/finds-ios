@@ -66,18 +66,18 @@ const Login = () => {
         if (
           res.data.access_token !== null &&
           res.data.refresh_token !== null &&
-          res.data.id
+          res.data.user.id
         ) {
           const session = {
             accessToken: res.data.accessToken,
             refreshToken: res.data.refreshToken,
             profile: {
-              id: res.data.id,
-              firstname: res.data.firstname,
-              created_at: res.data.created_at,
-              email: res.data.email,
-              image: res.data.avatar,
-              username: res.data.username,
+              id: res.data.user.id,
+              firstname: res.data.user.firstname,
+              created_at: res.data.user.created_at,
+              email: res.data.user.email,
+              image: res.data.user.avatar,
+              username: res.data.user.username,
             },
           };
 
@@ -97,18 +97,18 @@ const Login = () => {
           if (
             res.data.access_token !== null &&
             res.data.refresh_token !== null &&
-            res.data.id
+            res.data.user.id
           ) {
             const session = {
               accessToken: res.data.accessToken,
               refreshToken: res.data.refreshToken,
               profile: {
-                id: res.data.id,
-                firstname: res.data.firstname,
-                created_at: res.data.created_at,
-                email: res.data.email,
-                image: res.data.avatar,
-                username: res.data.username,
+                id: res.data.user.id,
+                firstname: res.data.user.firstname,
+                created_at: res.data.user.created_at,
+                email: res.data.user.email,
+                image: res.data.user.avatar,
+                username: res.data.user.username,
               },
             };
 
