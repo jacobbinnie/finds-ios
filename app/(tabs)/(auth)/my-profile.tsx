@@ -18,12 +18,15 @@ import { usersQuery } from "@/types/queries";
 import { kFormatter } from "@/utils/kFormatter";
 import { useAuth } from "@/providers/AuthProvider";
 
-const ProfileDetails = () => {
-  const { id } = useLocalSearchParams<{ id: string }>();
+const MyProfile = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
 
   const router = useRouter();
   const { session } = useAuth();
+
+  if (!session?.profile.id) {
+    return null;
+  }
 
   const {
     data: profile,
@@ -31,7 +34,9 @@ const ProfileDetails = () => {
     isError,
     error,
     refetch,
-  } = useQuery(usersQuery.usersControllerGetProfileAndFinds(Number(id)));
+  } = useQuery(
+    usersQuery.usersControllerGetProfileAndFinds(session?.profile.id)
+  );
 
   if (isLoading) {
     return <Text>Loading...</Text>;
@@ -48,8 +53,8 @@ const ProfileDetails = () => {
   return (
     <View style={Theme.Container}>
       <SafeAreaView />
-
       <View style={{ gap: 20, flex: 1 }}>
+        <Text style={[Theme.Title, { fontSize: 32 }]}>my profile</Text>
         <View
           style={{
             display: "flex",
@@ -57,55 +62,6 @@ const ProfileDetails = () => {
             gap: 20,
           }}
         >
-          <View
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              flexDirection: "row",
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => router.back()}
-              style={{
-                borderColor: Colors.grey,
-                borderWidth: 1,
-                paddingHorizontal: 15,
-                paddingVertical: 10,
-                gap: 5,
-                borderRadius: 99,
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <Ionicons
-                name="arrow-back-outline"
-                size={24}
-                color={Colors.grey}
-              />
-              <Text style={[Theme.ButtonText, { color: Colors.grey }]}>
-                Back
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={{
-                backgroundColor: Colors.dark,
-                paddingHorizontal: 15,
-                paddingVertical: 10,
-                gap: 5,
-                borderRadius: 99,
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <Text style={[Theme.ButtonText, { color: Colors.light }]}>
-                Follow
-              </Text>
-            </TouchableOpacity>
-          </View>
-
           <View
             style={{
               display: "flex",
@@ -139,6 +95,54 @@ const ProfileDetails = () => {
 
         <View
           style={{
+            display: "flex",
+            justifyContent: "space-between",
+            flexDirection: "row",
+            gap: 15,
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              borderColor: Colors.grey,
+              borderWidth: 1,
+              paddingHorizontal: 15,
+              paddingVertical: 10,
+              gap: 5,
+              flex: 1,
+              borderRadius: 99,
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Text style={[Theme.ButtonText, { color: Colors.grey }]}>
+              Edit profile
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={{
+              backgroundColor: Colors.dark,
+              paddingHorizontal: 15,
+              paddingVertical: 10,
+              gap: 5,
+              flex: 1,
+              borderRadius: 99,
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Text style={[Theme.ButtonText, { color: Colors.light }]}>
+              Share profile
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <View
+          style={{
             flex: 1,
           }}
           onLayout={(e) => {
@@ -165,7 +169,7 @@ const ProfileDetails = () => {
                   }}
                 >
                   <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-                    That's all {"User's name here"}'s finds so far
+                    That's all your finds so far
                   </Text>
                 </View>
               }
@@ -196,4 +200,4 @@ const ProfileDetails = () => {
   );
 };
 
-export default ProfileDetails;
+export default MyProfile;

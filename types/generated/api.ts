@@ -843,11 +843,11 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
     return {
         /**
          * 
-         * @param {string} id 
+         * @param {number} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersControllerGetProfileAndFinds: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        usersControllerGetProfileAndFinds: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('usersControllerGetProfileAndFinds', 'id', id)
             const localVarPath = `/user/profile/{id}`
@@ -919,11 +919,11 @@ export const UsersApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @param {string} id 
+         * @param {number} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersControllerGetProfileAndFinds(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserProfileDto>> {
+        async usersControllerGetProfileAndFinds(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserProfileDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.usersControllerGetProfileAndFinds(id, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['UsersApi.usersControllerGetProfileAndFinds']?.[index]?.url;
@@ -953,11 +953,11 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
     return {
         /**
          * 
-         * @param {string} id 
+         * @param {number} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersControllerGetProfileAndFinds(id: string, options?: any): AxiosPromise<UserProfileDto> {
+        usersControllerGetProfileAndFinds(id: number, options?: any): AxiosPromise<UserProfileDto> {
             return localVarFp.usersControllerGetProfileAndFinds(id, options).then((request) => request(axios, basePath));
         },
         /**
@@ -981,12 +981,12 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
 export class UsersApi extends BaseAPI {
     /**
      * 
-     * @param {string} id 
+     * @param {number} id 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UsersApi
      */
-    public usersControllerGetProfileAndFinds(id: string, options?: RawAxiosRequestConfig) {
+    public usersControllerGetProfileAndFinds(id: number, options?: RawAxiosRequestConfig) {
         return UsersApiFp(this.configuration).usersControllerGetProfileAndFinds(id, options).then((request) => request(this.axios, this.basePath));
     }
 

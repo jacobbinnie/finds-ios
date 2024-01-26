@@ -54,7 +54,7 @@ const Layout = () => {
         }}
       />
       <Tabs.Screen
-        name="(auth)/profile"
+        name="(auth)/my-profile"
         options={{
           headerShown: false,
           tabBarLabel: "Profile",
@@ -68,7 +68,7 @@ const Layout = () => {
             if (!session) {
               router.push("/(modals)/login");
             } else {
-              router.push("/profile");
+              router.push("/my-profile");
             }
           },
         }}

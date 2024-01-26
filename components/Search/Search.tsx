@@ -7,9 +7,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { Theme } from "@/constants/Styles";
 
 const Search = () => {
-  const router = useRouter();
-  const deviceHeight = useWindowDimensions().height;
-
   return (
     <View
       style={{
@@ -22,35 +19,6 @@ const Search = () => {
       <Text style={[Theme.Title, { fontSize: 32, color: Colors.primary }]}>
         finds.nyc
       </Text>
-
-      <View
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          gap: 20,
-          alignItems: "center",
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => router.push("/(modals)/search")}
-          style={{
-            height: deviceHeight * 0.065,
-            width: deviceHeight * 0.065,
-            backgroundColor: "#FFF",
-            elevation: 4,
-            borderRadius: 99,
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Ionicons
-            name="search"
-            size={deviceHeight * 0.03}
-            color={Colors.dark}
-          />
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };
