@@ -219,7 +219,7 @@ const MyProfile = () => {
             snapToInterval={findHeight - 20}
             ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
             renderItem={({ item }) => (
-              <Find findHeight={findHeight - 40} find={item} />
+              <Find isProfileFind findHeight={findHeight - 40} find={item} />
             )}
           />
         ) : (
