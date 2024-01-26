@@ -67,11 +67,11 @@ const Save = ({ profileFind, saveHeight, find }: FindProps) => {
             }}
           >
             <TouchableOpacity
-              onPress={onPressCallback}
+              onPress={() => router.push(`/profile/${find.user.id}`)}
               style={{
                 display: "flex",
                 flexDirection: "row",
-                gap: 10,
+                gap: 5,
                 alignItems: "center",
               }}
             >
@@ -87,7 +87,7 @@ const Save = ({ profileFind, saveHeight, find }: FindProps) => {
                   fontSize: 16,
                 }}
               >
-                {`Find by @${find.user.username}`}
+                {`@${find.user.username}`}
               </Text>
             </TouchableOpacity>
           </View>
