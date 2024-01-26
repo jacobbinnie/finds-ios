@@ -133,7 +133,7 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
 
           <ImageSwiper
             images={find.images}
-            height={findHeight * 0.675}
+            height={findHeight * 0.7}
             onPressCallback={onPressCallback}
           />
 

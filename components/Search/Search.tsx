@@ -1,4 +1,4 @@
-import { View, Text, useWindowDimensions } from "react-native";
+import { View, Text } from "react-native";
 import React from "react";
 import Colors from "@/constants/Colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -16,9 +16,7 @@ const Search = () => {
         justifyContent: "space-between", // Aligns items along the main axis (horizontal in this case)
       }}
     >
-      <Text style={[Theme.Title, { fontSize: 32, color: Colors.primary }]}>
-        finds.nyc
-      </Text>
+      <Text style={Theme.BigTitle}>finds.nyc</Text>
     </View>
   );
 };

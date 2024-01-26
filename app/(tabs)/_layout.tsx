@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Tabs, useRouter, useSegments } from "expo-router";
 import Colors from "@/constants/Colors";
 
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAuth } from "@/providers/AuthProvider";
 
 const Layout = () => {
@@ -31,6 +31,16 @@ const Layout = () => {
           tabBarLabel: "Explore",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="compass" size={30} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="(auth)/search"
+        options={{
+          headerShown: false,
+          tabBarLabel: "Explore",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="search" size={30} color={color} />
           ),
         }}
       />

@@ -21,6 +21,11 @@ export const Theme = StyleSheet.create({
     fontFamily: "font-m",
     fontSize: 16,
   },
+  BigTitle: {
+    fontFamily: "font-b",
+    color: Colors.dark,
+    fontSize: 32,
+  },
   Title: {
     fontFamily: "font-b",
     color: Colors.dark,

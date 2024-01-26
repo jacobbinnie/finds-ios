@@ -44,10 +44,6 @@ const Saves = () => {
     <View style={{ flex: 1, gap: 15 }}>
       <SafeAreaView />
 
-      <View style={{ paddingHorizontal: 15 }}>
-        <Search />
-      </View>
-
       {/* <Categories /> */}
 
       <View
@@ -64,7 +60,7 @@ const Saves = () => {
           }
         }}
       >
-        <Text style={[Theme.Title, { marginBottom: 15 }]}>My saves</Text>
+        <Text style={[Theme.BigTitle, { marginBottom: 15 }]}>my saves</Text>
 
         {findHeight && (
           <FlatList

@@ -1,22 +1,24 @@
 import {
+  SafeAreaView,
   View,
   Text,
-  TouchableOpacity,
-  LayoutAnimation,
   FlatList,
+  UIManager,
+  LayoutAnimation,
+  TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import { useQuery } from "@tanstack/react-query";
-import Colors from "@/constants/Colors";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
+import React, { useEffect, useState } from "react";
 import { Theme } from "@/constants/Styles";
-import { Image } from "react-native-elements";
-import Find from "@/components/Find/Find";
-import { usersQuery } from "@/types/queries";
-import { kFormatter } from "@/utils/kFormatter";
+import Search from "@/components/Search/Search";
+import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/providers/AuthProvider";
+import Colors from "@/constants/Colors";
+import Save from "@/components/Save/Save";
+import { savesQuery, usersQuery } from "@/types/queries";
+import { kFormatter } from "@/utils/kFormatter";
+import { Image } from "react-native-elements";
+import { useRouter } from "expo-router";
+import Find from "@/components/Find/Find";
 
 const MyProfile = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
@@ -51,10 +53,11 @@ const MyProfile = () => {
   }
 
   return (
-    <View style={Theme.Container}>
+    <View style={{ flex: 1, gap: 15 }}>
       <SafeAreaView />
-      <View style={{ gap: 20, flex: 1 }}>
-        <Text style={[Theme.Title, { fontSize: 32 }]}>my profile</Text>
+
+      <View style={{ paddingHorizontal: 15, gap: 15 }}>
+        <Text style={Theme.BigTitle}>my profile</Text>
         <View
           style={{
             display: "flex",
@@ -71,7 +74,7 @@ const MyProfile = () => {
             }}
           >
             <Image
-              source={{ uri: profile.avatar }}
+              source={{ uri: session?.profile.avatar }}
               style={{ width: 70, height: 70, borderRadius: 99 }}
             />
 
@@ -82,12 +85,12 @@ const MyProfile = () => {
                 gap: 5,
               }}
             >
-              <Text style={Theme.Title}>{profile.firstname}</Text>
+              <Text style={Theme.Title}>{session?.profile.firstname}</Text>
               <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-                @{profile.username}
+                @{session?.profile.username}
               </Text>
               <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-                {`${kFormatter(profile.followers)} followers`}
+                200 followers
               </Text>
             </View>
           </View>
@@ -140,61 +143,61 @@ const MyProfile = () => {
             </Text>
           </TouchableOpacity>
         </View>
+      </View>
 
-        <View
-          style={{
-            flex: 1,
-          }}
-          onLayout={(e) => {
-            if (findHeight) {
-              e.nativeEvent.layout.height < findHeight &&
-                setFindHeight(e.nativeEvent.layout.height);
-            } else {
-              LayoutAnimation.configureNext(
-                LayoutAnimation.Presets.easeInEaseOut
-              );
+      <View
+        style={{
+          flex: 1,
+        }}
+        onLayout={(e) => {
+          if (findHeight) {
+            e.nativeEvent.layout.height < findHeight &&
               setFindHeight(e.nativeEvent.layout.height);
+          } else {
+            LayoutAnimation.configureNext(
+              LayoutAnimation.Presets.easeInEaseOut
+            );
+            setFindHeight(e.nativeEvent.layout.height);
+          }
+        }}
+      >
+        {findHeight ? (
+          <FlatList
+            ListFooterComponent={
+              <View
+                style={{
+                  height: 40,
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <Text style={[Theme.BodyText, { color: Colors.grey }]}>
+                  That's all your finds so far
+                </Text>
+              </View>
             }
-          }}
-        >
-          {findHeight ? (
-            <FlatList
-              ListFooterComponent={
-                <View
-                  style={{
-                    height: 40,
-                    width: "100%",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-                    That's all your finds so far
-                  </Text>
-                </View>
-              }
-              style={{
-                borderRadius: 10,
-                overflow: "hidden",
-                flexGrow: 1,
-              }}
-              decelerationRate={"fast"}
-              viewabilityConfig={{ itemVisiblePercentThreshold: 80 }}
-              pagingEnabled={true}
-              onRefresh={() => refetch()}
-              refreshing={isLoading}
-              data={profile.finds}
-              keyExtractor={(item) => item.id.toString()}
-              showsVerticalScrollIndicator={false}
-              snapToInterval={findHeight - 40}
-              renderItem={({ item }) => (
-                <Find isProfileFind findHeight={findHeight - 40} find={item} />
-              )}
-            />
-          ) : (
-            <Text>Loading...</Text>
-          )}
-        </View>
+            style={{
+              borderRadius: 10,
+              overflow: "hidden",
+              flexGrow: 1,
+            }}
+            decelerationRate={"fast"}
+            viewabilityConfig={{ itemVisiblePercentThreshold: 80 }}
+            pagingEnabled={true}
+            onRefresh={() => refetch()}
+            refreshing={isLoading}
+            data={profile.finds}
+            keyExtractor={(item) => item.id.toString()}
+            showsVerticalScrollIndicator={false}
+            snapToInterval={findHeight - 40}
+            renderItem={({ item }) => (
+              <Find isProfileFind findHeight={findHeight - 40} find={item} />
+            )}
+          />
+        ) : (
+          <Text>Loading...</Text>
+        )}
       </View>
     </View>
   );

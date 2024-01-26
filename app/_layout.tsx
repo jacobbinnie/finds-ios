@@ -81,20 +81,6 @@ function RootLayoutNav() {
           headerShown: false,
         }}
       />
-      <Stack.Screen
-        name="(modals)/search"
-        options={{
-          presentation: "modal",
-          title: "Search",
-          headerTitleStyle: Theme.Title,
-          headerShown: false,
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => router.back()}>
-              <Ionicons name="close-outline" size={24} />
-            </TouchableOpacity>
-          ),
-        }}
-      />
       <Stack.Screen name="profile/[id]" options={{ headerShown: false }} />
       <Stack.Screen name="place/[id]" options={{ headerShown: false }} />
       <Stack.Screen
