@@ -187,7 +187,24 @@ const MyProfile = () => {
       >
         {findHeight ? (
           <FlatList
+            ListFooterComponent={
+              <View
+                style={{
+                  height: 40,
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Text style={[Theme.BodyText, { color: Colors.grey }]}>
+                  You're up to date!
+                </Text>
+              </View>
+            }
             style={{
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
               overflow: "hidden",
               flexGrow: 1,
             }}
@@ -199,12 +216,10 @@ const MyProfile = () => {
             data={profile.finds}
             keyExtractor={(item) => item.id.toString()}
             showsVerticalScrollIndicator={false}
-            snapToInterval={findHeight + 20}
-            ItemSeparatorComponent={() => (
-              <View style={{ paddingVertical: 10 }} />
-            )}
+            snapToInterval={findHeight - 20}
+            ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
             renderItem={({ item }) => (
-              <Find isProfileFind findHeight={findHeight} find={item} />
+              <Find findHeight={findHeight - 40} find={item} />
             )}
           />
         ) : (
