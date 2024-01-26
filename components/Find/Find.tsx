@@ -154,7 +154,7 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
             <Text
               style={[
                 Theme.ButtonText,
-                { color: Colors.light, fontFamily: "font-b" },
+                { color: Colors.dark, fontFamily: "font-b" },
               ]}
             >
               {find.rating}
