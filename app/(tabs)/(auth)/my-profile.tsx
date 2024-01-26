@@ -52,7 +52,35 @@ const MyProfile = () => {
       <SafeAreaView />
 
       <View style={{ paddingHorizontal: 15, gap: 15 }}>
-        <Text style={Theme.BigTitle}>my profile</Text>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Text style={Theme.BigTitle}>my profile</Text>
+          <TouchableOpacity
+            style={{
+              borderColor: Colors.grey,
+              borderWidth: 1,
+              paddingHorizontal: 15,
+              paddingVertical: 10,
+              gap: 5,
+              borderRadius: 99,
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Text style={[Theme.ButtonText, { color: Colors.grey }]}>
+              Sign out
+            </Text>
+          </TouchableOpacity>
+        </View>
+
         <View
           style={{
             display: "flex",
@@ -159,20 +187,6 @@ const MyProfile = () => {
       >
         {findHeight ? (
           <FlatList
-            ListFooterComponent={
-              <View
-                style={{
-                  height: 40,
-                  width: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-                  That's all your finds so far
-                </Text>
-              </View>
-            }
             style={{
               overflow: "hidden",
               flexGrow: 1,
@@ -185,12 +199,12 @@ const MyProfile = () => {
             data={profile.finds}
             keyExtractor={(item) => item.id.toString()}
             showsVerticalScrollIndicator={false}
-            snapToInterval={findHeight - 20}
+            snapToInterval={findHeight + 20}
             ItemSeparatorComponent={() => (
               <View style={{ paddingVertical: 10 }} />
             )}
             renderItem={({ item }) => (
-              <Find isProfileFind findHeight={findHeight - 40} find={item} />
+              <Find isProfileFind findHeight={findHeight} find={item} />
             )}
           />
         ) : (
