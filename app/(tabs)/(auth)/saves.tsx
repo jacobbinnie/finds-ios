@@ -60,7 +60,7 @@ const Saves = () => {
           }
         }}
       >
-        <Text style={[Theme.BigTitle, { marginBottom: 15 }]}>my saves</Text>
+        <Text style={[Theme.BigTitle, { marginBottom: 15 }]}>your saves</Text>
 
         {findHeight && (
           <FlatList

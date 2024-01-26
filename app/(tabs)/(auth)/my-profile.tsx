@@ -3,19 +3,15 @@ import {
   View,
   Text,
   FlatList,
-  UIManager,
   LayoutAnimation,
   TouchableOpacity,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Theme } from "@/constants/Styles";
-import Search from "@/components/Search/Search";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/providers/AuthProvider";
 import Colors from "@/constants/Colors";
-import Save from "@/components/Save/Save";
-import { savesQuery, usersQuery } from "@/types/queries";
-import { kFormatter } from "@/utils/kFormatter";
+import { usersQuery } from "@/types/queries";
 import { Image } from "react-native-elements";
 import { useRouter } from "expo-router";
 import Find from "@/components/Find/Find";
@@ -23,7 +19,6 @@ import Find from "@/components/Find/Find";
 const MyProfile = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
 
-  const router = useRouter();
   const { session } = useAuth();
 
   if (!session?.profile.id) {
@@ -148,6 +143,7 @@ const MyProfile = () => {
       <View
         style={{
           flex: 1,
+          paddingHorizontal: 15,
         }}
         onLayout={(e) => {
           if (findHeight) {
@@ -178,7 +174,6 @@ const MyProfile = () => {
               </View>
             }
             style={{
-              borderRadius: 10,
               overflow: "hidden",
               flexGrow: 1,
             }}
@@ -190,7 +185,10 @@ const MyProfile = () => {
             data={profile.finds}
             keyExtractor={(item) => item.id.toString()}
             showsVerticalScrollIndicator={false}
-            snapToInterval={findHeight - 40}
+            snapToInterval={findHeight - 20}
+            ItemSeparatorComponent={() => (
+              <View style={{ paddingVertical: 10 }} />
+            )}
             renderItem={({ item }) => (
               <Find isProfileFind findHeight={findHeight - 40} find={item} />
             )}

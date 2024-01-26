@@ -94,7 +94,7 @@ const Save = ({ profileFind, saveHeight, find }: FindProps) => {
 
           <ImageSwiper
             images={find.images}
-            height={saveHeight * 0.675}
+            height={saveHeight * 0.7}
             onPressCallback={onPressCallback}
           />
 
