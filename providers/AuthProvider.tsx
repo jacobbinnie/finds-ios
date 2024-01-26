@@ -6,6 +6,7 @@ import { Profile } from "@/types/types";
 import { storage } from "@/utils/storage";
 import { authApi } from "@/types";
 import { AuthUserDto } from "@/types/generated";
+import { useRouter } from "expo-router";
 
 interface Session {
   accessToken: string;
@@ -32,6 +33,8 @@ interface AuthProviderOptions {
 export const AuthProvider = ({ children }: AuthProviderOptions) => {
   const [session, setSession] = useState<Session | null>(null);
   const [isCheckingAuth, setIsCheckingAuth] = useState(false);
+
+  const router = useRouter();
 
   const refreshAuth = async (refreshToken: string) => {
     const decodedRefreshToken = jwtDecode(refreshToken);
@@ -116,6 +119,16 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
       checkJwt(session);
     }
   }, []);
+
+  useEffect(() => {
+    if (session?.profile) {
+      if (session?.profile?.username) {
+        router.push("/");
+      } else {
+        router.push("/(modals)/onboarding");
+      }
+    }
+  }, [session]);
 
   const value = {
     session,

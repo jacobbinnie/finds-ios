@@ -65,14 +65,20 @@ function RootLayoutNav() {
         name="(modals)/login"
         options={{
           presentation: "modal",
-          title: "Sign in",
-          headerTitleStyle: Theme.Title,
           headerShown: false,
           headerLeft: () => (
             <TouchableOpacity onPress={() => router.replace("/")}>
               <Ionicons name="close-outline" size={24} />
             </TouchableOpacity>
           ),
+        }}
+      />
+      <Stack.Screen
+        name="(modals)/onboarding"
+        options={{
+          presentation: "fullScreenModal",
+          animation: "slide_from_right",
+          headerShown: false,
         }}
       />
       <Stack.Screen

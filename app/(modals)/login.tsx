@@ -32,12 +32,6 @@ const Login = () => {
 
   const BASE_URL = process.env.EXPO_PUBLIC_API_URL;
 
-  useEffect(() => {
-    if (session?.profile) {
-      router.back();
-    }
-  }, [session?.profile]);
-
   const {
     control,
     handleSubmit,

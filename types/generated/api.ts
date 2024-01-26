@@ -935,7 +935,7 @@ export const UsersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersControllerUpdateUsername(username: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+        async usersControllerUpdateUsername(username: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthUserDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.usersControllerUpdateUsername(username, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['UsersApi.usersControllerUpdateUsername']?.[index]?.url;
@@ -966,7 +966,7 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersControllerUpdateUsername(username: string, options?: any): AxiosPromise<string> {
+        usersControllerUpdateUsername(username: string, options?: any): AxiosPromise<AuthUserDto> {
             return localVarFp.usersControllerUpdateUsername(username, options).then((request) => request(axios, basePath));
         },
     };
