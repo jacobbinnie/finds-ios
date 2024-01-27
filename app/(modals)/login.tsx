@@ -137,14 +137,7 @@ const Login = () => {
         },
       ]}
     >
-      <Text
-        style={[
-          Theme.Title,
-          { fontSize: 32, color: Colors.primary, marginBottom: 15 },
-        ]}
-      >
-        finds.nyc
-      </Text>
+      <Text style={[Theme.BigTitle, { marginBottom: 15 }]}>finds.nyc</Text>
 
       <Controller
         control={control}
