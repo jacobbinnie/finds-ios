@@ -22,7 +22,10 @@ import Animated, {
   FadeOutRight,
   FadeInUp,
   FadeInDown,
+  FadeIn,
+  FadeOut,
 } from "react-native-reanimated";
+import Loader from "@/components/Loader/Loader";
 
 const Page = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
@@ -42,7 +45,7 @@ const Page = () => {
   } = useQuery(findsQuery.findsControllerAllFinds());
 
   if (isLoading) {
-    return <Text>Loading...</Text>;
+    return <Loader />;
   }
 
   if (isError) {

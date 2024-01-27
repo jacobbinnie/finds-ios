@@ -21,6 +21,7 @@ import Animated, {
   FadeInUp,
   FadeInDown,
 } from "react-native-reanimated";
+import Loader from "@/components/Loader/Loader";
 
 const Saves = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
@@ -40,7 +41,7 @@ const Saves = () => {
   } = useQuery(savesQuery.savesControllerGetUserSaves());
 
   if (isLoading) {
-    return <Text>Loading...</Text>;
+    return <Loader />;
   }
 
   if (isError) {
@@ -76,7 +77,7 @@ const Saves = () => {
 
         {findHeight && (
           <Animated.FlatList
-            entering={FadeInDown.springify().delay(50)}
+            entering={FadeInDown.springify().delay(200)}
             style={{
               borderTopLeftRadius: 10,
               borderTopRightRadius: 10,

@@ -22,7 +22,11 @@ import Animated, {
   FadeOutRight,
   FadeInUp,
   FadeInDown,
+  FadeIn,
+  FadeOut,
 } from "react-native-reanimated";
+import { kFormatter } from "@/utils/kFormatter";
+import Loader from "@/components/Loader/Loader";
 
 const MyProfile = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
@@ -42,7 +46,7 @@ const MyProfile = () => {
   );
 
   if (isLoading) {
-    return <Text>Loading...</Text>;
+    return <Loader />;
   }
 
   if (isError) {
@@ -131,7 +135,7 @@ const MyProfile = () => {
                 @{session?.profile.username}
               </Text>
               <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-                200 followers
+                {kFormatter(profile.followers)} followers
               </Text>
             </View>
           </View>
