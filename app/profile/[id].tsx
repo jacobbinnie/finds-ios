@@ -17,6 +17,13 @@ import Find from "@/components/Find/Find";
 import { usersQuery } from "@/types/queries";
 import { kFormatter } from "@/utils/kFormatter";
 import { useAuth } from "@/providers/AuthProvider";
+import Animated, {
+  FadeInDown,
+  FadeInLeft,
+  FadeInRight,
+  FadeOutLeft,
+  FadeOutRight,
+} from "react-native-reanimated";
 
 const ProfileDetails = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -46,93 +53,95 @@ const ProfileDetails = () => {
   }
 
   return (
-    <View style={Theme.Container}>
+    <View style={{ flex: 1 }}>
       <SafeAreaView />
 
-      <View style={{ gap: 20, flex: 1 }}>
-        <View
+      <TouchableOpacity onPress={() => router.back()}>
+        <Animated.View
+          entering={FadeInLeft.springify().delay(800)}
+          exiting={FadeOutRight}
           style={{
-            display: "flex",
-            justifyContent: "space-between",
-            gap: 20,
+            padding: 10,
+            borderRadius: 99,
+            overflow: "hidden",
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            paddingRight: 100,
           }}
         >
+          <Ionicons name="arrow-back" size={30} color="black" />
+        </Animated.View>
+      </TouchableOpacity>
+
+      <View style={{ flex: 1, gap: 15 }}>
+        <View style={{ paddingHorizontal: 15, gap: 15 }}>
           <View
             style={{
               display: "flex",
-              justifyContent: "space-between",
               flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
             }}
           >
-            <TouchableOpacity
-              onPress={() => router.back()}
-              style={{
-                borderColor: Colors.grey,
-                borderWidth: 1,
-                paddingHorizontal: 15,
-                paddingVertical: 10,
-                gap: 5,
-                borderRadius: 99,
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
+            <Animated.Text
+              entering={FadeInLeft.springify()}
+              exiting={FadeOutLeft}
+              style={Theme.BigTitle}
             >
-              <Ionicons
-                name="arrow-back-outline"
-                size={24}
-                color={Colors.grey}
-              />
-              <Text style={[Theme.ButtonText, { color: Colors.grey }]}>
-                Back
-              </Text>
-            </TouchableOpacity>
+              @{profile.username}
+            </Animated.Text>
 
-            <TouchableOpacity
-              style={{
-                backgroundColor: Colors.dark,
-                paddingHorizontal: 15,
-                paddingVertical: 10,
-                gap: 5,
-                borderRadius: 99,
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <Text style={[Theme.ButtonText, { color: Colors.light }]}>
-                Follow
-              </Text>
+            <TouchableOpacity>
+              <Animated.View
+                entering={FadeInRight.springify().delay(100)}
+                exiting={FadeOutRight}
+                style={{
+                  padding: 10,
+                  borderRadius: 99,
+                  overflow: "hidden",
+                  borderWidth: 1,
+                  borderColor: Colors.dark,
+                }}
+              >
+                <Text style={Theme.ButtonText}>follow</Text>
+              </Animated.View>
             </TouchableOpacity>
           </View>
 
           <View
             style={{
               display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 10,
+              justifyContent: "space-between",
+              gap: 20,
             }}
           >
-            <Image
-              source={{ uri: profile.avatar }}
-              style={{ width: 70, height: 70, borderRadius: 99 }}
-            />
-
             <View
               style={{
-                flex: 1,
-                position: "relative",
-                gap: 5,
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 10,
               }}
             >
-              <Text style={Theme.Title}>{profile.firstname}</Text>
-              <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-                @{profile.username}
-              </Text>
-              <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-                {`${kFormatter(profile.followers)} followers`}
-              </Text>
+              <Image
+                source={{ uri: profile.avatar }}
+                style={{ width: 70, height: 70, borderRadius: 99 }}
+              />
+
+              <View
+                style={{
+                  flex: 1,
+                  position: "relative",
+                  gap: 5,
+                }}
+              >
+                <Text style={Theme.Title}>{profile.firstname}</Text>
+
+                <Text style={[Theme.BodyText, { color: Colors.grey }]}>
+                  {kFormatter(profile.followers)} followers
+                </Text>
+              </View>
             </View>
           </View>
         </View>
@@ -140,6 +149,7 @@ const ProfileDetails = () => {
         <View
           style={{
             flex: 1,
+            paddingHorizontal: 15,
           }}
           onLayout={(e) => {
             if (findHeight) {
@@ -154,7 +164,8 @@ const ProfileDetails = () => {
           }}
         >
           {findHeight ? (
-            <FlatList
+            <Animated.FlatList
+              entering={FadeInDown.springify().delay(400)}
               ListFooterComponent={
                 <View
                   style={{
@@ -162,15 +173,17 @@ const ProfileDetails = () => {
                     width: "100%",
                     display: "flex",
                     alignItems: "center",
+                    justifyContent: "center",
                   }}
                 >
                   <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-                    That's all {"User's name here"}'s finds so far
+                    You're up to date!
                   </Text>
                 </View>
               }
               style={{
-                borderRadius: 10,
+                borderTopLeftRadius: 10,
+                borderTopRightRadius: 10,
                 overflow: "hidden",
                 flexGrow: 1,
               }}
@@ -182,7 +195,7 @@ const ProfileDetails = () => {
               data={profile.finds}
               keyExtractor={(item) => item.id.toString()}
               showsVerticalScrollIndicator={false}
-              snapToInterval={findHeight - 40}
+              snapToInterval={findHeight - 20}
               renderItem={({ item }) => (
                 <Find isProfileFind findHeight={findHeight - 40} find={item} />
               )}

@@ -56,8 +56,6 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const router = useRouter();
-
   return (
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
@@ -66,11 +64,6 @@ function RootLayoutNav() {
         options={{
           presentation: "modal",
           headerShown: false,
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => router.replace("/")}>
-              <Ionicons name="close-outline" size={24} />
-            </TouchableOpacity>
-          ),
         }}
       />
       <Stack.Screen

@@ -75,7 +75,7 @@ const MyProfile = () => {
             exiting={FadeOutLeft}
             style={Theme.BigTitle}
           >
-            my profile
+            @{profile.username}
           </Animated.Text>
           <Animated.View
             entering={FadeInRight.springify()}
@@ -131,9 +131,7 @@ const MyProfile = () => {
               }}
             >
               <Text style={Theme.Title}>{session?.profile.firstname}</Text>
-              <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-                @{session?.profile.username}
-              </Text>
+
               <Text style={[Theme.BodyText, { color: Colors.grey }]}>
                 {kFormatter(profile.followers)} followers
               </Text>

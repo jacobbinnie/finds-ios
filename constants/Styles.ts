@@ -43,7 +43,7 @@ export const Theme = StyleSheet.create({
     lineHeight: 20,
   },
   ReviewText: {
-    fontFamily: "font-mi",
+    fontFamily: "font-m",
     fontSize: 14,
     color: Colors.dark,
     lineHeight: 20,
