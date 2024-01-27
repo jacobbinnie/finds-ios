@@ -12,9 +12,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/providers/AuthProvider";
 import Colors from "@/constants/Colors";
 import { usersQuery } from "@/types/queries";
-import { Image } from "react-native-elements";
 import { useRouter } from "expo-router";
 import Find from "@/components/Find/Find";
+import { Image } from "react-native-elements";
 
 const MyProfile = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
@@ -44,6 +44,8 @@ const MyProfile = () => {
   if (!profile) {
     return <Text>Profile not found</Text>;
   }
+
+  console.log(session);
 
   return (
     <View style={{ flex: 1, gap: 15 }}>

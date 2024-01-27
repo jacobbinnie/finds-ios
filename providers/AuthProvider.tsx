@@ -79,6 +79,7 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
     console.log("Checking JWT..");
 
     const parsed = JSON.parse(session) as Session;
+    console.log(parsed);
     const decodedJwt = parsed.accessToken
       ? jwtDecode(parsed.accessToken)
       : null;

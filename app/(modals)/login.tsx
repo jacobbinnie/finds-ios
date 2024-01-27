@@ -24,13 +24,10 @@ type FormInputs = {
 
 const Login = () => {
   const { session, setSession } = useAuth();
-  const router = useRouter();
 
   const [screen, setScreen] = useState<"login" | "signup">("login");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  const BASE_URL = process.env.EXPO_PUBLIC_API_URL;
 
   const {
     control,
@@ -70,7 +67,7 @@ const Login = () => {
               firstname: res.data.user.firstname,
               created_at: res.data.user.created_at,
               email: res.data.user.email,
-              image: res.data.user.avatar,
+              avatar: res.data.user.avatar,
               username: res.data.user.username,
             },
           };
@@ -101,7 +98,7 @@ const Login = () => {
                 firstname: res.data.user.firstname,
                 created_at: res.data.user.created_at,
                 email: res.data.user.email,
-                image: res.data.user.avatar,
+                avatar: res.data.user.avatar,
                 username: res.data.user.username,
               },
             };
