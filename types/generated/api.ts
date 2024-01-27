@@ -278,6 +278,12 @@ export interface UserProfileDto {
     'avatar'?: string;
     /**
      * 
+     * @type {string}
+     * @memberof UserProfileDto
+     */
+    'bio'?: string;
+    /**
+     * 
      * @type {number}
      * @memberof UserProfileDto
      */

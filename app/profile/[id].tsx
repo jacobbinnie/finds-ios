@@ -143,6 +143,12 @@ const ProfileDetails = () => {
                 </Text>
               </View>
             </View>
+
+            {profile.bio && profile.bio.length > 1 && (
+              <Text style={[Theme.BodyText, { color: Colors.grey }]}>
+                {profile.bio}
+              </Text>
+            )}
           </View>
         </View>
 
