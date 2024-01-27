@@ -7,6 +7,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
 import ImageSwiper from "../ImageSwiper/ImageSwiper";
 import { FindDto } from "@/types/generated";
+import { useAuth } from "@/providers/AuthProvider";
 
 interface FindProps {
   profileFind?: boolean;
@@ -16,6 +17,18 @@ interface FindProps {
 
 const Save = ({ profileFind, saveHeight, find }: FindProps) => {
   const router = useRouter();
+
+  const { session } = useAuth();
+
+  const handleGoToProfile = () => {
+    if (session) {
+      session.profile.id === find.user.id
+        ? router.push("/(tabs)/(auth)/my-profile")
+        : router.push(`/profile/${find.user.id}`);
+    } else {
+      router.push(`/profile/${find.user.id}`);
+    }
+  };
 
   const onPressCallback = () =>
     router.push({
@@ -67,7 +80,7 @@ const Save = ({ profileFind, saveHeight, find }: FindProps) => {
             }}
           >
             <TouchableOpacity
-              onPress={() => router.push(`/profile/${find.user.id}`)}
+              onPress={handleGoToProfile}
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -112,12 +125,7 @@ const Save = ({ profileFind, saveHeight, find }: FindProps) => {
               top: 15,
             }}
           >
-            <Text
-              style={[
-                Theme.ButtonText,
-                { color: Colors.light, fontFamily: "font-b" },
-              ]}
-            >
+            <Text style={[Theme.ButtonText, { color: Colors.dark }]}>
               {find.rating}
             </Text>
           </View>

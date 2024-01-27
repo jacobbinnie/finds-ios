@@ -130,7 +130,7 @@ const FindDetails = () => {
                 }}
               >
                 <View style={{ gap: 5 }}>
-                  <Text style={Theme.BodyText}>{`${find.user.firstname}`}</Text>
+                  <Text style={Theme.Title}>{`${find.user.firstname}`}</Text>
                   <Text
                     style={[Theme.BodyText, { color: Colors.grey }]}
                   >{`@${find.user.username}`}</Text>

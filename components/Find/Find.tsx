@@ -51,6 +51,16 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
   //   },
   // });
 
+  const handleGoToProfile = () => {
+    if (session) {
+      session.profile.id === find.user.id
+        ? router.push("/(tabs)/(auth)/my-profile")
+        : router.push(`/profile/${find.user.id}`);
+    } else {
+      router.push(`/profile/${find.user.id}`);
+    }
+  };
+
   const handleAction = async (action: FindAction) => {
     try {
       if (!session) {
@@ -117,7 +127,7 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
             }}
           >
             <TouchableOpacity
-              onPress={() => router.push(`/profile/${find.user.id}`)}
+              onPress={handleGoToProfile}
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -131,7 +141,7 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
                   style={{ width: 25, height: 25, borderRadius: 99 }}
                 />
               )}
-              <Text style={Theme.ButtonText}>{`@${find.user.username}`}</Text>
+              <Text style={[Theme.ButtonText]}>{`@${find.user.username}`}</Text>
             </TouchableOpacity>
           </View>
 
@@ -155,12 +165,7 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
               top: 15,
             }}
           >
-            <Text
-              style={[
-                Theme.ButtonText,
-                { color: Colors.dark, fontFamily: "font-b" },
-              ]}
-            >
+            <Text style={[Theme.ButtonText, { color: Colors.dark }]}>
               {find.rating}
             </Text>
           </View>

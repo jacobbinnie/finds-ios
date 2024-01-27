@@ -27,7 +27,7 @@ const PlaceDetails = () => {
   }>();
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
 
-  const { profile } = useAuth();
+  const { session } = useAuth();
 
   const router = useRouter();
   const parsed = JSON.parse(data);
@@ -107,7 +107,7 @@ const PlaceDetails = () => {
 
             <TouchableOpacity
               onPress={() => {
-                if (!profile) {
+                if (!session) {
                   return router.push("/(modals)/login");
                 } else {
                   router.push({
