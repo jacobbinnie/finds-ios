@@ -5,7 +5,6 @@ import {
   FlatList,
   UIManager,
   LayoutAnimation,
-  Touchable,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Theme } from "@/constants/Styles";
@@ -14,7 +13,16 @@ import Find from "@/components/Find/Find";
 import Colors from "@/constants/Colors";
 import { findsQuery } from "@/types/queries";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { AntDesign, Feather, FontAwesome } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
+import FindSkeleton from "@/components/Find/FindSkeleton";
+import Animated, {
+  FadeInLeft,
+  FadeInRight,
+  FadeOutLeft,
+  FadeOutRight,
+  FadeInUp,
+  FadeInDown,
+} from "react-native-reanimated";
 
 const Page = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
@@ -54,9 +62,20 @@ const Page = () => {
           alignItems: "center",
         }}
       >
-        <Text style={Theme.BigTitle}>finds.nyc</Text>
+        <Animated.Text
+          entering={FadeInLeft.springify()}
+          exiting={FadeOutLeft}
+          style={Theme.BigTitle}
+        >
+          finds.nyc
+        </Animated.Text>
         <TouchableOpacity>
-          <Feather name="plus-square" size={30} color="black" />
+          <Animated.View
+            entering={FadeInRight.springify().delay(100)}
+            exiting={FadeOutRight}
+          >
+            <Feather name="plus-square" size={30} color="black" />
+          </Animated.View>
         </TouchableOpacity>
       </View>
 
@@ -76,42 +95,46 @@ const Page = () => {
           }
         }}
       >
-        {findHeight && (
-          <FlatList
-            ListFooterComponent={
-              <View
-                style={{
-                  height: 40,
-                  width: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-                  You're up to date!
-                </Text>
-              </View>
-            }
-            style={{
-              borderTopLeftRadius: 10,
-              borderTopRightRadius: 10,
-              overflow: "hidden",
-              flexGrow: 1,
-            }}
-            decelerationRate={"fast"}
-            viewabilityConfig={{ itemVisiblePercentThreshold: 80 }}
-            pagingEnabled={true}
-            onRefresh={() => refetch()}
-            refreshing={isLoading}
-            data={finds}
-            keyExtractor={(item) => item.id.toString()}
-            showsVerticalScrollIndicator={false}
-            snapToInterval={findHeight - 40}
-            renderItem={({ item }) => (
-              <Find findHeight={findHeight - 40} find={item} />
-            )}
-          />
-        )}
+        {findHeight &&
+          (isLoading ? (
+            <FindSkeleton findHeight={findHeight - 40} />
+          ) : (
+            <Animated.FlatList
+              entering={FadeInDown.springify().delay(50)}
+              ListFooterComponent={
+                <View
+                  style={{
+                    height: 40,
+                    width: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text style={[Theme.BodyText, { color: Colors.grey }]}>
+                    You're up to date!
+                  </Text>
+                </View>
+              }
+              style={{
+                borderTopLeftRadius: 10,
+                borderTopRightRadius: 10,
+                overflow: "hidden",
+                flexGrow: 1,
+              }}
+              decelerationRate={"fast"}
+              viewabilityConfig={{ itemVisiblePercentThreshold: 80 }}
+              pagingEnabled={true}
+              onRefresh={() => refetch()}
+              refreshing={isLoading}
+              data={finds}
+              keyExtractor={(item) => item.id.toString()}
+              showsVerticalScrollIndicator={false}
+              snapToInterval={findHeight - 40}
+              renderItem={({ item }) => (
+                <Find findHeight={findHeight - 40} find={item} />
+              )}
+            />
+          ))}
       </View>
     </View>
   );

@@ -8,12 +8,19 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Theme } from "@/constants/Styles";
-import Search from "@/components/Search/Search";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/providers/AuthProvider";
 import Colors from "@/constants/Colors";
 import Save from "@/components/Save/Save";
 import { savesQuery } from "@/types/queries";
+import Animated, {
+  FadeInLeft,
+  FadeInRight,
+  FadeOutLeft,
+  FadeOutRight,
+  FadeInUp,
+  FadeInDown,
+} from "react-native-reanimated";
 
 const Saves = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
@@ -60,10 +67,16 @@ const Saves = () => {
           }
         }}
       >
-        <Text style={[Theme.BigTitle, { marginBottom: 15 }]}>your saves</Text>
+        <Animated.Text
+          entering={FadeInLeft.springify()}
+          style={[Theme.BigTitle, { marginBottom: 15 }]}
+        >
+          your saves
+        </Animated.Text>
 
         {findHeight && (
-          <FlatList
+          <Animated.FlatList
+            entering={FadeInDown.springify().delay(50)}
             style={{
               borderTopLeftRadius: 10,
               borderTopRightRadius: 10,

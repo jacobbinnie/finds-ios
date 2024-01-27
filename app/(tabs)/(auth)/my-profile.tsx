@@ -15,6 +15,14 @@ import { usersQuery } from "@/types/queries";
 import { useRouter } from "expo-router";
 import Find from "@/components/Find/Find";
 import { Image } from "react-native-elements";
+import Animated, {
+  FadeInLeft,
+  FadeInRight,
+  FadeOutLeft,
+  FadeOutRight,
+  FadeInUp,
+  FadeInDown,
+} from "react-native-reanimated";
 
 const MyProfile = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
@@ -58,26 +66,37 @@ const MyProfile = () => {
             alignItems: "center",
           }}
         >
-          <Text style={Theme.BigTitle}>my profile</Text>
-          <TouchableOpacity
-            onPress={() => signout()}
-            style={{
-              borderColor: Colors.grey,
-              borderWidth: 1,
-              paddingHorizontal: 15,
-              paddingVertical: 10,
-              gap: 5,
-              borderRadius: 99,
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
+          <Animated.Text
+            entering={FadeInLeft.springify()}
+            exiting={FadeOutLeft}
+            style={Theme.BigTitle}
           >
-            <Text style={[Theme.ButtonText, { color: Colors.grey }]}>
-              Sign out
-            </Text>
-          </TouchableOpacity>
+            my profile
+          </Animated.Text>
+          <Animated.View
+            entering={FadeInRight.springify()}
+            exiting={FadeOutRight}
+          >
+            <TouchableOpacity
+              onPress={() => signout()}
+              style={{
+                borderColor: Colors.grey,
+                borderWidth: 1,
+                paddingHorizontal: 15,
+                paddingVertical: 10,
+                gap: 5,
+                borderRadius: 99,
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text style={[Theme.ButtonText, { color: Colors.grey }]}>
+                Sign out
+              </Text>
+            </TouchableOpacity>
+          </Animated.View>
         </View>
 
         <View
@@ -118,7 +137,8 @@ const MyProfile = () => {
           </View>
         </View>
 
-        <View
+        <Animated.View
+          entering={FadeInDown.springify().delay(50)}
           style={{
             display: "flex",
             justifyContent: "space-between",
@@ -164,7 +184,7 @@ const MyProfile = () => {
               Share profile
             </Text>
           </TouchableOpacity>
-        </View>
+        </Animated.View>
       </View>
 
       <View
@@ -185,7 +205,8 @@ const MyProfile = () => {
         }}
       >
         {findHeight ? (
-          <FlatList
+          <Animated.FlatList
+            entering={FadeInDown.springify().delay(400)}
             ListFooterComponent={
               <View
                 style={{

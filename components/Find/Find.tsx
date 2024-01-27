@@ -98,7 +98,6 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
           },
           shadowOpacity: 0.2,
           shadowRadius: 2.62,
-          backgroundColor: "red",
           elevation: 4,
         }}
       >
