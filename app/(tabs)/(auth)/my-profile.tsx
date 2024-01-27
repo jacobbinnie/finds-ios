@@ -45,8 +45,6 @@ const MyProfile = () => {
     return <Text>Profile not found</Text>;
   }
 
-  console.log(session);
-
   return (
     <View style={{ flex: 1, gap: 15 }}>
       <SafeAreaView />
@@ -218,7 +216,6 @@ const MyProfile = () => {
             keyExtractor={(item) => item.id.toString()}
             showsVerticalScrollIndicator={false}
             snapToInterval={findHeight - 20}
-            ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
             renderItem={({ item }) => (
               <Find isProfileFind findHeight={findHeight - 40} find={item} />
             )}

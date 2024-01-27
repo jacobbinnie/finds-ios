@@ -30,6 +30,10 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
   const router = useRouter();
   const { session } = useAuth();
 
+  const bottomOffset = 15;
+  const descriptionCardHeight = 152;
+  const imageheight = findHeight - descriptionCardHeight - bottomOffset;
+
   // const { data: existingSave, refetch: refetchSave } = useQuery({
   //   queryKey: ["saves", "find", find.id],
   //   queryFn: async () => {
@@ -83,7 +87,8 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
         style={{
           display: "flex",
           position: "relative",
-          height: "100%",
+          flex: 1,
+          marginBottom: bottomOffset,
           borderRadius: 10,
           overflow: "hidden",
           shadowColor: Colors.grey,
@@ -93,7 +98,7 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
           },
           shadowOpacity: 0.2,
           shadowRadius: 2.62,
-          backgroundColor: Colors.light,
+          backgroundColor: "red",
           elevation: 4,
         }}
       >
@@ -133,7 +138,7 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
 
           <ImageSwiper
             images={find.images}
-            height={findHeight * 0.7}
+            height={imageheight}
             onPressCallback={onPressCallback}
           />
 
@@ -170,6 +175,7 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
               borderEndStartRadius: 10,
               borderEndEndRadius: 10,
               overflow: "hidden",
+              height: descriptionCardHeight,
             }}
           >
             <View style={{ gap: 10, paddingVertical: 15 }}>
@@ -247,16 +253,12 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
                 <TouchableOpacity onPress={() => handleAction(FindAction.SAVE)}>
                   <Ionicons
                     name="ios-heart"
-                    size={findHeight * 0.05}
+                    size={30}
                     color={Colors.light} // TODO: add existing save logic
                   />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => handleAction(FindAction.FIND)}>
-                  <Entypo
-                    name="loop"
-                    size={findHeight * 0.05}
-                    color={Colors.light}
-                  />
+                  <Entypo name="loop" size={30} color={Colors.light} />
                 </TouchableOpacity>
               </View>
             </View>
