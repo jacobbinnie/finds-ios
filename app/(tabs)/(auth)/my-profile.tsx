@@ -19,11 +19,9 @@ import Find from "@/components/Find/Find";
 const MyProfile = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
 
-  const { session } = useAuth();
+  const { session, signout } = useAuth();
 
-  if (!session?.profile.id) {
-    return null;
-  }
+  const router = useRouter();
 
   const {
     data: profile,
@@ -32,7 +30,7 @@ const MyProfile = () => {
     error,
     refetch,
   } = useQuery(
-    usersQuery.usersControllerGetProfileAndFinds(session?.profile.id)
+    usersQuery.usersControllerGetProfileAndFinds(session?.profile.id!)
   );
 
   if (isLoading) {
@@ -62,6 +60,7 @@ const MyProfile = () => {
         >
           <Text style={Theme.BigTitle}>my profile</Text>
           <TouchableOpacity
+            onPress={() => signout()}
             style={{
               borderColor: Colors.grey,
               borderWidth: 1,

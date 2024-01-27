@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { jwtDecode } from "jwt-decode";
 import "core-js/stable/atob";
 
@@ -18,12 +24,14 @@ interface AuthContextValues {
   session: Session | null;
   setSession: (session: Session | null) => void;
   isCheckingAuth: boolean;
+  signout: () => void;
 }
 
 const AuthContext = createContext<AuthContextValues>({
   session: null,
   setSession: () => null,
   isCheckingAuth: false,
+  signout: () => null,
 });
 
 interface AuthProviderOptions {
@@ -33,6 +41,13 @@ interface AuthProviderOptions {
 export const AuthProvider = ({ children }: AuthProviderOptions) => {
   const [session, setSession] = useState<Session | null>(null);
   const [isCheckingAuth, setIsCheckingAuth] = useState(false);
+
+  const signout = () => {
+    storage.delete("auth");
+    setSession(null);
+    router.push("/");
+    router.push("/(modals)/login");
+  };
 
   const router = useRouter();
 
@@ -112,7 +127,7 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
     }
   };
 
-  useEffect(() => {
+  useMemo(() => {
     const session = storage.getString("auth");
 
     if (session) {
@@ -134,6 +149,7 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
     session,
     setSession,
     isCheckingAuth,
+    signout,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

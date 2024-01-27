@@ -38,10 +38,20 @@ const Layout = () => {
         name="(auth)/search"
         options={{
           headerShown: false,
-          tabBarLabel: "Explore",
+          tabBarLabel: "Search",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="search" size={30} color={color} />
           ),
+        }}
+        listeners={{
+          tabPress: (e) => {
+            e.preventDefault();
+            if (!session) {
+              router.push("/(modals)/login");
+            } else {
+              router.push("/search");
+            }
+          },
         }}
       />
       <Tabs.Screen
