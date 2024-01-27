@@ -5,6 +5,7 @@ import {
   FlatList,
   UIManager,
   LayoutAnimation,
+  Touchable,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Theme } from "@/constants/Styles";
@@ -13,6 +14,8 @@ import { useQuery } from "@tanstack/react-query";
 import Find from "@/components/Find/Find";
 import Colors from "@/constants/Colors";
 import { findsQuery } from "@/types/queries";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { AntDesign, Feather, FontAwesome } from "@expo/vector-icons";
 
 const Page = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
@@ -43,8 +46,19 @@ const Page = () => {
     <View style={{ flex: 1, gap: 15 }}>
       <SafeAreaView />
 
-      <View style={{ paddingHorizontal: 15 }}>
-        <Search />
+      <View
+        style={{
+          paddingHorizontal: 15,
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Text style={Theme.BigTitle}>finds.nyc</Text>
+        <TouchableOpacity>
+          <Feather name="plus-square" size={30} color="black" />
+        </TouchableOpacity>
       </View>
 
       {/* <Categories /> */}
