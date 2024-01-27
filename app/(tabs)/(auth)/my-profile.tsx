@@ -107,7 +107,7 @@ const MyProfile = () => {
           style={{
             display: "flex",
             justifyContent: "space-between",
-            gap: 20,
+            gap: 15,
           }}
         >
           <View
