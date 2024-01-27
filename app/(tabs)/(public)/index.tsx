@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Theme } from "@/constants/Styles";
-import Search from "@/components/Search/Search";
 import { useQuery } from "@tanstack/react-query";
 import Find from "@/components/Find/Find";
 import Colors from "@/constants/Colors";
