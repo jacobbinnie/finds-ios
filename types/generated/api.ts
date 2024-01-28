@@ -123,6 +123,12 @@ export interface FindDto {
     'images': Array<string>;
     /**
      * 
+     * @type {Array<TagDto>}
+     * @memberof FindDto
+     */
+    'tags': Array<TagDto>;
+    /**
+     * 
      * @type {ProfileDto}
      * @memberof FindDto
      */
@@ -185,12 +191,6 @@ export interface PlaceDto {
     'address': string;
     /**
      * 
-     * @type {Array<string>}
-     * @memberof PlaceDto
-     */
-    'categories': Array<string>;
-    /**
-     * 
      * @type {string}
      * @memberof PlaceDto
      */
@@ -245,6 +245,25 @@ export interface ProfileDto {
      * @memberof ProfileDto
      */
     'avatar'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface TagDto
+ */
+export interface TagDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof TagDto
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof TagDto
+     */
+    'name': string;
 }
 /**
  * 
