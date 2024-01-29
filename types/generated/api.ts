@@ -105,10 +105,10 @@ export interface FindDto {
     'review': string;
     /**
      * 
-     * @type {string}
+     * @type {RatingDto}
      * @memberof FindDto
      */
-    'rating': string;
+    'rating': RatingDto;
     /**
      * 
      * @type {PlaceDto}
@@ -245,6 +245,25 @@ export interface ProfileDto {
      * @memberof ProfileDto
      */
     'avatar'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface RatingDto
+ */
+export interface RatingDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof RatingDto
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof RatingDto
+     */
+    'name': string;
 }
 /**
  * 

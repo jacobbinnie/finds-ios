@@ -13,12 +13,15 @@ import { Image } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import ImageSwiper from "@/components/ImageSwiper/ImageSwiper";
 import { FindDto } from "@/types/generated";
+import { useRoute } from "@react-navigation/native";
 
 const FindDetails = () => {
+  const route = useRoute();
   const { id, data } = useLocalSearchParams<{ id: string; data: string }>();
   const router = useRouter();
 
   const deviceHeight = useWindowDimensions().height;
+
   const find = JSON.parse(data) as FindDto;
 
   return (
@@ -49,14 +52,13 @@ const FindDetails = () => {
         }}
       >
         <TouchableOpacity
-          onPress={() =>
+          onPress={() => {
+            const stringedPlace = JSON.stringify(find.place);
+
             router.replace({
-              pathname: `/place/${find.place.googlePlaceId}`,
-              params: {
-                data: JSON.stringify(find.place),
-              },
-            })
-          }
+              pathname: `/place/${find.place.googlePlaceId}?data=${stringedPlace}`,
+            });
+          }}
           style={{
             backgroundColor: Colors.light,
             paddingHorizontal: 15,
@@ -109,7 +111,6 @@ const FindDetails = () => {
                 display: "flex",
                 flexDirection: "row",
                 gap: 10,
-
                 alignItems: "center",
               }}
             >
@@ -152,7 +153,7 @@ const FindDetails = () => {
                       { color: Colors.light, fontFamily: "font-b" },
                     ]}
                   >
-                    {find.rating}
+                    {find.rating.name}
                   </Text>
                 </View>
               </View>

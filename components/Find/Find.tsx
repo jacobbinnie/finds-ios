@@ -78,11 +78,10 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
   };
 
   const onPressCallback = () => {
+    const stringedFind = JSON.stringify(find);
+
     router.push({
-      pathname: `/find-details/${find.id}`,
-      params: {
-        data: JSON.stringify(find),
-      },
+      pathname: `/find-details/${find.id}?data=${stringedFind}`,
     });
   };
 
@@ -139,7 +138,7 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
                 alignItems: "center",
               }}
             >
-              {find.user.avatar && !isProfileFind && (
+              {find.user && !isProfileFind && (
                 <TouchableOpacity
                   onPress={handleGoToProfile}
                   style={{
@@ -151,29 +150,41 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
                     padding: 5,
                   }}
                 >
-                  <Image
-                    source={{ uri: find.user.avatar }}
-                    style={{ width: 25, height: 25, borderRadius: 99 }}
-                  />
+                  {find.user.avatar ? (
+                    <Image
+                      source={{ uri: find.user.avatar }}
+                      style={{ width: 25, height: 25, borderRadius: 99 }}
+                    />
+                  ) : (
+                    <View
+                      style={{
+                        width: 22,
+                        height: 22,
+                        borderRadius: 99,
+                        backgroundColor: Colors.grey,
+                      }}
+                    />
+                  )}
 
                   <Text
-                    style={[Theme.BodyText]}
+                    style={[Theme.Caption]}
                   >{`@${find.user.username}`}</Text>
                 </TouchableOpacity>
               )}
 
               <View
                 style={{
-                  padding: 5,
+                  paddingHorizontal: 10,
+                  paddingVertical: 5,
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  backgroundColor: Colors.dark,
+                  backgroundColor: Colors.primary,
                   borderRadius: 99,
                 }}
               >
-                <Text style={[Theme.BodyText, { color: Colors.light }]}>
-                  {find.rating}
+                <Text style={[Theme.Caption, { color: Colors.dark }]}>
+                  {find.rating.name}
                 </Text>
               </View>
             </View>

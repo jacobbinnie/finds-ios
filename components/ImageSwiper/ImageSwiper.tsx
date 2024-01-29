@@ -79,20 +79,22 @@ const ImageSwiper = ({
             key={key}
             style={{ position: "relative" }}
           >
-            <View
-              style={{
-                position: "absolute",
-                top: 0,
-                bottom: 0,
-                left: 0,
-                right: 0,
-                backgroundColor: Colors.grey, // Adjust the background color and opacity as needed
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <ActivityIndicator size="large" color="#FFF" />
-            </View>
+            {loadTracking.find((item) => item.index === key)?.isLoading && (
+              <View
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  backgroundColor: Colors.grey, // Adjust the background color and opacity as needed
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <ActivityIndicator size="large" color="#FFF" />
+              </View>
+            )}
 
             <Image
               style={{

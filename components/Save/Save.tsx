@@ -126,7 +126,7 @@ const Save = ({ profileFind, saveHeight, find }: FindProps) => {
             }}
           >
             <Text style={[Theme.ButtonText, { color: Colors.dark }]}>
-              {find.rating}
+              {find.rating.name}
             </Text>
           </View>
 
