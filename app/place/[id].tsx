@@ -18,6 +18,13 @@ import Find from "@/components/Find/Find";
 import { useAuth } from "@/providers/AuthProvider";
 import { placesQuery } from "@/types/queries";
 import { PlaceDto } from "@/types/generated";
+import Animated, {
+  FadeInDown,
+  FadeInLeft,
+  FadeInRight,
+  FadeOutLeft,
+  FadeOutRight,
+} from "react-native-reanimated";
 
 const PlaceDetails = () => {
   const { id, data } = useLocalSearchParams<{
@@ -63,96 +70,85 @@ const PlaceDetails = () => {
   );
 
   return (
-    <View style={Theme.Container}>
+    <View style={{ flex: 1 }}>
       <SafeAreaView />
 
-      <View style={{ gap: 20, flex: 1 }}>
-        <View
+      <TouchableOpacity onPress={() => router.back()}>
+        <Animated.View
+          entering={FadeInLeft.springify().delay(800)}
+          exiting={FadeOutRight}
           style={{
-            display: "flex",
-            justifyContent: "space-between",
-            gap: 20,
+            padding: 10,
+            borderRadius: 99,
+            overflow: "hidden",
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            paddingRight: 100,
           }}
         >
+          <Ionicons name="arrow-back" size={30} color="black" />
+        </Animated.View>
+      </TouchableOpacity>
+
+      <TouchableOpacity>
+        <Animated.View
+          entering={FadeInRight.springify().delay(100)}
+          exiting={FadeOutRight}
+          style={{
+            padding: 10,
+            borderRadius: 99,
+            overflow: "hidden",
+            borderWidth: 1,
+            borderColor: Colors.dark,
+            position: "absolute",
+            right: 15,
+            bottom: 0,
+          }}
+        >
+          <Text style={Theme.ButtonText}>find</Text>
+        </Animated.View>
+      </TouchableOpacity>
+
+      <View style={{ flex: 1, gap: 15 }}>
+        <View style={{ paddingHorizontal: 15, gap: 5 }}>
           <View
             style={{
               display: "flex",
-              justifyContent: "space-between",
               flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Animated.Text
+              entering={FadeInLeft.springify()}
+              exiting={FadeOutLeft}
+              style={Theme.BigTitle}
+            >
+              {place.name}
+            </Animated.Text>
+          </View>
+
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 10,
             }}
           >
             <TouchableOpacity
-              onPress={() => router.back()}
+              onPress={() => Linking.openURL(place.googleMapsUri)}
               style={{
-                borderColor: Colors.grey,
-                borderWidth: 1,
-                paddingHorizontal: 15,
-                paddingVertical: 10,
+                flex: 1,
+                flexDirection: "row",
+                position: "relative",
                 gap: 5,
-                borderRadius: 99,
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <Ionicons
-                name="arrow-back-outline"
-                size={24}
-                color={Colors.grey}
-              />
-              <Text style={[Theme.ButtonText, { color: Colors.grey }]}>
-                Back
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => {
-                if (!session) {
-                  return router.push("/(modals)/login");
-                } else {
-                  router.push({
-                    pathname: `/new-find/${id}`,
-                    params: { data: JSON.stringify(place) },
-                  });
-                }
-              }}
-              style={{
-                backgroundColor: Colors.dark,
-                paddingHorizontal: 15,
-                paddingVertical: 10,
-                gap: 5,
-                borderRadius: 99,
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <Ionicons name="add" size={24} color={Colors.light} />
-              <Text style={[Theme.ButtonText, { color: Colors.light }]}>
-                Find
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          <View style={{ display: "flex", gap: 10 }}>
-            <Text style={Theme.Title}>{place?.name ?? place?.name}</Text>
-            <TouchableOpacity
-              onPress={() => Linking.openURL(place?.googleMapsUri)}
-              style={{
-                display: "flex",
-                flexDirection: "row",
                 alignItems: "baseline",
-                gap: 5,
-                maxWidth: "75%",
               }}
             >
-              <FontAwesome name="map-marker" size={15} color={Colors.primary} />
-              <Text
-                numberOfLines={1}
-                style={[Theme.Caption, { color: Colors.grey }]}
-              >
-                {place?.address}
-              </Text>
+              <FontAwesome name="map-marker" size={20} color={Colors.primary} />
+              <Text style={Theme.BodyText}>{place.address}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -160,6 +156,7 @@ const PlaceDetails = () => {
         <View
           style={{
             flex: 1,
+            paddingHorizontal: 15,
           }}
           onLayout={(e) => {
             if (findHeight) {
@@ -174,8 +171,8 @@ const PlaceDetails = () => {
           }}
         >
           {findHeight ? (
-            <FlatList
-              ListEmptyComponent={<Text>No finds yet</Text>}
+            <Animated.FlatList
+              entering={FadeInDown.springify().delay(400)}
               ListFooterComponent={
                 <View
                   style={{
@@ -183,29 +180,31 @@ const PlaceDetails = () => {
                     width: "100%",
                     display: "flex",
                     alignItems: "center",
+                    justifyContent: "center",
                   }}
                 >
                   <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-                    That's all {place.name}'s finds so far
+                    You're up to date!
                   </Text>
                 </View>
               }
               style={{
-                borderRadius: 10,
+                borderTopLeftRadius: 10,
+                borderTopRightRadius: 10,
                 overflow: "hidden",
                 flexGrow: 1,
               }}
               decelerationRate={"fast"}
               viewabilityConfig={{ itemVisiblePercentThreshold: 80 }}
               pagingEnabled={true}
-              refreshing={isLoading}
               onRefresh={() => refetch()}
+              refreshing={isLoading}
               data={placeData?.finds}
               keyExtractor={(item) => item.id.toString()}
               showsVerticalScrollIndicator={false}
-              snapToInterval={findHeight - 40}
+              snapToInterval={findHeight - 20}
               renderItem={({ item }) => (
-                <Find isPlaceFind findHeight={findHeight - 40} find={item} />
+                <Find isProfileFind findHeight={findHeight - 40} find={item} />
               )}
             />
           ) : (
