@@ -146,6 +146,9 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
                     gap: 5,
                     alignItems: "center",
                     borderRadius: 99,
+                    borderWidth: 1,
+                    borderColor: Colors.light,
+                    padding: 5,
                   }}
                 >
                   {find.user.avatar ? (
@@ -172,13 +175,12 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
 
               <View
                 style={{
-                  paddingHorizontal: 10,
-                  paddingVertical: 5,
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
                   backgroundColor: Colors.primary,
                   borderRadius: 99,
+                  padding: 10,
                 }}
               >
                 <Text style={[Theme.Caption, { color: Colors.dark }]}>

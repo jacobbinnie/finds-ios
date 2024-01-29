@@ -34,6 +34,16 @@ const FindDetails = () => {
 
   const find = JSON.parse(data) as FindDto;
 
+  const handleGoToProfile = () => {
+    if (session) {
+      session.profile.id === find.user.id
+        ? router.push("/(tabs)/(auth)/my-profile")
+        : router.push(`/profile/${find.user.id}`);
+    } else {
+      router.push(`/profile/${find.user.id}`);
+    }
+  };
+
   const handleAction = async (action: FindAction) => {
     try {
       if (!session) {
@@ -138,11 +148,16 @@ const FindDetails = () => {
           >
             {find.user && (
               <TouchableOpacity
+                onPress={handleGoToProfile}
                 style={{
                   flexDirection: "row",
                   gap: 5,
                   alignItems: "center",
                   borderRadius: 99,
+                  borderWidth: 1,
+                  borderColor: Colors.light,
+                  height: 35,
+                  paddingHorizontal: 5,
                 }}
               >
                 {find.user.avatar ? (
@@ -153,8 +168,8 @@ const FindDetails = () => {
                 ) : (
                   <View
                     style={{
-                      width: 25,
-                      height: 25,
+                      width: 22,
+                      height: 22,
                       borderRadius: 99,
                       backgroundColor: Colors.grey,
                     }}
@@ -164,15 +179,16 @@ const FindDetails = () => {
                 <Text style={[Theme.Caption]}>{`@${find.user.username}`}</Text>
               </TouchableOpacity>
             )}
+
             <View
               style={{
-                paddingHorizontal: 10,
-                paddingVertical: 5,
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
                 backgroundColor: Colors.primary,
                 borderRadius: 99,
+                height: 35,
+                paddingHorizontal: 15,
               }}
             >
               <Text style={[Theme.Caption, { color: Colors.dark }]}>
