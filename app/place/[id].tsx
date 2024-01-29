@@ -204,7 +204,7 @@ const PlaceDetails = () => {
               showsVerticalScrollIndicator={false}
               snapToInterval={findHeight - 20}
               renderItem={({ item }) => (
-                <Find isProfileFind findHeight={findHeight - 40} find={item} />
+                <Find isPlaceFind findHeight={findHeight - 40} find={item} />
               )}
             />
           ) : (

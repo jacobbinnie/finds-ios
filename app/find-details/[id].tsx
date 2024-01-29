@@ -37,10 +37,10 @@ const FindDetails = () => {
   const handleGoToProfile = () => {
     if (session) {
       session.profile.id === find.user.id
-        ? router.push("/(tabs)/(auth)/my-profile")
-        : router.push(`/profile/${find.user.id}`);
+        ? router.replace("/(tabs)/(auth)/my-profile")
+        : router.replace(`/profile/${find.user.id}`);
     } else {
-      router.push(`/profile/${find.user.id}`);
+      router.replace(`/profile/${find.user.id}`);
     }
   };
 

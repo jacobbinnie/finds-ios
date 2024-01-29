@@ -190,19 +190,17 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
             </View>
 
             <View style={{ gap: 10 }}>
-              {!isPlaceFind && (
-                <View
-                  style={{
-                    display: "flex",
-                    gap: 5,
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Text numberOfLines={1} style={Theme.Title}>
-                    {find.review}
-                  </Text>
-                </View>
-              )}
+              <View
+                style={{
+                  display: "flex",
+                  gap: 5,
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text numberOfLines={1} style={Theme.Title}>
+                  {find.review}
+                </Text>
+              </View>
 
               <View
                 style={{
