@@ -145,9 +145,7 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
                     flexDirection: "row",
                     gap: 5,
                     alignItems: "center",
-                    backgroundColor: Colors.light,
                     borderRadius: 99,
-                    padding: 5,
                   }}
                 >
                   {find.user.avatar ? (

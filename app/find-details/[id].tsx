@@ -7,22 +7,48 @@ import {
 import React from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import Colors from "@/constants/Colors";
-import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import { Entypo, FontAwesome, Ionicons } from "@expo/vector-icons";
 import { Theme } from "@/constants/Styles";
-import { Image } from "react-native-elements";
+import { Divider, Image } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import ImageSwiper from "@/components/ImageSwiper/ImageSwiper";
 import { FindDto } from "@/types/generated";
 import { useRoute } from "@react-navigation/native";
+import {
+  format,
+  isThisHour,
+  isThisMinute,
+  isToday,
+  isYesterday,
+} from "date-fns";
+import { FindAction } from "@/types/types";
+import { useAuth } from "@/providers/AuthProvider";
 
 const FindDetails = () => {
   const route = useRoute();
   const { id, data } = useLocalSearchParams<{ id: string; data: string }>();
   const router = useRouter();
+  const { session } = useAuth();
 
   const deviceHeight = useWindowDimensions().height;
 
   const find = JSON.parse(data) as FindDto;
+
+  const handleAction = async (action: FindAction) => {
+    try {
+      if (!session) {
+        return router.push("/(modals)/login");
+      }
+
+      if (action === FindAction.SAVE) {
+        // do something here
+      } else {
+        // do something here
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <ScrollView
@@ -90,135 +116,130 @@ const FindDetails = () => {
 
         <View
           style={{
-            paddingHorizontal: 10,
-            paddingTop: 10,
-          }}
-        >
-          <View
-            style={{
-              display: "flex",
-              zIndex: 10,
-              overflow: "hidden",
-              borderWidth: 1,
-              borderColor: Colors.light,
-              borderRadius: 10,
-              padding: 10,
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => router.replace(`/profile/${find.user?.id}`)}
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                gap: 10,
-                alignItems: "center",
-              }}
-            >
-              {find.user.avatar && (
-                <Image
-                  source={{ uri: find.user.avatar }}
-                  style={{ width: 45, height: 45, borderRadius: 99 }}
-                />
-              )}
-
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  flex: 1,
-                }}
-              >
-                <View style={{ gap: 5 }}>
-                  <Text style={Theme.Title}>{`${find.user.firstname}`}</Text>
-                  <Text
-                    style={[Theme.BodyText, { color: Colors.grey }]}
-                  >{`@${find.user.username}`}</Text>
-                </View>
-                <View
-                  style={{
-                    width: 35,
-                    height: 35,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    backgroundColor: Colors.primary,
-                    borderRadius: 99,
-                  }}
-                >
-                  <Text
-                    style={[
-                      Theme.ButtonText,
-                      { color: Colors.light, fontFamily: "font-b" },
-                    ]}
-                  >
-                    {find.rating.name}
-                  </Text>
-                </View>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        <View
-          style={{
             display: "flex",
-            flex: 1,
-            padding: 15,
+            justifyContent: "space-evenly",
+            paddingHorizontal: 15,
             backgroundColor: "#FFF",
             borderEndStartRadius: 10,
             borderEndEndRadius: 10,
             overflow: "hidden",
             gap: 15,
+            marginTop: 15,
           }}
         >
-          <View style={{ gap: 5 }}>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              gap: 5,
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            {find.user && (
+              <TouchableOpacity
+                style={{
+                  flexDirection: "row",
+                  gap: 5,
+                  alignItems: "center",
+                  borderRadius: 99,
+                }}
+              >
+                {find.user.avatar ? (
+                  <Image
+                    source={{ uri: find.user.avatar }}
+                    style={{ width: 25, height: 25, borderRadius: 99 }}
+                  />
+                ) : (
+                  <View
+                    style={{
+                      width: 25,
+                      height: 25,
+                      borderRadius: 99,
+                      backgroundColor: Colors.grey,
+                    }}
+                  />
+                )}
+
+                <Text style={[Theme.Caption]}>{`@${find.user.username}`}</Text>
+              </TouchableOpacity>
+            )}
             <View
               style={{
+                paddingHorizontal: 10,
+                paddingVertical: 5,
                 display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: Colors.primary,
+                borderRadius: 99,
               }}
             >
-              <Text style={Theme.Title}>{find.place.name}</Text>
+              <Text style={[Theme.Caption, { color: Colors.dark }]}>
+                {find.rating.name}
+              </Text>
             </View>
+          </View>
+
+          <View
+            style={{
+              display: "flex",
+              gap: 5,
+              justifyContent: "space-between",
+            }}
+          >
+            <Text style={Theme.BodyText}>{find.review}</Text>
+          </View>
+
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Text style={[Theme.ReviewText, { color: Colors.grey }]}>
+              {find.place.name}
+            </Text>
             <View
               style={{
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "baseline",
                 gap: 5,
+                maxWidth: "75%",
               }}
             >
-              <FontAwesome name="map-marker" size={15} color={Colors.primary} />
-              <Text style={[Theme.Caption, { color: Colors.grey }]}>
+              <Text
+                numberOfLines={1}
+                style={[Theme.Caption, { color: Colors.grey }]}
+              >
                 {find.place.address}
               </Text>
             </View>
           </View>
 
-          <Text style={Theme.ReviewText}>{find.review}</Text>
+          <Divider />
 
-          {/* <View
+          <View
             style={{
               display: "flex",
               flexDirection: "row",
               justifyContent: "space-between",
               alignItems: "center",
-              paddingVertical: 10,
             }}
           >
-            <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-              {isThisMinute(find.created_at)
+            <Text style={[Theme.Caption, { color: Colors.grey }]}>
+              {isThisMinute(find.createdAt)
                 ? "Just now"
-                : isThisHour(find.created_at)
+                : isThisHour(find.createdAt)
                 ? "In the past hour"
-                : isToday(find.created_at)
+                : isToday(find.createdAt)
                 ? "Today"
-                : isYesterday(find.created_at)
+                : isYesterday(find.createdAt)
                 ? "Yesterday"
-                : format(new Date(find.created_at), "MMM dd, yyyy")}
+                : format(new Date(find.createdAt), "MMM dd, yyyy")}
             </Text>
 
             <View
@@ -232,19 +253,15 @@ const FindDetails = () => {
               <TouchableOpacity onPress={() => handleAction(FindAction.SAVE)}>
                 <Ionicons
                   name="ios-heart"
-                  size={deviceHeight * 0.035}
-                  color={existingSave ? Colors.primary : Colors.light}
+                  size={30}
+                  color={Colors.light} // TODO: add existing save logic
                 />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => handleAction(FindAction.FIND)}>
-                <Entypo
-                  name="loop"
-                  size={deviceHeight * 0.035}
-                  color={Colors.light}
-                />
+                <Entypo name="loop" size={30} color={Colors.light} />
               </TouchableOpacity>
             </View>
-          </View> */}
+          </View>
         </View>
       </View>
     </ScrollView>
