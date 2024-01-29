@@ -162,7 +162,7 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
                         width: 22,
                         height: 22,
                         borderRadius: 99,
-                        backgroundColor: Colors.grey,
+                        backgroundColor: Colors.light,
                       }}
                     />
                   )}
