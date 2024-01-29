@@ -72,14 +72,6 @@ const Page = () => {
         >
           finds.nyc
         </Animated.Text>
-        <TouchableOpacity>
-          <Animated.View
-            entering={FadeInRight.springify().delay(100)}
-            exiting={FadeOutRight}
-          >
-            <Feather name="plus-square" size={30} color="black" />
-          </Animated.View>
-        </TouchableOpacity>
       </View>
 
       {/* <Categories /> */}

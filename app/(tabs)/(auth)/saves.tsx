@@ -72,7 +72,7 @@ const Saves = () => {
           entering={FadeInLeft.springify()}
           style={[Theme.BigTitle, { marginBottom: 15 }]}
         >
-          your saves
+          Your saves
         </Animated.Text>
 
         {findHeight && (

@@ -31,7 +31,7 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
   const { session } = useAuth();
 
   const bottomOffset = 15;
-  const descriptionCardHeight = 152;
+  const descriptionCardHeight = 180;
   const imageheight = findHeight - descriptionCardHeight - bottomOffset;
 
   // const { data: existingSave, refetch: refetchSave } = useQuery({
@@ -112,63 +112,11 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
         }}
       >
         <TouchableOpacity activeOpacity={1} onPress={onPressCallback}>
-          <View
-            style={{
-              display: isProfileFind ? "none" : "flex",
-              position: "absolute",
-              zIndex: 10,
-              top: 15,
-              left: 15,
-              backgroundColor: Colors.light,
-              paddingHorizontal: 10,
-              paddingVertical: 10,
-              borderRadius: 99,
-              overflow: "hidden",
-            }}
-          >
-            <TouchableOpacity
-              onPress={handleGoToProfile}
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                gap: 5,
-                alignItems: "center",
-              }}
-            >
-              {find.user.avatar && (
-                <Image
-                  source={{ uri: find.user.avatar }}
-                  style={{ width: 25, height: 25, borderRadius: 99 }}
-                />
-              )}
-              <Text style={[Theme.ButtonText]}>{`@${find.user.username}`}</Text>
-            </TouchableOpacity>
-          </View>
-
           <ImageSwiper
             images={find.images}
             height={imageheight}
             onPressCallback={onPressCallback}
           />
-
-          <View
-            style={{
-              width: 45,
-              height: 45,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: Colors.primary,
-              borderRadius: 99,
-              position: "absolute",
-              right: 15,
-              top: 15,
-            }}
-          >
-            <Text style={[Theme.ButtonText, { color: Colors.dark }]}>
-              {find.rating}
-            </Text>
-          </View>
 
           <View
             style={{
@@ -182,7 +130,55 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
               height: descriptionCardHeight,
             }}
           >
-            <View style={{ gap: 10, paddingVertical: 15 }}>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                gap: 5,
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              {find.user.avatar && !isProfileFind && (
+                <TouchableOpacity
+                  onPress={handleGoToProfile}
+                  style={{
+                    flexDirection: "row",
+                    gap: 5,
+                    alignItems: "center",
+                    backgroundColor: Colors.light,
+                    borderRadius: 99,
+                    padding: 5,
+                  }}
+                >
+                  <Image
+                    source={{ uri: find.user.avatar }}
+                    style={{ width: 25, height: 25, borderRadius: 99 }}
+                  />
+
+                  <Text
+                    style={[Theme.BodyText]}
+                  >{`@${find.user.username}`}</Text>
+                </TouchableOpacity>
+              )}
+
+              <View
+                style={{
+                  padding: 5,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  backgroundColor: Colors.dark,
+                  borderRadius: 99,
+                }}
+              >
+                <Text style={[Theme.BodyText, { color: Colors.light }]}>
+                  {find.rating}
+                </Text>
+              </View>
+            </View>
+
+            <View style={{ gap: 10 }}>
               {!isPlaceFind && (
                 <View
                   style={{
@@ -191,36 +187,43 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
                     justifyContent: "space-between",
                   }}
                 >
-                  <Text style={Theme.Title}>{find.place.name}</Text>
-                  <View
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "baseline",
-                      gap: 5,
-                      maxWidth: "75%",
-                    }}
-                  >
-                    <FontAwesome
-                      name="map-marker"
-                      size={15}
-                      color={Colors.primary}
-                    />
-                    <Text
-                      numberOfLines={1}
-                      style={[Theme.Caption, { color: Colors.grey }]}
-                    >
-                      {find.place.address}
-                    </Text>
-                  </View>
+                  <Text numberOfLines={1} style={Theme.Title}>
+                    {find.review}
+                  </Text>
                 </View>
               )}
-              <Text
-                numberOfLines={isPlaceFind ? 2 : 1}
-                style={Theme.ReviewText}
+
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
               >
-                {find.review}
-              </Text>
+                <Text
+                  numberOfLines={isPlaceFind ? 2 : 1}
+                  style={[Theme.ReviewText, { color: Colors.grey }]}
+                >
+                  {find.place.name}
+                </Text>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "baseline",
+                    gap: 5,
+                    maxWidth: "75%",
+                  }}
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={[Theme.Caption, { color: Colors.grey }]}
+                  >
+                    {find.place.address}
+                  </Text>
+                </View>
+              </View>
             </View>
 
             <Divider />
@@ -231,7 +234,6 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
                 flexDirection: "row",
                 justifyContent: "space-between",
                 alignItems: "center",
-                paddingVertical: 10,
               }}
             >
               <Text style={[Theme.Caption, { color: Colors.grey }]}>
