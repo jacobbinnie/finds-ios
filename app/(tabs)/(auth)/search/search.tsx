@@ -19,9 +19,17 @@ import { useRouter } from "expo-router";
 import { searchQuery } from "@/types/queries";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "@/constants/Colors";
+import Animated, {
+  FadeInLeft,
+  FadeInRight,
+  FadeOutRight,
+  SharedTransition,
+  withSpring,
+} from "react-native-reanimated";
 
 const Search = () => {
   const deviceHeight = useWindowDimensions().height;
+  const [isSearching, setIsSearching] = useState<boolean>(false);
 
   const [query, setQuery] = useState<string>("");
 
@@ -48,37 +56,81 @@ const Search = () => {
             gap: 15,
           }}
         >
-          <View
-            style={{
-              backgroundColor: "#FFF",
-              padding: 10,
-              borderRadius: 10,
-              overflow: "hidden",
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 5,
-              flex: 1,
-            }}
-          >
-            <Ionicons name="search" size={20} color={Colors.light} />
-            <TextInput
-              onChangeText={(e) => setQuery(e)}
-              placeholder="Search people & places"
-              autoFocus={true}
-              style={[
-                Theme.BodyText,
-                {
-                  display: "flex",
-                  flexDirection: "row",
-                  marginTop: -2,
-                },
-              ]}
-            />
-          </View>
-          <TouchableOpacity onPress={() => router.back()}>
-            <Text style={Theme.BodyText}>Cancel</Text>
-          </TouchableOpacity>
+          {isSearching ? (
+            <View
+              style={{
+                width: 200,
+                backgroundColor: "#FFF",
+                padding: 10,
+                borderRadius: 10,
+                overflow: "hidden",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 5,
+                flex: 1,
+              }}
+            >
+              <Ionicons name="search" size={20} color={Colors.light} />
+              <TextInput
+                onChangeText={(e) => setQuery(e)}
+                placeholder="Search people & places"
+                autoFocus={true}
+                focusable={isSearching}
+                style={[
+                  Theme.BodyText,
+                  {
+                    display: "flex",
+                    flexDirection: "row",
+                    marginTop: -2,
+                    color: Colors.grey,
+                  },
+                ]}
+              />
+            </View>
+          ) : (
+            <Animated.View
+              entering={FadeInLeft}
+              exiting={FadeOutRight}
+              onTouchStart={() => setIsSearching(true)}
+              style={{
+                width: 400,
+                backgroundColor: "#FFF",
+                padding: 10,
+                borderRadius: 10,
+                overflow: "hidden",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 5,
+                flex: 1,
+              }}
+            >
+              <Ionicons name="search" size={20} color={Colors.light} />
+              <Text
+                style={[Theme.BodyText, { color: Colors.grey, marginTop: 2 }]}
+              >
+                Search people & places
+              </Text>
+            </Animated.View>
+          )}
+
+          {isSearching && (
+            <TouchableOpacity
+              onPress={() => {
+                setIsSearching(false);
+                setQuery("");
+              }}
+            >
+              <Animated.Text
+                entering={FadeInRight}
+                exiting={FadeOutRight}
+                style={Theme.BodyText}
+              >
+                Cancel
+              </Animated.Text>
+            </TouchableOpacity>
+          )}
         </View>
 
         <FlatList
