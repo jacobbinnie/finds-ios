@@ -102,7 +102,7 @@ const PlaceDetails = () => {
             bottom: 0,
           }}
         >
-          <Text style={Theme.ButtonText}>find</Text>
+          <Text style={Theme.ButtonText}>Add find</Text>
         </Animated.View>
       </TouchableOpacity>
 
@@ -174,7 +174,7 @@ const PlaceDetails = () => {
                   style={{
                     height: 40,
                     width: "100%",
-                    display: "flex",
+                    display: placeData?.finds ? "flex" : "none",
                     alignItems: "center",
                     justifyContent: "center",
                   }}
@@ -199,6 +199,28 @@ const PlaceDetails = () => {
               keyExtractor={(item) => item.id.toString()}
               showsVerticalScrollIndicator={false}
               snapToInterval={findHeight - 20}
+              ListEmptyComponent={
+                <View
+                  style={{
+                    height: findHeight - 40,
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text style={Theme.Title}>
+                    You're the first one here! 🎉 Go ahead and add your find to
+                    the map!
+                  </Text>
+                  <TouchableOpacity
+                    style={[Theme.Button, { backgroundColor: Colors.dark }]}
+                  >
+                    <Text style={[Theme.ButtonText, { color: Colors.light }]}>
+                      Add find
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              }
               renderItem={({ item }) => (
                 <Find isPlaceFind findHeight={findHeight - 40} find={item} />
               )}

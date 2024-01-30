@@ -8,7 +8,6 @@ import React, {
 import { jwtDecode } from "jwt-decode";
 import "core-js/stable/atob";
 
-import { Profile } from "@/types/types";
 import { storage } from "@/utils/storage";
 import { authApi } from "@/types";
 import { AuthUserDto } from "@/types/generated";
@@ -92,7 +91,6 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
         console.log(
           "Access token has expired or has 5 minutes remaining. Refreshing token.."
         );
-        console.log(parsed.refreshToken);
         const newAccessToken = await refreshAuth(parsed.refreshToken);
 
         if (newAccessToken) {
