@@ -1,5 +1,12 @@
 import axios from "axios";
-import { AuthApi, FindsApi, PlacesApi, SavesApi, UsersApi } from "./generated";
+import {
+  AuthApi,
+  FindsApi,
+  PlacesApi,
+  SavesApi,
+  SearchApi,
+  UsersApi,
+} from "./generated";
 import { useAuth } from "@/providers/AuthProvider";
 import { storage } from "@/utils/storage";
 
@@ -35,3 +42,5 @@ export const usersApi = new UsersApi(undefined, BASE_URL, instance);
 export const authApi = new AuthApi(undefined, BASE_URL, instance);
 
 export const savesApi = new SavesApi(undefined, BASE_URL, instance);
+
+export const searchApi = new SearchApi(undefined, BASE_URL, instance);

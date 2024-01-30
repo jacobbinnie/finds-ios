@@ -30,17 +30,17 @@ const Layout = () => {
           headerShown: false,
           tabBarLabel: "Explore",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="compass" size={30} color={color} />
+            <Ionicons name="compass" size={size} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="(auth)/search"
+        name="(auth)/search/search"
         options={{
           headerShown: false,
           tabBarLabel: "Search",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="search" size={30} color={color} />
+            <Ionicons name="search" size={size} color={color} />
           ),
         }}
         listeners={{
@@ -49,7 +49,7 @@ const Layout = () => {
             if (!session) {
               router.push("/(modals)/login");
             } else {
-              router.push("/search");
+              router.push("/search/search");
             }
           },
         }}
@@ -60,7 +60,7 @@ const Layout = () => {
           headerShown: false,
           tabBarLabel: "New Find",
           tabBarIcon: ({ color, size }) => (
-            <Feather name="plus-square" size={30} color={color} />
+            <Feather name="plus-square" size={size} color={color} />
           ),
         }}
         listeners={{
@@ -69,7 +69,7 @@ const Layout = () => {
             if (!session) {
               router.push("/(modals)/login");
             } else {
-              router.push("/search");
+              router.push("/new-find");
             }
           },
         }}
@@ -78,7 +78,7 @@ const Layout = () => {
         name="(auth)/saves"
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="heart" size={30} color={color} />
+            <Ionicons name="heart" size={size} color={color} />
           ),
           headerShown: false,
         }}
@@ -98,8 +98,8 @@ const Layout = () => {
         options={{
           headerShown: false,
           tabBarLabel: "Profile",
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="account" size={30} color={color} />
+          tabBarIcon: ({ size, color }) => (
+            <MaterialCommunityIcons name="account" size={size} color={color} />
           ),
         }}
         listeners={{
