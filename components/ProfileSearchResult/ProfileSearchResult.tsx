@@ -1,13 +1,13 @@
 import { View, Text, Image } from "react-native";
 import React from "react";
-import { Profile } from "@/types/types";
 import { Theme } from "@/constants/Styles";
 import Colors from "@/constants/Colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
+import { ProfileDto } from "@/types/generated";
 
 interface SearchResultProps {
-  profile: Profile;
+  profile: ProfileDto;
 }
 
 const ProfileSearchResult = ({ profile }: SearchResultProps) => {
@@ -16,37 +16,46 @@ const ProfileSearchResult = ({ profile }: SearchResultProps) => {
   return (
     <View
       style={{
-        padding: 20,
+        padding: 15,
         display: "flex",
+        flexDirection: "row",
         alignItems: "center",
-        backgroundColor: "#FFF",
         gap: 10,
       }}
     >
+      {profile.avatar ? (
+        <Image
+          source={{ uri: profile.avatar }}
+          style={{ width: 25, height: 25 }}
+        />
+      ) : (
+        <View
+          style={{
+            width: 30,
+            height: 30,
+            borderRadius: 99,
+            backgroundColor: Colors.light,
+          }}
+        />
+      )}
+
       <View
         style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          gap: 10,
+          gap: 5,
         }}
       >
-        <Image
-          source={{ uri: profile.image ?? undefined }}
-          style={{ width: 20, height: 20, borderRadius: 99 }}
-        />
-        <Text style={Theme.BodyText}>@{profile.username}</Text>
+        <Text style={Theme.Caption}>{profile.firstname}</Text>
+        <Text
+          style={[
+            Theme.Caption,
+            {
+              color: Colors.grey,
+            },
+          ]}
+        >
+          @{profile.username}
+        </Text>
       </View>
-      <Text
-        style={[
-          Theme.BodyText,
-          {
-            color: Colors.grey,
-          },
-        ]}
-      >
-        1.4k followers
-      </Text>
     </View>
   );
 };

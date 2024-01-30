@@ -13,22 +13,17 @@ const PlaceSearchResult = ({ place }: PlaceSearchResultProps) => {
   return (
     <View
       style={{
-        padding: 20,
+        padding: 15,
         display: "flex",
-        alignItems: "center",
-        backgroundColor: "#FFF",
-        gap: 10,
+        gap: 5,
       }}
     >
-      <Text style={[Theme.BodyText, { textAlign: "center" }]}>
-        {place.displayName.text}
-      </Text>
+      <Text style={Theme.Caption}>{place.displayName.text}</Text>
       <Text
         style={[
-          Theme.BodyText,
+          Theme.Caption,
           {
             color: Colors.grey,
-            textAlign: "center",
           },
         ]}
       >

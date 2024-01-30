@@ -43,138 +43,137 @@ const Search = () => {
   const combinedData = [...(data?.profiles ?? []), ...(data?.places ?? [])];
 
   return (
-    <>
+    <View style={[Theme.Container, { backgroundColor: "#FFF" }]}>
       <SafeAreaView />
-      <View style={Theme.Container}>
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            width: "100%",
-            justifyContent: "space-between",
-            alignItems: "center",
-            gap: 15,
-          }}
-        >
-          {isSearching ? (
-            <View
-              style={{
-                width: 200,
-                backgroundColor: "#FFF",
-                padding: 10,
-                borderRadius: 10,
-                overflow: "hidden",
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 5,
-                flex: 1,
-              }}
+
+      <View
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          width: "100%",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: 15,
+        }}
+      >
+        {isSearching ? (
+          <View
+            style={{
+              width: 200,
+              backgroundColor: Colors.light,
+              padding: 10,
+              borderRadius: 10,
+              overflow: "hidden",
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 5,
+              flex: 1,
+            }}
+          >
+            <Ionicons name="search" size={20} color={Colors.grey} />
+            <TextInput
+              onChangeText={(e) => setQuery(e)}
+              placeholder="Search people & places"
+              autoFocus={true}
+              focusable={isSearching}
+              style={[
+                Theme.BodyText,
+                {
+                  display: "flex",
+                  flexDirection: "row",
+                  marginTop: -2,
+                  color: Colors.grey,
+                },
+              ]}
+            />
+          </View>
+        ) : (
+          <Animated.View
+            entering={FadeInLeft}
+            exiting={FadeOutRight}
+            onTouchStart={() => setIsSearching(true)}
+            style={{
+              width: 400,
+              backgroundColor: Colors.light,
+              padding: 10,
+              borderRadius: 10,
+              overflow: "hidden",
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 5,
+              flex: 1,
+            }}
+          >
+            <Ionicons name="search" size={20} color={Colors.grey} />
+            <Text
+              style={[Theme.BodyText, { color: Colors.grey, marginTop: 2 }]}
             >
-              <Ionicons name="search" size={20} color={Colors.light} />
-              <TextInput
-                onChangeText={(e) => setQuery(e)}
-                placeholder="Search people & places"
-                autoFocus={true}
-                focusable={isSearching}
-                style={[
-                  Theme.BodyText,
-                  {
-                    display: "flex",
-                    flexDirection: "row",
-                    marginTop: -2,
-                    color: Colors.grey,
-                  },
-                ]}
-              />
-            </View>
-          ) : (
-            <Animated.View
-              entering={FadeInLeft}
+              Search people & places
+            </Text>
+          </Animated.View>
+        )}
+
+        {isSearching && (
+          <TouchableOpacity
+            onPress={() => {
+              setIsSearching(false);
+              setQuery("");
+            }}
+          >
+            <Animated.Text
+              entering={FadeInRight}
               exiting={FadeOutRight}
-              onTouchStart={() => setIsSearching(true)}
-              style={{
-                width: 400,
-                backgroundColor: "#FFF",
-                padding: 10,
-                borderRadius: 10,
-                overflow: "hidden",
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 5,
-                flex: 1,
-              }}
+              style={Theme.BodyText}
             >
-              <Ionicons name="search" size={20} color={Colors.light} />
-              <Text
-                style={[Theme.BodyText, { color: Colors.grey, marginTop: 2 }]}
-              >
-                Search people & places
-              </Text>
-            </Animated.View>
-          )}
-
-          {isSearching && (
-            <TouchableOpacity
-              onPress={() => {
-                setIsSearching(false);
-                setQuery("");
-              }}
-            >
-              <Animated.Text
-                entering={FadeInRight}
-                exiting={FadeOutRight}
-                style={Theme.BodyText}
-              >
-                Cancel
-              </Animated.Text>
-            </TouchableOpacity>
-          )}
-        </View>
-
-        <FlatList
-          data={combinedData}
-          ItemSeparatorComponent={() => <Divider />}
-          onScroll={Keyboard.dismiss}
-          renderItem={({ item }) => {
-            if ("firstname" in item) {
-              // This is a profile item
-              return (
-                <TouchableOpacity
-                  onPress={() => router.replace(`/profile/${item.id}`)}
-                >
-                  <ProfileSearchResult
-                    profile={{
-                      id: item.id,
-                      firstname: item.firstname,
-                      username: item.username,
-                      image: item.avatar,
-                    }}
-                  />
-                </TouchableOpacity>
-              );
-            } else {
-              // This is a place item
-              return (
-                <TouchableOpacity
-                  onPress={() =>
-                    router.replace({
-                      pathname: `/place/${item.id}`,
-                      params: {
-                        data: JSON.stringify(item),
-                      },
-                    })
-                  }
-                >
-                  <PlaceSearchResult place={item} />
-                </TouchableOpacity>
-              );
-            }
-          }}
-        />
+              Cancel
+            </Animated.Text>
+          </TouchableOpacity>
+        )}
       </View>
-    </>
+
+      <FlatList
+        data={combinedData}
+        ItemSeparatorComponent={() => <Divider />}
+        onScroll={Keyboard.dismiss}
+        renderItem={({ item }) => {
+          if ("firstname" in item) {
+            // This is a profile item
+            return (
+              <TouchableOpacity
+                onPress={() => router.push(`/profile/${item.id}`)}
+              >
+                <ProfileSearchResult
+                  profile={{
+                    id: item.id,
+                    firstname: item.firstname,
+                    username: item.username,
+                    avatar: item.avatar,
+                  }}
+                />
+              </TouchableOpacity>
+            );
+          } else {
+            // This is a place item
+            return (
+              <TouchableOpacity
+                onPress={() =>
+                  router.push({
+                    pathname: `/place/${item.id}`,
+                    params: {
+                      data: JSON.stringify(item),
+                    },
+                  })
+                }
+              >
+                <PlaceSearchResult place={item} />
+              </TouchableOpacity>
+            );
+          }
+        }}
+      />
+    </View>
   );
 };
 

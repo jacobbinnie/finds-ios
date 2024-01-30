@@ -185,13 +185,13 @@ const FindDetails = () => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                backgroundColor: Colors.primary,
+                backgroundColor: Colors.dark,
                 borderRadius: 99,
                 height: 35,
                 paddingHorizontal: 15,
               }}
             >
-              <Text style={[Theme.Caption, { color: Colors.dark }]}>
+              <Text style={[Theme.Caption, { color: Colors.light }]}>
                 {find.rating.name}
               </Text>
             </View>
@@ -272,9 +272,6 @@ const FindDetails = () => {
                   size={30}
                   color={Colors.light} // TODO: add existing save logic
                 />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleAction(FindAction.FIND)}>
-                <Entypo name="loop" size={30} color={Colors.light} />
               </TouchableOpacity>
             </View>
           </View>
