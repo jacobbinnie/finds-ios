@@ -32,6 +32,8 @@ const PlaceDetails = () => {
   }>();
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
 
+  const { session } = useAuth();
+
   const router = useRouter();
   const parsed = JSON.parse(data);
 
@@ -106,7 +108,7 @@ const PlaceDetails = () => {
         </Animated.View>
       </TouchableOpacity>
 
-      <View style={{ flex: 1, gap: 15 }}>
+      <View style={{ flex: 1, gap: 15, paddingTop: 10 }}>
         <View style={{ paddingHorizontal: 15, gap: 5 }}>
           <View
             style={{
@@ -206,11 +208,12 @@ const PlaceDetails = () => {
                     width: "100%",
                     display: "flex",
                     justifyContent: "space-between",
+                    paddingTop: 10,
                   }}
                 >
                   <Text style={Theme.Title}>
-                    You're the first one here! 🎉 Go ahead and add your find to
-                    the map!
+                    Yoooooo {session?.profile.firstname}! You're the first one
+                    here! 🎉 Go ahead and submit your find!
                   </Text>
                   <TouchableOpacity
                     style={[Theme.Button, { backgroundColor: Colors.dark }]}

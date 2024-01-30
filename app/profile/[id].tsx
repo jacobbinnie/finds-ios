@@ -104,7 +104,7 @@ const ProfileDetails = () => {
                   borderColor: Colors.dark,
                 }}
               >
-                <Text style={Theme.ButtonText}>follow</Text>
+                <Text style={Theme.ButtonText}>Follow</Text>
               </Animated.View>
             </TouchableOpacity>
           </View>
