@@ -212,8 +212,8 @@ const PlaceDetails = () => {
                   }}
                 >
                   <Text style={Theme.Title}>
-                    Yoooooo {session?.profile.firstname}! You're the first one
-                    here! 🎉 Go ahead and submit your find!
+                    Yoooooooo {session?.profile.firstname}! You're the first one
+                    here 🎉 Go ahead and add your find!
                   </Text>
                   <TouchableOpacity
                     style={[Theme.Button, { backgroundColor: Colors.dark }]}
