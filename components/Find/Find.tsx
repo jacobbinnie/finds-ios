@@ -81,7 +81,8 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
     const stringedFind = JSON.stringify(find);
 
     router.push({
-      pathname: `/find-details/${find.id}?data=${stringedFind}`,
+      pathname: `/find-details/${find.id}`,
+      params: { data: stringedFind },
     });
   };
 

@@ -67,6 +67,15 @@ const PlaceDetails = () => {
     placesQuery.placesControllerGetPlaceByGoogleId(place.googlePlaceId)
   );
 
+  const handleAddNewFind = () => {
+    const stringedPlace = JSON.stringify(place);
+
+    router.push({
+      pathname: `/new-find/${place.id}`,
+      params: { data: stringedPlace },
+    });
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <SafeAreaView />
@@ -89,7 +98,7 @@ const PlaceDetails = () => {
         </Animated.View>
       </TouchableOpacity>
 
-      <TouchableOpacity>
+      <TouchableOpacity onPress={handleAddNewFind}>
         <Animated.View
           entering={FadeInRight.springify().delay(100)}
           exiting={FadeOutRight}
@@ -216,6 +225,7 @@ const PlaceDetails = () => {
                     here 🎉 Go ahead and add your find!
                   </Text>
                   <TouchableOpacity
+                    onPress={handleAddNewFind}
                     style={[Theme.Button, { backgroundColor: Colors.dark }]}
                   >
                     <Text style={[Theme.ButtonText, { color: Colors.light }]}>

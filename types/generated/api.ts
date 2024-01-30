@@ -63,6 +63,43 @@ export interface AuthUserDto {
 /**
  * 
  * @export
+ * @interface CreateFindDto
+ */
+export interface CreateFindDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateFindDto
+     */
+    'googlePlaceId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateFindDto
+     */
+    'review': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateFindDto
+     */
+    'ratingId': number;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof CreateFindDto
+     */
+    'images': Array<string>;
+    /**
+     * 
+     * @type {Array<TagDto>}
+     * @memberof CreateFindDto
+     */
+    'tags': Array<TagDto>;
+}
+/**
+ * 
+ * @export
  * @interface CreateUserDto
  */
 export interface CreateUserDto {
@@ -339,6 +376,25 @@ export interface RatingDto {
      * @memberof RatingDto
      */
     'name': string;
+}
+/**
+ * 
+ * @export
+ * @interface RatingsAndTagsDto
+ */
+export interface RatingsAndTagsDto {
+    /**
+     * 
+     * @type {Array<RatingDto>}
+     * @memberof RatingsAndTagsDto
+     */
+    'ratings': Array<RatingDto>;
+    /**
+     * 
+     * @type {Array<TagDto>}
+     * @memberof RatingsAndTagsDto
+     */
+    'tags': Array<TagDto>;
 }
 /**
  * 
@@ -691,6 +747,128 @@ export const FindsApiAxiosParamCreator = function (configuration?: Configuration
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {CreateFindDto} createFindDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        findsControllerCreateFind: async (createFindDto: CreateFindDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'createFindDto' is not null or undefined
+            assertParamExists('findsControllerCreateFind', 'createFindDto', createFindDto)
+            const localVarPath = `/finds/create`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createFindDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        findsControllerGetAllRatings: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/finds/ratings`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        findsControllerGetAllRatingsAndTags: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/finds/ratings-and-tags`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        findsControllerGetAllTags: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/finds/tags`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -712,6 +890,51 @@ export const FindsApiFp = function(configuration?: Configuration) {
             const operationBasePath = operationServerMap['FindsApi.findsControllerAllFinds']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
+        /**
+         * 
+         * @param {CreateFindDto} createFindDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async findsControllerCreateFind(createFindDto: CreateFindDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FindDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.findsControllerCreateFind(createFindDto, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['FindsApi.findsControllerCreateFind']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async findsControllerGetAllRatings(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<RatingDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.findsControllerGetAllRatings(options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['FindsApi.findsControllerGetAllRatings']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async findsControllerGetAllRatingsAndTags(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RatingsAndTagsDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.findsControllerGetAllRatingsAndTags(options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['FindsApi.findsControllerGetAllRatingsAndTags']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async findsControllerGetAllTags(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<TagDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.findsControllerGetAllTags(options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['FindsApi.findsControllerGetAllTags']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
     }
 };
 
@@ -729,6 +952,39 @@ export const FindsApiFactory = function (configuration?: Configuration, basePath
          */
         findsControllerAllFinds(options?: any): AxiosPromise<Array<FindDto>> {
             return localVarFp.findsControllerAllFinds(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {CreateFindDto} createFindDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        findsControllerCreateFind(createFindDto: CreateFindDto, options?: any): AxiosPromise<FindDto> {
+            return localVarFp.findsControllerCreateFind(createFindDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        findsControllerGetAllRatings(options?: any): AxiosPromise<Array<RatingDto>> {
+            return localVarFp.findsControllerGetAllRatings(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        findsControllerGetAllRatingsAndTags(options?: any): AxiosPromise<RatingsAndTagsDto> {
+            return localVarFp.findsControllerGetAllRatingsAndTags(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        findsControllerGetAllTags(options?: any): AxiosPromise<Array<TagDto>> {
+            return localVarFp.findsControllerGetAllTags(options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -748,6 +1004,47 @@ export class FindsApi extends BaseAPI {
      */
     public findsControllerAllFinds(options?: RawAxiosRequestConfig) {
         return FindsApiFp(this.configuration).findsControllerAllFinds(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {CreateFindDto} createFindDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FindsApi
+     */
+    public findsControllerCreateFind(createFindDto: CreateFindDto, options?: RawAxiosRequestConfig) {
+        return FindsApiFp(this.configuration).findsControllerCreateFind(createFindDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FindsApi
+     */
+    public findsControllerGetAllRatings(options?: RawAxiosRequestConfig) {
+        return FindsApiFp(this.configuration).findsControllerGetAllRatings(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FindsApi
+     */
+    public findsControllerGetAllRatingsAndTags(options?: RawAxiosRequestConfig) {
+        return FindsApiFp(this.configuration).findsControllerGetAllRatingsAndTags(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FindsApi
+     */
+    public findsControllerGetAllTags(options?: RawAxiosRequestConfig) {
+        return FindsApiFp(this.configuration).findsControllerGetAllTags(options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -962,6 +1259,39 @@ export const SearchApiAxiosParamCreator = function (configuration?: Configuratio
     return {
         /**
          * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        searchControllerGetGooglePlaceById: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('searchControllerGetGooglePlaceById', 'id', id)
+            const localVarPath = `/search/place/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {string} query 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1005,6 +1335,18 @@ export const SearchApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async searchControllerGetGooglePlaceById(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GooglePlaceDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.searchControllerGetGooglePlaceById(id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['SearchApi.searchControllerGetGooglePlaceById']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * 
          * @param {string} query 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1027,6 +1369,15 @@ export const SearchApiFactory = function (configuration?: Configuration, basePat
     return {
         /**
          * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        searchControllerGetGooglePlaceById(id: string, options?: any): AxiosPromise<GooglePlaceDto> {
+            return localVarFp.searchControllerGetGooglePlaceById(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {string} query 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1044,6 +1395,17 @@ export const SearchApiFactory = function (configuration?: Configuration, basePat
  * @extends {BaseAPI}
  */
 export class SearchApi extends BaseAPI {
+    /**
+     * 
+     * @param {string} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SearchApi
+     */
+    public searchControllerGetGooglePlaceById(id: string, options?: RawAxiosRequestConfig) {
+        return SearchApiFp(this.configuration).searchControllerGetGooglePlaceById(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @param {string} query 

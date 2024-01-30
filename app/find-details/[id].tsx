@@ -92,7 +92,8 @@ const FindDetails = () => {
             const stringedPlace = JSON.stringify(find.place);
 
             router.replace({
-              pathname: `/place/${find.place.googlePlaceId}?data=${stringedPlace}`,
+              pathname: `/place/${find.place.googlePlaceId}`,
+              params: { data: stringedPlace },
             });
           }}
           style={{
