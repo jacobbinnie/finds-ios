@@ -11,8 +11,6 @@ interface SearchResultProps {
 }
 
 const ProfileSearchResult = ({ profile }: SearchResultProps) => {
-  const router = useRouter();
-
   return (
     <View
       style={{

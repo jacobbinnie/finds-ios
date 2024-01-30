@@ -158,14 +158,14 @@ const Search = () => {
             // This is a place item
             return (
               <TouchableOpacity
-                onPress={() =>
+                onPress={() => {
+                  const stringedPlace = JSON.stringify(item);
+
                   router.push({
                     pathname: `/place/${item.id}`,
-                    params: {
-                      data: JSON.stringify(item),
-                    },
-                  })
-                }
+                    params: { data: stringedPlace },
+                  });
+                }}
               >
                 <PlaceSearchResult place={item} />
               </TouchableOpacity>

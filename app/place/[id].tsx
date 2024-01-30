@@ -12,12 +12,11 @@ import Colors from "@/constants/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { Theme } from "@/constants/Styles";
-import { GooglePlace, Place } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import Find from "@/components/Find/Find";
 import { useAuth } from "@/providers/AuthProvider";
 import { placesQuery } from "@/types/queries";
-import { PlaceDto } from "@/types/generated";
+import { GooglePlaceDto, PlaceDto } from "@/types/generated";
 import Animated, {
   FadeInDown,
   FadeInLeft,
@@ -30,25 +29,22 @@ const PlaceDetails = () => {
   const { id, data } = useLocalSearchParams<{
     id: string;
     data: string;
-    searchData: string;
   }>();
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
-
-  const { session } = useAuth();
 
   const router = useRouter();
   const parsed = JSON.parse(data);
 
-  const isGooglePlace = (parsed: any): parsed is GooglePlace =>
+  const isGooglePlace = (parsed: any): parsed is GooglePlaceDto =>
     parsed && typeof parsed.shortFormattedAddress !== "undefined";
 
   const place: PlaceDto = isGooglePlace(parsed)
     ? {
+        id: parsed.id,
         name: parsed.displayName.text,
-        google_maps_uri: parsed.googleMapsUri,
-        short_formatted_address: parsed.shortFormattedAddress,
-        categories: parsed.types,
-        google_places_id: parsed.id,
+        address: parsed.shortFormattedAddress,
+        googleMapsUri: parsed.googleMapsUri,
+        googlePlaceId: parsed.id,
       }
     : parsed;
 
@@ -143,11 +139,11 @@ const PlaceDetails = () => {
                 flex: 1,
                 flexDirection: "row",
                 position: "relative",
-                gap: 5,
+                gap: 10,
                 alignItems: "baseline",
               }}
             >
-              <FontAwesome name="map-marker" size={20} color={Colors.primary} />
+              <FontAwesome name="map-marker" size={20} color={Colors.dark} />
               <Text style={Theme.BodyText}>{place.address}</Text>
             </TouchableOpacity>
           </View>
