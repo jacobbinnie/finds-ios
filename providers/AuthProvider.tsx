@@ -9,7 +9,7 @@ import { jwtDecode } from "jwt-decode";
 import "core-js/stable/atob";
 
 import { storage } from "@/utils/storage";
-import { authApi } from "@/types";
+import { authApi, usersApi } from "@/types";
 import { AuthUserDto } from "@/types/generated";
 import { useRouter } from "expo-router";
 
@@ -117,7 +117,24 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
         console.log(
           `Access token is still valid. Updating auth state... Remaining time is ${remainingTime}ms`
         );
-        setSession(parsed);
+
+        const res = await usersApi.usersControllerGetUser({
+          headers: {
+            Authorization: `Bearer ${parsed.accessToken}`,
+          },
+        });
+
+        if (res.data) {
+          setSession({
+            accessToken: parsed.accessToken,
+            refreshToken: parsed.refreshToken,
+            profile: res.data,
+          });
+        } else {
+          console.log("Error fetching user data. Deleting auth data..");
+          storage.delete("auth");
+        }
+
         setIsCheckingAuth(false);
       }
     } else {
