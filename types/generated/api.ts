@@ -63,6 +63,25 @@ export interface AuthUserDto {
 /**
  * 
  * @export
+ * @interface CategoryDto
+ */
+export interface CategoryDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof CategoryDto
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CategoryDto
+     */
+    'name': string;
+}
+/**
+ * 
+ * @export
  * @interface CreateFindDto
  */
 export interface CreateFindDto {
@@ -83,7 +102,7 @@ export interface CreateFindDto {
      * @type {number}
      * @memberof CreateFindDto
      */
-    'ratingId': number;
+    'categoryId': number;
     /**
      * 
      * @type {Array<string>}
@@ -92,10 +111,10 @@ export interface CreateFindDto {
     'images': Array<string>;
     /**
      * 
-     * @type {Array<TagDto>}
+     * @type {Array<string>}
      * @memberof CreateFindDto
      */
-    'tags': Array<TagDto>;
+    'tags': Array<string>;
 }
 /**
  * 
@@ -142,10 +161,10 @@ export interface FindDto {
     'review': string;
     /**
      * 
-     * @type {RatingDto}
+     * @type {CategoryDto}
      * @memberof FindDto
      */
-    'rating': RatingDto;
+    'category': CategoryDto;
     /**
      * 
      * @type {PlaceDto}
@@ -160,10 +179,10 @@ export interface FindDto {
     'images': Array<string>;
     /**
      * 
-     * @type {Array<TagDto>}
+     * @type {Array<string>}
      * @memberof FindDto
      */
-    'tags': Array<TagDto>;
+    'tags': Array<string>;
     /**
      * 
      * @type {ProfileDto}
@@ -357,63 +376,6 @@ export interface ProfileDto {
      * @memberof ProfileDto
      */
     'avatar'?: string;
-}
-/**
- * 
- * @export
- * @interface RatingDto
- */
-export interface RatingDto {
-    /**
-     * 
-     * @type {number}
-     * @memberof RatingDto
-     */
-    'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof RatingDto
-     */
-    'name': string;
-}
-/**
- * 
- * @export
- * @interface RatingsAndTagsDto
- */
-export interface RatingsAndTagsDto {
-    /**
-     * 
-     * @type {Array<RatingDto>}
-     * @memberof RatingsAndTagsDto
-     */
-    'ratings': Array<RatingDto>;
-    /**
-     * 
-     * @type {Array<TagDto>}
-     * @memberof RatingsAndTagsDto
-     */
-    'tags': Array<TagDto>;
-}
-/**
- * 
- * @export
- * @interface TagDto
- */
-export interface TagDto {
-    /**
-     * 
-     * @type {number}
-     * @memberof TagDto
-     */
-    'id': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof TagDto
-     */
-    'name': string;
 }
 /**
  * 
@@ -787,66 +749,8 @@ export const FindsApiAxiosParamCreator = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        findsControllerGetAllRatings: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/finds/ratings`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findsControllerGetAllRatingsAndTags: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/finds/ratings-and-tags`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findsControllerGetAllTags: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/finds/tags`;
+        findsControllerGetAllCategories: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/finds/categories`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -907,32 +811,10 @@ export const FindsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async findsControllerGetAllRatings(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<RatingDto>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.findsControllerGetAllRatings(options);
+        async findsControllerGetAllCategories(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<CategoryDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.findsControllerGetAllCategories(options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['FindsApi.findsControllerGetAllRatings']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async findsControllerGetAllRatingsAndTags(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RatingsAndTagsDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.findsControllerGetAllRatingsAndTags(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['FindsApi.findsControllerGetAllRatingsAndTags']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async findsControllerGetAllTags(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<TagDto>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.findsControllerGetAllTags(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['FindsApi.findsControllerGetAllTags']?.[index]?.url;
+            const operationBasePath = operationServerMap['FindsApi.findsControllerGetAllCategories']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
@@ -967,24 +849,8 @@ export const FindsApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        findsControllerGetAllRatings(options?: any): AxiosPromise<Array<RatingDto>> {
-            return localVarFp.findsControllerGetAllRatings(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findsControllerGetAllRatingsAndTags(options?: any): AxiosPromise<RatingsAndTagsDto> {
-            return localVarFp.findsControllerGetAllRatingsAndTags(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        findsControllerGetAllTags(options?: any): AxiosPromise<Array<TagDto>> {
-            return localVarFp.findsControllerGetAllTags(options).then((request) => request(axios, basePath));
+        findsControllerGetAllCategories(options?: any): AxiosPromise<Array<CategoryDto>> {
+            return localVarFp.findsControllerGetAllCategories(options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -1023,28 +889,8 @@ export class FindsApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FindsApi
      */
-    public findsControllerGetAllRatings(options?: RawAxiosRequestConfig) {
-        return FindsApiFp(this.configuration).findsControllerGetAllRatings(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FindsApi
-     */
-    public findsControllerGetAllRatingsAndTags(options?: RawAxiosRequestConfig) {
-        return FindsApiFp(this.configuration).findsControllerGetAllRatingsAndTags(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FindsApi
-     */
-    public findsControllerGetAllTags(options?: RawAxiosRequestConfig) {
-        return FindsApiFp(this.configuration).findsControllerGetAllTags(options).then((request) => request(this.axios, this.basePath));
+    public findsControllerGetAllCategories(options?: RawAxiosRequestConfig) {
+        return FindsApiFp(this.configuration).findsControllerGetAllCategories(options).then((request) => request(this.axios, this.basePath));
     }
 }
 
