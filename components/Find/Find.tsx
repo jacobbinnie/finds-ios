@@ -31,6 +31,8 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
   const [save, setSave] = useState<ActiveSaveDto>();
 
   useEffect(() => {
+    if (!session) return;
+
     savesApi
       .savesControllerGetFindUserSave({
         data: {
