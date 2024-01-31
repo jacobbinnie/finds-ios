@@ -11,10 +11,7 @@ import ImageSwiper from "../ImageSwiper/ImageSwiper";
 import { useAuth } from "@/providers/AuthProvider";
 import { ActiveSaveDto, FindDto } from "@/types/generated";
 import { formatPostDate } from "@/utils/formatPostDate";
-import { useQuery } from "@tanstack/react-query";
-import { savesQuery } from "@/types/queries";
 import { savesApi } from "@/types";
-import { set } from "date-fns";
 
 interface FindProps {
   isProfileFind?: boolean;
@@ -292,7 +289,7 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
                     name="ios-heart"
                     size={30}
                     color={
-                      save
+                      save?.id
                         ? save.deleted_at
                           ? Colors.light
                           : Colors.primary
