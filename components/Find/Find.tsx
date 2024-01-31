@@ -203,11 +203,19 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
                   flexDirection: "row",
                   justifyContent: "space-between",
                   alignItems: "center",
+                  gap: 10,
                 }}
               >
                 <Text
-                  numberOfLines={isPlaceFind ? 2 : 1}
-                  style={[Theme.ReviewText, { color: Colors.grey }]}
+                  numberOfLines={1}
+                  style={[
+                    Theme.ReviewText,
+                    {
+                      color: Colors.grey,
+                      textOverflow: "ellipsis",
+                      maxWidth: "40%",
+                    },
+                  ]}
                 >
                   {find.place.name}
                 </Text>
@@ -217,12 +225,20 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
                     flexDirection: "row",
                     alignItems: "baseline",
                     gap: 5,
-                    maxWidth: "75%",
+                    maxWidth: "60%",
                   }}
                 >
                   <Text
                     numberOfLines={1}
-                    style={[Theme.Caption, { color: Colors.grey }]}
+                    style={[
+                      Theme.Caption,
+                      {
+                        color: Colors.grey,
+                        textOverflow: "ellipsis",
+
+                        textAlign: "right",
+                      },
+                    ]}
                   >
                     {find.place.address}
                   </Text>
@@ -253,11 +269,7 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
                 }}
               >
                 <TouchableOpacity onPress={() => handleAction(FindAction.SAVE)}>
-                  <Ionicons
-                    name="ios-heart"
-                    size={30}
-                    color={Colors.light} // TODO: add existing save logic
-                  />
+                  <Ionicons name="ios-heart" size={30} color={Colors.light} />
                 </TouchableOpacity>
               </View>
             </View>
