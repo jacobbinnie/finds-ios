@@ -54,26 +54,7 @@ const Layout = () => {
           },
         }}
       />
-      <Tabs.Screen
-        name="(auth)/new-find"
-        options={{
-          headerShown: false,
-          tabBarLabel: "New Find",
-          tabBarIcon: ({ color, size }) => (
-            <Feather name="plus-square" size={size} color={color} />
-          ),
-        }}
-        listeners={{
-          tabPress: (e) => {
-            e.preventDefault();
-            if (!session) {
-              router.push("/(modals)/login");
-            } else {
-              router.push("/new-find");
-            }
-          },
-        }}
-      />
+
       <Tabs.Screen
         name="(auth)/saves"
         options={{
