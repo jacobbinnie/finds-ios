@@ -23,6 +23,7 @@ import Animated, {
   FadeOutLeft,
   FadeOutRight,
 } from "react-native-reanimated";
+import { FlashList } from "@shopify/flash-list";
 
 const PlaceDetails = () => {
   const { id, data } = useLocalSearchParams<{
@@ -67,6 +68,10 @@ const PlaceDetails = () => {
   );
 
   const handleAddNewFind = () => {
+    if (!session) {
+      return router.push("/(modals)/login");
+    }
+
     const stringedPlace = JSON.stringify(place);
 
     router.push({
@@ -183,66 +188,69 @@ const PlaceDetails = () => {
           }}
         >
           {findHeight ? (
-            <Animated.FlatList
-              entering={FadeInDown.springify().delay(400)}
-              ListFooterComponent={
-                <View
-                  style={{
-                    height: 40,
-                    width: "100%",
-                    display: placeData?.finds ? "flex" : "none",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-                    You're up to date!
-                  </Text>
-                </View>
-              }
+            <View
               style={{
                 borderTopLeftRadius: 10,
                 borderTopRightRadius: 10,
                 overflow: "hidden",
                 flexGrow: 1,
               }}
-              decelerationRate={"fast"}
-              viewabilityConfig={{ itemVisiblePercentThreshold: 80 }}
-              pagingEnabled={true}
-              onRefresh={() => refetch()}
-              refreshing={isLoading}
-              data={placeData?.finds}
-              keyExtractor={(item) => item.id.toString()}
-              showsVerticalScrollIndicator={false}
-              snapToInterval={findHeight - 20}
-              ListEmptyComponent={
-                <View
-                  style={{
-                    height: findHeight - 40,
-                    width: "100%",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    paddingTop: 10,
-                  }}
-                >
-                  <Text style={Theme.Title}>
-                    Yoooooooo {session?.profile.firstname}! You're the first one
-                    here 🎉 Go ahead and add your find!
-                  </Text>
-                  <TouchableOpacity
-                    onPress={handleAddNewFind}
-                    style={[Theme.Button, { backgroundColor: Colors.dark }]}
+            >
+              <FlashList
+                estimatedItemSize={findHeight - 40}
+                ListFooterComponent={
+                  <View
+                    style={{
+                      height: 40,
+                      width: "100%",
+                      display: placeData?.finds ? "flex" : "none",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
                   >
-                    <Text style={[Theme.ButtonText, { color: Colors.light }]}>
-                      Add find
+                    <Text style={[Theme.BodyText, { color: Colors.grey }]}>
+                      You're up to date!
                     </Text>
-                  </TouchableOpacity>
-                </View>
-              }
-              renderItem={({ item }) => (
-                <Find isPlaceFind findHeight={findHeight - 40} find={item} />
-              )}
-            />
+                  </View>
+                }
+                decelerationRate={"fast"}
+                viewabilityConfig={{ itemVisiblePercentThreshold: 80 }}
+                pagingEnabled={true}
+                onRefresh={() => refetch()}
+                refreshing={isLoading}
+                data={placeData?.finds}
+                keyExtractor={(item) => item.id.toString()}
+                showsVerticalScrollIndicator={false}
+                snapToInterval={findHeight - 20}
+                ListEmptyComponent={
+                  <View
+                    style={{
+                      height: findHeight - 40,
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      paddingTop: 10,
+                    }}
+                  >
+                    <Text style={Theme.Title}>
+                      Yoooooooo {session?.profile.firstname}! You're the first
+                      one here 🎉 Go ahead and add your find!
+                    </Text>
+                    <TouchableOpacity
+                      onPress={handleAddNewFind}
+                      style={[Theme.Button, { backgroundColor: Colors.dark }]}
+                    >
+                      <Text style={[Theme.ButtonText, { color: Colors.light }]}>
+                        Add find
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                }
+                renderItem={({ item }) => (
+                  <Find isPlaceFind findHeight={findHeight - 40} find={item} />
+                )}
+              />
+            </View>
           ) : (
             <Text>Loading...</Text>
           )}

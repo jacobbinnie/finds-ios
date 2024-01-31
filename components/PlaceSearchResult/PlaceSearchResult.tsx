@@ -2,11 +2,11 @@ import { View, Text } from "react-native";
 import React from "react";
 
 import { Theme } from "@/constants/Styles";
-import { GooglePlace } from "@/types/types";
 import Colors from "@/constants/Colors";
+import { GooglePlaceDto } from "@/types/generated";
 
 interface PlaceSearchResultProps {
-  place: GooglePlace;
+  place: GooglePlaceDto;
 }
 
 const PlaceSearchResult = ({ place }: PlaceSearchResultProps) => {

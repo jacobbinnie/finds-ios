@@ -2,7 +2,6 @@ import {
   SafeAreaView,
   View,
   Text,
-  FlatList,
   UIManager,
   LayoutAnimation,
 } from "react-native";
@@ -13,15 +12,9 @@ import { useAuth } from "@/providers/AuthProvider";
 import Colors from "@/constants/Colors";
 import Save from "@/components/Save/Save";
 import { savesQuery } from "@/types/queries";
-import Animated, {
-  FadeInLeft,
-  FadeInRight,
-  FadeOutLeft,
-  FadeOutRight,
-  FadeInUp,
-  FadeInDown,
-} from "react-native-reanimated";
+import Animated, { FadeInLeft, FadeInDown } from "react-native-reanimated";
 import Loader from "@/components/Loader/Loader";
+import { FlashList } from "@shopify/flash-list";
 
 const Saves = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
@@ -76,30 +69,33 @@ const Saves = () => {
         </Animated.Text>
 
         {findHeight && (
-          <Animated.FlatList
-            entering={FadeInDown.springify().delay(200)}
+          <View
             style={{
               borderTopLeftRadius: 10,
               borderTopRightRadius: 10,
               overflow: "hidden",
               flexGrow: 1,
             }}
-            decelerationRate={"fast"}
-            viewabilityConfig={{ itemVisiblePercentThreshold: 80 }}
-            pagingEnabled={true}
-            onRefresh={() => refetch()}
-            refreshing={isLoading}
-            data={saves}
-            keyExtractor={(item) => item.id.toString()}
-            showsVerticalScrollIndicator={false}
-            snapToInterval={findHeight / 2 + 20}
-            ItemSeparatorComponent={() => (
-              <View style={{ paddingVertical: 10 }} />
-            )}
-            renderItem={({ item }) => (
-              <Save saveHeight={findHeight / 2} find={item.find} />
-            )}
-          />
+          >
+            <FlashList
+              estimatedItemSize={findHeight / 2}
+              decelerationRate={"fast"}
+              viewabilityConfig={{ itemVisiblePercentThreshold: 80 }}
+              pagingEnabled={true}
+              onRefresh={() => refetch()}
+              refreshing={isLoading}
+              data={saves}
+              keyExtractor={(item) => item.id.toString()}
+              showsVerticalScrollIndicator={false}
+              snapToInterval={findHeight / 2 + 20}
+              ItemSeparatorComponent={() => (
+                <View style={{ paddingVertical: 10 }} />
+              )}
+              renderItem={({ item }) => (
+                <Save saveHeight={findHeight / 2} find={item.find} />
+              )}
+            />
+          </View>
         )}
       </View>
     </View>

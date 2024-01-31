@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  LayoutAnimation,
-  FlatList,
-} from "react-native";
+import { View, Text, TouchableOpacity, LayoutAnimation } from "react-native";
 import React, { useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
@@ -24,6 +18,7 @@ import Animated, {
   FadeOutLeft,
   FadeOutRight,
 } from "react-native-reanimated";
+import { FlashList } from "@shopify/flash-list";
 
 const ProfileDetails = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -170,42 +165,49 @@ const ProfileDetails = () => {
           }}
         >
           {findHeight ? (
-            <Animated.FlatList
-              entering={FadeInDown.springify().delay(400)}
-              ListFooterComponent={
-                <View
-                  style={{
-                    height: 40,
-                    width: "100%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-                    You're up to date!
-                  </Text>
-                </View>
-              }
+            <View
               style={{
                 borderTopLeftRadius: 10,
                 borderTopRightRadius: 10,
                 overflow: "hidden",
                 flexGrow: 1,
               }}
-              decelerationRate={"fast"}
-              viewabilityConfig={{ itemVisiblePercentThreshold: 80 }}
-              pagingEnabled={true}
-              onRefresh={() => refetch()}
-              refreshing={isLoading}
-              data={profile.finds}
-              keyExtractor={(item) => item.id.toString()}
-              showsVerticalScrollIndicator={false}
-              snapToInterval={findHeight - 20}
-              renderItem={({ item }) => (
-                <Find isProfileFind findHeight={findHeight - 40} find={item} />
-              )}
-            />
+            >
+              <FlashList
+                estimatedItemSize={findHeight - 40}
+                ListFooterComponent={
+                  <View
+                    style={{
+                      height: 40,
+                      width: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Text style={[Theme.BodyText, { color: Colors.grey }]}>
+                      You're up to date!
+                    </Text>
+                  </View>
+                }
+                decelerationRate={"fast"}
+                viewabilityConfig={{ itemVisiblePercentThreshold: 80 }}
+                pagingEnabled={true}
+                onRefresh={() => refetch()}
+                refreshing={isLoading}
+                data={profile.finds}
+                keyExtractor={(item) => item.id.toString()}
+                showsVerticalScrollIndicator={false}
+                snapToInterval={findHeight - 20}
+                renderItem={({ item }) => (
+                  <Find
+                    isProfileFind
+                    findHeight={findHeight - 40}
+                    find={item}
+                  />
+                )}
+              />
+            </View>
           ) : (
             <Text>Loading...</Text>
           )}

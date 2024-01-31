@@ -6,12 +6,10 @@ import {
   Keyboard,
   TouchableOpacity,
   SafeAreaView,
-  Pressable,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Theme } from "@/constants/Styles";
 import { useQuery } from "@tanstack/react-query";
-import { FlatList } from "react-native-gesture-handler";
 import { Divider } from "react-native-elements";
 import ProfileSearchResult from "@/components/ProfileSearchResult/ProfileSearchResult";
 import PlaceSearchResult from "@/components/PlaceSearchResult/PlaceSearchResult";
@@ -23,9 +21,8 @@ import Animated, {
   FadeInLeft,
   FadeInRight,
   FadeOutRight,
-  SharedTransition,
-  withSpring,
 } from "react-native-reanimated";
+import { FlashList } from "@shopify/flash-list";
 
 const Search = () => {
   const deviceHeight = useWindowDimensions().height;
@@ -133,7 +130,8 @@ const Search = () => {
         )}
       </View>
 
-      <FlatList
+      <FlashList
+        estimatedItemSize={25}
         data={combinedData}
         ItemSeparatorComponent={() => <Divider />}
         onScroll={Keyboard.dismiss}

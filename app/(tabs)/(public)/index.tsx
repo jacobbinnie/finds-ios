@@ -2,7 +2,6 @@ import {
   SafeAreaView,
   View,
   Text,
-  FlatList,
   UIManager,
   LayoutAnimation,
 } from "react-native";
@@ -12,20 +11,10 @@ import { useQuery } from "@tanstack/react-query";
 import Find from "@/components/Find/Find";
 import Colors from "@/constants/Colors";
 import { findsQuery } from "@/types/queries";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { Feather } from "@expo/vector-icons";
 import FindSkeleton from "@/components/Find/FindSkeleton";
-import Animated, {
-  FadeInLeft,
-  FadeInRight,
-  FadeOutLeft,
-  FadeOutRight,
-  FadeInUp,
-  FadeInDown,
-  FadeIn,
-  FadeOut,
-} from "react-native-reanimated";
+import Animated, { FadeInLeft, FadeOutLeft } from "react-native-reanimated";
 import Loader from "@/components/Loader/Loader";
+import { FlashList } from "@shopify/flash-list";
 
 const Page = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
@@ -94,41 +83,44 @@ const Page = () => {
           (isLoading ? (
             <FindSkeleton findHeight={findHeight - 40} />
           ) : (
-            <Animated.FlatList
-              entering={FadeInDown.springify().delay(50)}
-              ListFooterComponent={
-                <View
-                  style={{
-                    height: 40,
-                    width: "100%",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-                    You're up to date!
-                  </Text>
-                </View>
-              }
+            <View
               style={{
                 borderTopLeftRadius: 10,
                 borderTopRightRadius: 10,
                 overflow: "hidden",
                 flexGrow: 1,
               }}
-              decelerationRate={"fast"}
-              viewabilityConfig={{ itemVisiblePercentThreshold: 80 }}
-              pagingEnabled={true}
-              onRefresh={() => refetch()}
-              refreshing={isLoading}
-              data={finds}
-              keyExtractor={(item) => item.id.toString()}
-              showsVerticalScrollIndicator={false}
-              snapToInterval={findHeight - 40}
-              renderItem={({ item }) => (
-                <Find findHeight={findHeight - 40} find={item} />
-              )}
-            />
+            >
+              <FlashList
+                estimatedItemSize={findHeight - 40}
+                ListFooterComponent={
+                  <View
+                    style={{
+                      height: 40,
+                      width: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Text style={[Theme.BodyText, { color: Colors.grey }]}>
+                      You're up to date!
+                    </Text>
+                  </View>
+                }
+                decelerationRate={"fast"}
+                viewabilityConfig={{ itemVisiblePercentThreshold: 80 }}
+                pagingEnabled={true}
+                onRefresh={() => refetch()}
+                refreshing={isLoading}
+                data={finds}
+                keyExtractor={(item) => item.id.toString()}
+                showsVerticalScrollIndicator={false}
+                snapToInterval={findHeight - 40}
+                renderItem={({ item }) => (
+                  <Find findHeight={findHeight - 40} find={item} />
+                )}
+              />
+            </View>
           ))}
       </View>
     </View>

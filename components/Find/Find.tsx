@@ -11,6 +11,8 @@ import ImageSwiper from "../ImageSwiper/ImageSwiper";
 import { useAuth } from "@/providers/AuthProvider";
 import { FindDto } from "@/types/generated";
 import { formatPostDate } from "@/utils/formatPostDate";
+import { useQuery } from "@tanstack/react-query";
+import { savesQuery } from "@/types/queries";
 
 interface FindProps {
   isProfileFind?: boolean;
@@ -27,22 +29,13 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
   const descriptionCardHeight = 180;
   const imageheight = findHeight - descriptionCardHeight - bottomOffset;
 
-  // const { data: existingSave, refetch: refetchSave } = useQuery({
-  //   queryKey: ["saves", "find", find.id],
-  //   queryFn: async () => {
-  //     if (!profile) return null;
-
-  //     const { data, error } = await supabase
-  //       .from("saves")
-  //       .select("id")
-  //       .eq("find", find.id)
-  //       .eq("profile", profile.id);
-
-  //     if (error) throw error;
-
-  //     return data?.[0] ?? null;
-  //   },
-  // });
+  const { data: save, isLoading } = useQuery(
+    savesQuery.savesControllerGetFindUserSave({
+      data: {
+        id: find.id,
+      },
+    })
+  );
 
   const handleGoToProfile = () => {
     if (session) {
@@ -212,7 +205,6 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
                     Theme.ReviewText,
                     {
                       color: Colors.grey,
-                      textOverflow: "ellipsis",
                       maxWidth: "40%",
                     },
                   ]}
@@ -234,7 +226,6 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
                       Theme.Caption,
                       {
                         color: Colors.grey,
-                        textOverflow: "ellipsis",
 
                         textAlign: "right",
                       },
@@ -269,7 +260,11 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
                 }}
               >
                 <TouchableOpacity onPress={() => handleAction(FindAction.SAVE)}>
-                  <Ionicons name="ios-heart" size={30} color={Colors.light} />
+                  <Ionicons
+                    name="ios-heart"
+                    size={30}
+                    color={save?.id ? Colors.primary : Colors.light}
+                  />
                 </TouchableOpacity>
               </View>
             </View>

@@ -26,6 +26,25 @@ import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerM
 /**
  * 
  * @export
+ * @interface ActiveSaveDto
+ */
+export interface ActiveSaveDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof ActiveSaveDto
+     */
+    'id': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ActiveSaveDto
+     */
+    'userId': number;
+}
+/**
+ * 
+ * @export
  * @interface AuthUserDto
  */
 export interface AuthUserDto {
@@ -1011,6 +1030,35 @@ export const SavesApiAxiosParamCreator = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
+        savesControllerGetFindUserSave: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/saves/find-user-save`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
         savesControllerGetUserSaves: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/saves/user-saves`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -1050,6 +1098,17 @@ export const SavesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
+        async savesControllerGetFindUserSave(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ActiveSaveDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.savesControllerGetFindUserSave(options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['SavesApi.savesControllerGetFindUserSave']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
         async savesControllerGetUserSaves(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<UserSaveDto>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.savesControllerGetUserSaves(options);
             const index = configuration?.serverIndex ?? 0;
@@ -1071,6 +1130,14 @@ export const SavesApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
+        savesControllerGetFindUserSave(options?: any): AxiosPromise<ActiveSaveDto> {
+            return localVarFp.savesControllerGetFindUserSave(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
         savesControllerGetUserSaves(options?: any): AxiosPromise<Array<UserSaveDto>> {
             return localVarFp.savesControllerGetUserSaves(options).then((request) => request(axios, basePath));
         },
@@ -1084,6 +1151,16 @@ export const SavesApiFactory = function (configuration?: Configuration, basePath
  * @extends {BaseAPI}
  */
 export class SavesApi extends BaseAPI {
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SavesApi
+     */
+    public savesControllerGetFindUserSave(options?: RawAxiosRequestConfig) {
+        return SavesApiFp(this.configuration).savesControllerGetFindUserSave(options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @param {*} [options] Override http request option.

@@ -87,6 +87,10 @@ const NewFind = () => {
 
   const [inputTags, setInputTags] = useState("");
 
+  if (isLoading) {
+    return <ActivityIndicator size="large" color={Colors.dark} />;
+  }
+
   return (
     <KeyboardAvoidingView
       style={{

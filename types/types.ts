@@ -1,4 +1,4 @@
 export enum FindAction {
-  FIND = "FIND",
+  ADD = "ADD",
   SAVE = "SAVE",
 }
