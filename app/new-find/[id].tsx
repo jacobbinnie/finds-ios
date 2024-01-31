@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { PlaceDto, CategoryDto } from "@/types/generated";
+import { PlaceDto, CategoryDto, CreateFindDto } from "@/types/generated";
 import { Theme } from "@/constants/Styles";
 import { Controller, SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { useAuth } from "@/providers/AuthProvider";
@@ -23,14 +23,8 @@ import { FadeInLeft, FadeInRight, FadeOutRight } from "react-native-reanimated";
 import Animated from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "react-native-elements/dist/buttons/Button";
-
-type FormInputs = {
-  review: string;
-  ratingId: number;
-  tags: string[];
-  googlePlaceId: string;
-  images: string[];
-};
+import axios from "axios";
+import { findsApi } from "@/types";
 
 const NewFind = () => {
   const { id, data } = useLocalSearchParams<{ id: string; data: string }>();
@@ -55,27 +49,33 @@ const NewFind = () => {
     formState: { errors },
     clearErrors,
     watch,
-  } = useForm<FormInputs>({
+  } = useForm<CreateFindDto>({
     defaultValues: {
       review: undefined,
-      ratingId: undefined,
+      categoryId: undefined,
       tags: [],
       googlePlaceId: place.googlePlaceId,
       images: [],
     },
   });
 
-  const selectedRating = watch("ratingId");
+  const selectedCategory = watch("categoryId");
   const currentTags = watch("tags");
 
-  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+  const onSubmit: SubmitHandler<CreateFindDto> = async (values) => {
     setIsSubmitting(true);
     setError(null);
 
     try {
-      // do submission here
+      const res = await findsApi.findsControllerCreateFind(values);
+      if (res.data) {
+        router.back();
+      } else {
+        setError("Something went wrong");
+        setIsSubmitting(false);
+      }
     } catch (err: any) {
-      if (err.response.data.statusCode === 409) {
+      if (err.response.data.statusCode === 412) {
         setError(err.response.data.message);
       } else {
         setError("Something went wrong");
@@ -180,9 +180,9 @@ const NewFind = () => {
           {categories && (
             <Controller
               control={control}
-              name="ratingId"
+              name="categoryId"
               rules={{
-                required: "Rating is required",
+                required: "Category is required",
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <View
@@ -203,7 +203,7 @@ const NewFind = () => {
                         justifyContent: "center",
                         alignItems: "center",
                         backgroundColor:
-                          selectedRating === category.id
+                          selectedCategory === category.id
                             ? Colors.dark
                             : Colors.light,
                         borderRadius: 99,
@@ -216,7 +216,7 @@ const NewFind = () => {
                           Theme.Caption,
                           {
                             color:
-                              selectedRating === category.id
+                              selectedCategory === category.id
                                 ? Colors.light
                                 : Colors.dark,
                           },
@@ -231,9 +231,9 @@ const NewFind = () => {
               )}
             />
           )}
-          {errors.ratingId && (
+          {errors.categoryId && (
             <Text style={[Theme.Caption, { color: "red" }]}>
-              {errors.ratingId.message}
+              {errors.categoryId.message}
             </Text>
           )}
 
@@ -375,24 +375,31 @@ const NewFind = () => {
             </Text>
           )}
 
-          <Button
-            disabled={isSubmitting}
-            titleStyle={[Theme.Title, { color: Colors.light }]}
-            onPress={handleSubmit(onSubmit)}
-            loading={isSubmitting}
-            loadingProps={{
-              children: <ActivityIndicator size="small" color={Colors.light} />,
-            }}
-            title={"Submit find"}
-            style={[
-              Theme.Button,
-              {
-                backgroundColor: Colors.dark,
-                marginTop: 15,
-                marginBottom: 100,
-              },
-            ]}
-          ></Button>
+          <View style={{ paddingTop: 15, gap: 15 }}>
+            {error && (
+              <Text style={[Theme.Caption, { color: "red" }]}>{error}</Text>
+            )}
+
+            <Button
+              disabled={isSubmitting}
+              titleStyle={[Theme.Title, { color: Colors.light }]}
+              onPress={handleSubmit(onSubmit)}
+              loading={isSubmitting}
+              loadingProps={{
+                children: (
+                  <ActivityIndicator size="small" color={Colors.light} />
+                ),
+              }}
+              title={"Submit find"}
+              style={[
+                Theme.Button,
+                {
+                  backgroundColor: Colors.dark,
+                  marginBottom: 100,
+                },
+              ]}
+            ></Button>
+          </View>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

@@ -6,8 +6,8 @@ import {
   Linking,
   FlatList,
 } from "react-native";
-import React, { useState } from "react";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import React, { useCallback, useEffect, useState } from "react";
+import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
 import Colors from "@/constants/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
@@ -75,6 +75,12 @@ const PlaceDetails = () => {
       params: { data: stringedPlace },
     });
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, [id])
+  );
 
   return (
     <View style={{ flex: 1 }}>

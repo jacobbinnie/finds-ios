@@ -101,6 +101,7 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
           marginBottom: bottomOffset,
           borderRadius: 10,
           overflow: "hidden",
+          backgroundColor: "#FFF",
           shadowColor: Colors.grey,
           shadowOffset: {
             width: 0,
@@ -185,7 +186,7 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
                 }}
               >
                 <Text style={[Theme.Caption, { color: Colors.light }]}>
-                  {find.rating.name}
+                  {find.category.name}
                 </Text>
               </View>
             </View>

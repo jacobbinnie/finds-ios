@@ -193,7 +193,7 @@ const FindDetails = () => {
               }}
             >
               <Text style={[Theme.Caption, { color: Colors.light }]}>
-                {find.rating.name}
+                {find.category.name}
               </Text>
             </View>
           </View>
