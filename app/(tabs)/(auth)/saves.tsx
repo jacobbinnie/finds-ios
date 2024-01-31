@@ -15,6 +15,7 @@ import { savesQuery } from "@/types/queries";
 import Animated, { FadeInLeft, FadeInDown } from "react-native-reanimated";
 import Loader from "@/components/Loader/Loader";
 import { FlashList } from "@shopify/flash-list";
+import Find from "@/components/Find/Find";
 
 const Saves = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
@@ -87,12 +88,21 @@ const Saves = () => {
               data={saves}
               keyExtractor={(item) => item.id.toString()}
               showsVerticalScrollIndicator={false}
-              snapToInterval={findHeight / 2 + 20}
-              ItemSeparatorComponent={() => (
-                <View style={{ paddingVertical: 10 }} />
-              )}
+              snapToInterval={findHeight / 1.75}
               renderItem={({ item }) => (
-                <Save saveHeight={findHeight / 2} find={item.find} />
+                <Find
+                  findHeight={findHeight / 1.75}
+                  find={{
+                    id: item.find.id,
+                    category: item.find.category,
+                    createdAt: item.find.createdAt,
+                    images: item.find.images,
+                    place: item.find.place,
+                    review: item.find.review,
+                    tags: item.find.tags,
+                    user: item.find.user,
+                  }}
+                />
               )}
             />
           </View>

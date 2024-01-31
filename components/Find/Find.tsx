@@ -4,7 +4,7 @@ import Colors from "@/constants/Colors";
 import { Theme } from "@/constants/Styles";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import { FindAction } from "@/types/types";
 import { Divider } from "react-native-elements";
 import ImageSwiper from "../ImageSwiper/ImageSwiper";
@@ -12,6 +12,8 @@ import { useAuth } from "@/providers/AuthProvider";
 import { ActiveSaveDto, FindDto } from "@/types/generated";
 import { formatPostDate } from "@/utils/formatPostDate";
 import { savesApi } from "@/types";
+import { useQuery } from "@tanstack/react-query";
+import { savesQuery } from "@/types/queries";
 
 interface FindProps {
   isProfileFind?: boolean;
@@ -28,23 +30,22 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
   const descriptionCardHeight = 200;
   const imageheight = findHeight - descriptionCardHeight - bottomOffset;
 
-  const [save, setSave] = useState<ActiveSaveDto>();
+  const {
+    data: save,
+    refetch: refetchSave,
+    error,
+    isLoading,
+  } = useQuery(
+    savesQuery.savesControllerGetFindUserSave({
+      data: {
+        id: find.id,
+      },
+    })
+  );
 
-  useEffect(() => {
-    if (!session) return;
-
-    savesApi
-      .savesControllerGetFindUserSave({
-        data: {
-          id: find.id,
-        },
-      })
-      .then((res) => {
-        if (res.data) {
-          setSave(res.data);
-        }
-      });
-  }, []);
+  useFocusEffect(() => {
+    refetchSave();
+  });
 
   const handleGoToProfile = () => {
     if (session) {
@@ -69,7 +70,7 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
           },
         });
 
-        setSave(res.data);
+        refetchSave();
       } else if (action === FindAction.DELETE_SAVE) {
         const res = await savesApi.savesControllerDeleteSave({
           data: {
@@ -77,7 +78,7 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
           },
         });
 
-        setSave(res.data);
+        refetchSave();
       }
     } catch (error) {
       console.log("Error", error);

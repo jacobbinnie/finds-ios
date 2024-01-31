@@ -15,6 +15,7 @@ import FindSkeleton from "@/components/Find/FindSkeleton";
 import Animated, { FadeInLeft, FadeOutLeft } from "react-native-reanimated";
 import Loader from "@/components/Loader/Loader";
 import { FlashList } from "@shopify/flash-list";
+import { useFocusEffect } from "expo-router";
 
 const Page = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
