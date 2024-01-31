@@ -26,7 +26,7 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
   const { session } = useAuth();
 
   const bottomOffset = 15;
-  const descriptionCardHeight = 180;
+  const descriptionCardHeight = 200;
   const imageheight = findHeight - descriptionCardHeight - bottomOffset;
 
   const { data: save, isLoading } = useQuery(
@@ -193,19 +193,16 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
               <View
                 style={{
                   display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  gap: 10,
+                  gap: 5,
                 }}
               >
                 <Text
                   numberOfLines={1}
                   style={[
-                    Theme.ReviewText,
+                    Theme.Caption,
                     {
                       color: Colors.grey,
-                      maxWidth: "40%",
+                      fontFamily: "font-b",
                     },
                   ]}
                 >
@@ -217,7 +214,6 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
                     flexDirection: "row",
                     alignItems: "baseline",
                     gap: 5,
-                    maxWidth: "60%",
                   }}
                 >
                   <Text
