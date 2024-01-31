@@ -1,23 +1,9 @@
-import { View, Text, Image, useWindowDimensions } from "react-native";
+import { View } from "react-native";
 import React from "react";
 import Colors from "@/constants/Colors";
-import { Theme } from "@/constants/Styles";
-import { AntDesign, Entypo, FontAwesome, Ionicons } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
-import { FindAction } from "@/types/types";
-import { Query, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  format,
-  isThisMinute,
-  isThisHour,
-  isToday,
-  isYesterday,
-} from "date-fns";
 import { Divider } from "react-native-elements";
-import ImageSwiper from "../ImageSwiper/ImageSwiper";
 import { useAuth } from "@/providers/AuthProvider";
-import { FindDto } from "@/types/generated";
 
 interface FindProps {
   isProfileFind?: boolean;

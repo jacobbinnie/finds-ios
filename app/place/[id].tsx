@@ -4,9 +4,8 @@ import {
   TouchableOpacity,
   LayoutAnimation,
   Linking,
-  FlatList,
 } from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
 import Colors from "@/constants/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";

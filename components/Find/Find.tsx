@@ -1,23 +1,16 @@
-import { View, Text, Image, useWindowDimensions } from "react-native";
+import { View, Text, Image } from "react-native";
 import React from "react";
 import Colors from "@/constants/Colors";
 import { Theme } from "@/constants/Styles";
-import { AntDesign, Entypo, FontAwesome, Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
 import { FindAction } from "@/types/types";
-import { Query, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  format,
-  isThisMinute,
-  isThisHour,
-  isToday,
-  isYesterday,
-} from "date-fns";
 import { Divider } from "react-native-elements";
 import ImageSwiper from "../ImageSwiper/ImageSwiper";
 import { useAuth } from "@/providers/AuthProvider";
 import { FindDto } from "@/types/generated";
+import { formatPostDate } from "@/utils/formatPostDate";
 
 interface FindProps {
   isProfileFind?: boolean;
@@ -248,15 +241,7 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
               }}
             >
               <Text style={[Theme.Caption, { color: Colors.grey }]}>
-                {isThisMinute(find.createdAt)
-                  ? "Just now"
-                  : isThisHour(find.createdAt)
-                  ? "In the past hour"
-                  : isToday(find.createdAt)
-                  ? "Today"
-                  : isYesterday(find.createdAt)
-                  ? "Yesterday"
-                  : format(new Date(find.createdAt), "MMM dd, yyyy")}
+                {formatPostDate(find.createdAt)}
               </Text>
 
               <View

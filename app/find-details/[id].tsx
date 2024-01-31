@@ -7,22 +7,16 @@ import {
 import React from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import Colors from "@/constants/Colors";
-import { Entypo, FontAwesome, Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { Theme } from "@/constants/Styles";
 import { Divider, Image } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import ImageSwiper from "@/components/ImageSwiper/ImageSwiper";
 import { FindDto } from "@/types/generated";
 import { useRoute } from "@react-navigation/native";
-import {
-  format,
-  isThisHour,
-  isThisMinute,
-  isToday,
-  isYesterday,
-} from "date-fns";
 import { FindAction } from "@/types/types";
 import { useAuth } from "@/providers/AuthProvider";
+import { formatPostDate } from "@/utils/formatPostDate";
 
 const FindDetails = () => {
   const route = useRoute();
@@ -248,15 +242,7 @@ const FindDetails = () => {
             }}
           >
             <Text style={[Theme.Caption, { color: Colors.grey }]}>
-              {isThisMinute(find.createdAt)
-                ? "Just now"
-                : isThisHour(find.createdAt)
-                ? "In the past hour"
-                : isToday(find.createdAt)
-                ? "Today"
-                : isYesterday(find.createdAt)
-                ? "Yesterday"
-                : format(new Date(find.createdAt), "MMM dd, yyyy")}
+              {formatPostDate(find.createdAt)}
             </Text>
 
             <View
