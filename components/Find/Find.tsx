@@ -208,7 +208,7 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
                 }}
               >
                 <Text numberOfLines={1} style={Theme.Title}>
-                  {find.review}
+                  {find.review.replace(/(?:\r\n|\r|\n)/g, " ")}
                 </Text>
               </View>
 
