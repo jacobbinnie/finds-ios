@@ -38,21 +38,7 @@ const FindDetails = () => {
     }
   };
 
-  const handleAction = async (action: FindAction) => {
-    try {
-      if (!session) {
-        return router.push("/(modals)/login");
-      }
-
-      if (action === FindAction.SAVE) {
-        // do something here
-      } else {
-        // do something here
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const handleAction = async (action: FindAction) => {};
 
   return (
     <ScrollView
@@ -123,13 +109,12 @@ const FindDetails = () => {
           style={{
             display: "flex",
             justifyContent: "space-evenly",
-            paddingHorizontal: 15,
+            padding: 15,
             backgroundColor: "#FFF",
             borderEndStartRadius: 10,
             borderEndEndRadius: 10,
             overflow: "hidden",
             gap: 15,
-            marginTop: 15,
           }}
         >
           <View
@@ -151,8 +136,7 @@ const FindDetails = () => {
                   borderRadius: 99,
                   borderWidth: 1,
                   borderColor: Colors.light,
-                  height: 35,
-                  paddingHorizontal: 5,
+                  padding: 5,
                 }}
               >
                 {find.user.avatar ? (
@@ -166,7 +150,7 @@ const FindDetails = () => {
                       width: 22,
                       height: 22,
                       borderRadius: 99,
-                      backgroundColor: Colors.grey,
+                      backgroundColor: Colors.light,
                     }}
                   />
                 )}
@@ -182,8 +166,7 @@ const FindDetails = () => {
                 alignItems: "center",
                 backgroundColor: Colors.dark,
                 borderRadius: 99,
-                height: 35,
-                paddingHorizontal: 15,
+                padding: 10,
               }}
             >
               <Text style={[Theme.Caption, { color: Colors.light }]}>
@@ -192,74 +175,59 @@ const FindDetails = () => {
             </View>
           </View>
 
-          <View
-            style={{
-              display: "flex",
-              gap: 5,
-              justifyContent: "space-between",
-            }}
-          >
-            <Text style={Theme.BodyText}>{find.review}</Text>
-          </View>
-
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Text style={[Theme.ReviewText, { color: Colors.grey }]}>
-              {find.place.name}
-            </Text>
+          <View style={{ gap: 10 }}>
             <View
               style={{
                 display: "flex",
-                flexDirection: "row",
-                alignItems: "baseline",
                 gap: 5,
-                maxWidth: "75%",
+                justifyContent: "space-between",
+              }}
+            >
+              <Text style={[Theme.Title, { lineHeight: 22 }]}>
+                {find.review.replace("\\n", "\n")}
+              </Text>
+            </View>
+
+            <View
+              style={{
+                display: "flex",
+                gap: 5,
               }}
             >
               <Text
                 numberOfLines={1}
-                style={[Theme.Caption, { color: Colors.grey }]}
+                style={[
+                  Theme.Caption,
+                  {
+                    color: Colors.grey,
+                    fontFamily: "font-b",
+                  },
+                ]}
               >
-                {find.place.address}
+                {find.place.name}
               </Text>
-            </View>
-          </View>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "baseline",
+                  gap: 5,
+                }}
+              >
+                <Text
+                  numberOfLines={1}
+                  style={[
+                    Theme.Caption,
+                    {
+                      color: Colors.grey,
 
-          <Divider />
-
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Text style={[Theme.Caption, { color: Colors.grey }]}>
-              {formatPostDate(find.createdAt)}
-            </Text>
-
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "row",
-                gap: 20,
-              }}
-            >
-              <TouchableOpacity onPress={() => handleAction(FindAction.SAVE)}>
-                <Ionicons
-                  name="ios-heart"
-                  size={30}
-                  color={Colors.light} // TODO: add existing save logic
-                />
-              </TouchableOpacity>
+                      textAlign: "right",
+                    },
+                  ]}
+                >
+                  {find.place.address}
+                </Text>
+              </View>
             </View>
           </View>
         </View>

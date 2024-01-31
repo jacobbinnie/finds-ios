@@ -8,12 +8,12 @@ import {
   Dimensions,
   ActivityIndicator,
 } from "react-native";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
 import { PlaceDto, CategoryDto, CreateFindDto } from "@/types/generated";
 import { Theme } from "@/constants/Styles";
 import { Controller, SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { useAuth } from "@/providers/AuthProvider";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import Colors from "@/constants/Colors";
 import { useQuery } from "@tanstack/react-query";
@@ -24,7 +24,10 @@ import Animated from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "react-native-elements/dist/buttons/Button";
 import axios from "axios";
-import { findsApi } from "@/types";
+import { authApi, findsApi } from "@/types";
+import { calculateJwtExpiry } from "@/utils/calculateJwtExpiry";
+import { jwtDecode } from "jwt-decode";
+import { storage } from "@/utils/storage";
 
 const NewFind = () => {
   const { id, data } = useLocalSearchParams<{ id: string; data: string }>();
@@ -32,7 +35,7 @@ const NewFind = () => {
   const place = JSON.parse(data) as PlaceDto;
 
   const router = useRouter();
-  const { session } = useAuth();
+  const { session, setSession, signout } = useAuth();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -66,22 +69,35 @@ const NewFind = () => {
     setIsSubmitting(true);
     setError(null);
 
-    try {
-      const res = await findsApi.findsControllerCreateFind(values);
-      if (res.data) {
-        router.back();
-      } else {
-        setError("Something went wrong");
-        setIsSubmitting(false);
-      }
-    } catch (err: any) {
-      if (err.response.data.statusCode === 412) {
-        setError(err.response.data.message);
-      } else {
-        setError("Something went wrong");
+    if (!session?.accessToken) {
+      signout();
+    } else {
+      const decodedRefreshToken = jwtDecode(session.refreshToken);
+
+      if (
+        decodedRefreshToken.exp &&
+        decodedRefreshToken.exp * 1000 < Date.now()
+      ) {
+        router.push("/(modals)/login");
       }
 
-      setIsSubmitting(false);
+      try {
+        const res = await findsApi.findsControllerCreateFind(values);
+        if (res.data) {
+          router.back();
+        } else {
+          setError("Something went wrong");
+          setIsSubmitting(false);
+        }
+      } catch (err: any) {
+        if (err.response.data.statusCode === 412) {
+          setError(err.response.data.message);
+        } else {
+          setError("Something went wrong");
+        }
+
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -268,6 +284,7 @@ const NewFind = () => {
                 ]}
                 onBlur={onBlur}
                 onChangeText={(text) => {
+                  const formattedText = text.replace(/\\n/g, "\n");
                   onChange(text);
                   clearErrors("review");
                 }}

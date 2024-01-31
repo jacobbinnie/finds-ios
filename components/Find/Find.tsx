@@ -9,7 +9,7 @@ import { FindAction } from "@/types/types";
 import { Divider } from "react-native-elements";
 import ImageSwiper from "../ImageSwiper/ImageSwiper";
 import { useAuth } from "@/providers/AuthProvider";
-import { ActiveSaveDto, FindDto } from "@/types/generated";
+import { FindDto } from "@/types/generated";
 import { formatPostDate } from "@/utils/formatPostDate";
 import { savesApi } from "@/types";
 import { useQuery } from "@tanstack/react-query";
