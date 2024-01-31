@@ -25,7 +25,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "react-native-elements/dist/buttons/Button";
 import axios from "axios";
 import { authApi, findsApi } from "@/types";
-import { calculateJwtExpiry } from "@/utils/calculateJwtExpiry";
 import { jwtDecode } from "jwt-decode";
 import { storage } from "@/utils/storage";
 
