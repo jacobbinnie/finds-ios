@@ -1,4 +1,4 @@
 export enum FindAction {
-  ADD = "ADD",
-  SAVE = "SAVE",
+  ADD_SAVE = "SAVE",
+  DELETE_SAVE = "DELETE_SAVE",
 }

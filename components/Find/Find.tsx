@@ -1,5 +1,5 @@
 import { View, Text, Image } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Colors from "@/constants/Colors";
 import { Theme } from "@/constants/Styles";
 import { Ionicons } from "@expo/vector-icons";
@@ -9,10 +9,12 @@ import { FindAction } from "@/types/types";
 import { Divider } from "react-native-elements";
 import ImageSwiper from "../ImageSwiper/ImageSwiper";
 import { useAuth } from "@/providers/AuthProvider";
-import { FindDto } from "@/types/generated";
+import { ActiveSaveDto, FindDto } from "@/types/generated";
 import { formatPostDate } from "@/utils/formatPostDate";
 import { useQuery } from "@tanstack/react-query";
 import { savesQuery } from "@/types/queries";
+import { savesApi } from "@/types";
+import { set } from "date-fns";
 
 interface FindProps {
   isProfileFind?: boolean;
@@ -29,13 +31,21 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
   const descriptionCardHeight = 200;
   const imageheight = findHeight - descriptionCardHeight - bottomOffset;
 
-  const { data: save, isLoading } = useQuery(
-    savesQuery.savesControllerGetFindUserSave({
-      data: {
-        id: find.id,
-      },
-    })
-  );
+  const [save, setSave] = useState<ActiveSaveDto>();
+
+  useEffect(() => {
+    savesApi
+      .savesControllerGetFindUserSave({
+        data: {
+          id: find.id,
+        },
+      })
+      .then((res) => {
+        if (res.data) {
+          setSave(res.data);
+        }
+      });
+  }, []);
 
   const handleGoToProfile = () => {
     if (session) {
@@ -48,18 +58,30 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
   };
 
   const handleAction = async (action: FindAction) => {
-    try {
-      if (!session) {
-        return router.push("/(modals)/login");
-      }
+    if (!session) {
+      return router.push("/(modals)/login");
+    }
 
-      if (action === FindAction.SAVE) {
-        // do something here
-      } else {
-        // do something here
+    try {
+      if (action === FindAction.ADD_SAVE) {
+        const res = await savesApi.savesControllerAddSave({
+          data: {
+            id: find.id,
+          },
+        });
+
+        setSave(res.data);
+      } else if (action === FindAction.DELETE_SAVE) {
+        const res = await savesApi.savesControllerDeleteSave({
+          data: {
+            id: find.id,
+          },
+        });
+
+        setSave(res.data);
       }
     } catch (error) {
-      console.error(error);
+      console.log("Error", error);
     }
   };
 
@@ -255,11 +277,27 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
                   gap: 20,
                 }}
               >
-                <TouchableOpacity onPress={() => handleAction(FindAction.SAVE)}>
+                <TouchableOpacity
+                  onPress={() =>
+                    handleAction(
+                      save
+                        ? save.deleted_at
+                          ? FindAction.ADD_SAVE
+                          : FindAction.DELETE_SAVE
+                        : FindAction.ADD_SAVE
+                    )
+                  }
+                >
                   <Ionicons
                     name="ios-heart"
                     size={30}
-                    color={save?.id ? Colors.primary : Colors.light}
+                    color={
+                      save
+                        ? save.deleted_at
+                          ? Colors.light
+                          : Colors.primary
+                        : Colors.light
+                    }
                   />
                 </TouchableOpacity>
               </View>
