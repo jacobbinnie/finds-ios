@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   ActivityIndicator,
+  useWindowDimensions,
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { PlaceDto, CreateFindDto } from "@/types/generated";
@@ -22,6 +23,19 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "react-native-elements/dist/buttons/Button";
 import { findsApi } from "@/types";
 import { jwtDecode } from "jwt-decode";
+import * as FileSystem from "expo-file-system";
+import * as ImagePicker from "expo-image-picker";
+import { Image } from "react-native-elements";
+import { set } from "date-fns";
+
+const imgDir = FileSystem.documentDirectory + "images/";
+
+const ensureDirExists = async () => {
+  const dirInfo = await FileSystem.getInfoAsync(imgDir);
+  if (!dirInfo.exists) {
+    await FileSystem.makeDirectoryAsync(imgDir, { intermediates: true });
+  }
+};
 
 const NewFind = () => {
   const { id, data } = useLocalSearchParams<{ id: string; data: string }>();
@@ -37,6 +51,65 @@ const NewFind = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const [images, setImages] = useState<string[]>([]);
+  const [imageUploading, setImageUploading] = useState<boolean>(false);
+
+  const uploadImage = async (uri: string) => {
+    setImageUploading(true);
+
+    const res = await FileSystem.uploadAsync(
+      process.env.EXPO_PUBLIC_API_URL + "/upload",
+      uri,
+      {
+        httpMethod: "POST",
+        uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+        fieldName: "files",
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+      }
+    );
+    setImageUploading(false);
+    console.log(res);
+  };
+
+  const saveImage = async (uri: string) => {
+    await ensureDirExists();
+
+    const filename = new Date().getTime() + ".jpg";
+    const dest = imgDir + filename;
+    await FileSystem.copyAsync({ from: uri, to: dest });
+    return dest;
+  };
+
+  const selectImage = async (useLibrary: boolean) => {
+    let result;
+
+    if (useLibrary) {
+      result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsMultipleSelection: true,
+      });
+    } else {
+      await ImagePicker.requestCameraPermissionsAsync();
+
+      result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      });
+    }
+
+    if (!result.canceled) {
+      const savedImages = await Promise.all(
+        result.assets.map(async (asset) => {
+          const savedImage = await saveImage(asset.uri);
+          return savedImage;
+        })
+      );
+
+      setImages((prevImages) => [...prevImages, ...savedImages]);
+    }
+  };
 
   const {
     data: categories,
@@ -62,6 +135,8 @@ const NewFind = () => {
 
   const selectedCategory = watch("categoryId");
   const currentTags = watch("tags");
+
+  const dimensions = useWindowDimensions();
 
   const onSubmit: SubmitHandler<CreateFindDto> = async (values) => {
     setIsSubmitting(true);
@@ -176,23 +251,67 @@ const NewFind = () => {
             gap: 15,
           }}
         >
-          <TouchableOpacity
-            style={{
-              width: "100%",
-              height: 150,
-              borderRadius: 10,
-              backgroundColor: Colors.light,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: 5,
-            }}
+          {imageUploading && <Text>Image uploading...</Text>}
+          <ScrollView
+            style={{ height: 250 }}
+            horizontal
+            showsHorizontalScrollIndicator={false}
           >
-            <Ionicons name="image-outline" size={24} color={Colors.dark} />
-            <Text style={[Theme.BodyText, { color: Colors.dark }]}>
-              Add photos
-            </Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => selectImage(true)}
+              style={{
+                width:
+                  images && images?.length > 0 ? 150 : dimensions.width - 30,
+                height: "100%",
+                backgroundColor: Colors.light,
+                borderRadius: 10,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginRight: 10,
+              }}
+            >
+              <Ionicons name="images-outline" size={24} color={Colors.grey} />
+            </TouchableOpacity>
+
+            {images &&
+              images.map((image, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={{
+                    marginRight: 10,
+                    position: "relative",
+                    alignItems: "center", // Center horizontally
+                    justifyContent: "center", // Center vertically
+                  }}
+                >
+                  <Image
+                    source={{ uri: image }}
+                    style={{
+                      width: 150,
+                      flex: 1,
+                      borderRadius: 10,
+                    }}
+                  />
+                  {/* {!image && (
+                    <View
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        backgroundColor: "rgba(255, 255, 255, 0.483)", // Adjust the background color and opacity as needed
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <ActivityIndicator size="large" color="#FFF" />
+                    </View>
+                  )} */}
+                </TouchableOpacity>
+              ))}
+          </ScrollView>
 
           <Text style={[Theme.Title, { marginTop: 5 }]}>Category</Text>
           {categories && (

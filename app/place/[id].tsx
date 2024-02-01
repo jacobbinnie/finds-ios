@@ -35,6 +35,11 @@ const PlaceDetails = () => {
   const { session } = useAuth();
 
   const router = useRouter();
+
+  if (!data) {
+    return null;
+  }
+
   const parsed = JSON.parse(data);
 
   const isGooglePlace = (parsed: any): parsed is GooglePlaceDto =>

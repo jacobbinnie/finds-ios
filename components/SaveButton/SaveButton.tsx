@@ -47,23 +47,25 @@ const SaveButton = ({ findId }: { findId: number }) => {
   };
 
   useEffect(() => {
-    Toast.show(
-      error
-        ? error.message && error?.message.includes("409")
-          ? "Too many requests..."
-          : error?.message
-        : "",
-      {
-        duration: Toast.durations.LONG,
-        position: Toast.positions.BOTTOM,
-        shadow: false,
-        animation: true,
-        hideOnPress: true,
-        backgroundColor: "#FFF",
-        textStyle: Theme.BodyText,
-        delay: 0,
-      }
-    );
+    if (error?.message) {
+      Toast.show(
+        error
+          ? error.message && error?.message.includes("409")
+            ? "Too many requests..."
+            : error?.message
+          : "Something went wrong with saves",
+        {
+          duration: Toast.durations.LONG,
+          position: Toast.positions.BOTTOM,
+          shadow: false,
+          animation: true,
+          hideOnPress: true,
+          backgroundColor: "#FFF",
+          textStyle: Theme.BodyText,
+          delay: 0,
+        }
+      );
+    }
   }, [error?.message]);
 
   return (
