@@ -716,7 +716,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        uploadControllerUploadFile: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        uploadControllerUploadFiles: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/upload`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -755,10 +755,10 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async uploadControllerUploadFile(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.uploadControllerUploadFile(options);
+        async uploadControllerUploadFiles(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.uploadControllerUploadFiles(options);
             const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['DefaultApi.uploadControllerUploadFile']?.[index]?.url;
+            const operationBasePath = operationServerMap['DefaultApi.uploadControllerUploadFiles']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
     }
@@ -776,8 +776,8 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        uploadControllerUploadFile(options?: any): AxiosPromise<void> {
-            return localVarFp.uploadControllerUploadFile(options).then((request) => request(axios, basePath));
+        uploadControllerUploadFiles(options?: any): AxiosPromise<void> {
+            return localVarFp.uploadControllerUploadFiles(options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -795,8 +795,8 @@ export class DefaultApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public uploadControllerUploadFile(options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).uploadControllerUploadFile(options).then((request) => request(this.axios, this.basePath));
+    public uploadControllerUploadFiles(options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).uploadControllerUploadFiles(options).then((request) => request(this.axios, this.basePath));
     }
 }
 

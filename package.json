@@ -38,6 +38,7 @@
     "expo-splash-screen": "~0.20.5",
     "expo-status-bar": "~1.6.0",
     "expo-system-ui": "~2.4.0",
+    "expo-updates": "~0.18.19",
     "expo-web-browser": "~12.3.2",
     "jwt-decode": "^4.0.0",
     "moment": "^2.29.4",

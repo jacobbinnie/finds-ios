@@ -15,6 +15,9 @@ import { savesApi } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { savesQuery } from "@/types/queries";
 import Toast from "react-native-root-toast";
+import { storage } from "@/utils/storage";
+import * as Updates from "expo-updates";
+import SaveButton from "../SaveButton/SaveButton";
 
 interface FindProps {
   isProfileFind?: boolean;
@@ -31,19 +34,6 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
   const descriptionCardHeight = 200;
   const imageheight = findHeight - descriptionCardHeight - bottomOffset;
 
-  const {
-    data: save,
-    refetch: refetchSave,
-    error,
-    isLoading,
-  } = useQuery(
-    savesQuery.savesControllerGetFindUserSave({
-      data: {
-        id: find.id,
-      },
-    })
-  );
-
   const handleGoToProfile = () => {
     if (session) {
       session.profile.id === find.user.id
@@ -51,24 +41,6 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
         : router.push(`/profile/${find.user.id}`);
     } else {
       router.push(`/profile/${find.user.id}`);
-    }
-  };
-
-  const handleSave = async () => {
-    if (!session) {
-      return router.push("/(modals)/login");
-    }
-
-    try {
-      await savesApi.savesControllerUpdateSave({
-        data: {
-          id: find.id,
-        },
-      });
-
-      refetchSave();
-    } catch (error) {
-      console.log("Error", error);
     }
   };
 
@@ -80,23 +52,6 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
       params: { data: stringedFind },
     });
   };
-
-  useEffect(() => {
-    if (error?.message.includes("429")) {
-      Toast.show("Too many requests...", {
-        duration: Toast.durations.LONG,
-        position: Toast.positions.BOTTOM,
-        shadow: false,
-        animation: true,
-        hideOnPress: true,
-        backgroundColor: "#FFF",
-        textStyle: Theme.BodyText,
-        delay: 0,
-      });
-    } else if (error?.message.includes("401")) {
-      signout();
-    }
-  }, [error?.message]);
 
   return (
     <View
@@ -273,32 +228,15 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
                 {formatPostDate(find.createdAt)}
               </Text>
 
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  flexDirection: "row",
-                  gap: 20,
-                }}
-              >
-                {isLoading ? (
-                  <ActivityIndicator />
-                ) : (
-                  <TouchableOpacity onPress={() => handleSave()}>
-                    <Ionicons
-                      name="ios-heart"
-                      size={30}
-                      color={
-                        save?.id
-                          ? save.deleted_at
-                            ? Colors.light
-                            : Colors.primary
-                          : Colors.light
-                      }
-                    />
-                  </TouchableOpacity>
-                )}
-              </View>
+              {session?.accessToken ? (
+                <SaveButton findId={find.id} />
+              ) : (
+                <TouchableOpacity
+                  onPress={() => router.push("/(modals)/login")}
+                >
+                  <Ionicons name="ios-heart" size={30} color={Colors.light} />
+                </TouchableOpacity>
+              )}
             </View>
           </View>
         </TouchableOpacity>
