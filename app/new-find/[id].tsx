@@ -26,7 +26,7 @@ import { jwtDecode } from "jwt-decode";
 import * as FileSystem from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
 import { Image } from "react-native-elements";
-import { set } from "date-fns";
+import { SaveFormat, manipulateAsync } from "expo-image-manipulator";
 
 const imgDir = FileSystem.documentDirectory + "images/";
 
@@ -52,11 +52,12 @@ const NewFind = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const [images, setImages] = useState<string[]>([]);
-  const [imageUploading, setImageUploading] = useState<boolean>(false);
+  const [images, setImages] = useState<
+    { localImage: string; serverImage?: string }[]
+  >([]);
 
   const uploadImage = async (uri: string) => {
-    setImageUploading(true);
+    // setImageUploading(true);
 
     const res = await FileSystem.uploadAsync(
       process.env.EXPO_PUBLIC_API_URL + "/upload",
@@ -70,16 +71,23 @@ const NewFind = () => {
         },
       }
     );
-    setImageUploading(false);
-    console.log(res);
+    return res.body;
   };
 
-  const saveImage = async (uri: string) => {
+  const saveImage = async (uri: string, orientation: number) => {
     await ensureDirExists();
 
     const filename = new Date().getTime() + ".jpg";
     const dest = imgDir + filename;
-    await FileSystem.copyAsync({ from: uri, to: dest });
+
+    // Use the ImageManipulator from expo to correct the orientation
+    const processedImage = await manipulateAsync(
+      uri,
+      [{ rotate: orientation || 1 }],
+      { format: SaveFormat.JPEG, compress: 1, base64: false }
+    );
+
+    await FileSystem.copyAsync({ from: processedImage.uri, to: dest });
     return dest;
   };
 
@@ -102,12 +110,39 @@ const NewFind = () => {
     if (!result.canceled) {
       const savedImages = await Promise.all(
         result.assets.map(async (asset) => {
-          const savedImage = await saveImage(asset.uri);
+          const savedImage = await saveImage(
+            asset.uri,
+            asset?.exif?.Orientation
+          );
           return savedImage;
         })
       );
 
-      setImages((prevImages) => [...prevImages, ...savedImages]);
+      const updatedImages = savedImages.map((savedImage) => {
+        return { localImage: savedImage };
+      });
+
+      setImages((prevImages) => [...prevImages, ...updatedImages]);
+
+      const uploadedImages = await Promise.all(
+        savedImages.map(async (savedImage) => {
+          return await uploadImage(savedImage);
+        })
+      );
+
+      const image_urls: string[] = [];
+
+      for (const item of uploadedImages) {
+        const json_array: string[] = JSON.parse(item);
+        // Assuming each JSON array contains only one URL, you can use the first element
+        const image_url: string = json_array[0];
+        image_urls.push(image_url);
+      }
+
+      setImages((prev) => [
+        ...prev.filter((image) => image.serverImage),
+        ...image_urls.map((url) => ({ localImage: url, serverImage: url })),
+      ]);
     }
   };
 
@@ -251,7 +286,6 @@ const NewFind = () => {
             gap: 15,
           }}
         >
-          {imageUploading && <Text>Image uploading...</Text>}
           <ScrollView
             style={{ height: 250 }}
             horizontal
@@ -286,14 +320,14 @@ const NewFind = () => {
                   }}
                 >
                   <Image
-                    source={{ uri: image }}
+                    source={{ uri: image.localImage }}
                     style={{
                       width: 150,
                       flex: 1,
                       borderRadius: 10,
                     }}
                   />
-                  {/* {!image && (
+                  {!image.serverImage && (
                     <View
                       style={{
                         position: "absolute",
@@ -308,7 +342,7 @@ const NewFind = () => {
                     >
                       <ActivityIndicator size="large" color="#FFF" />
                     </View>
-                  )} */}
+                  )}
                 </TouchableOpacity>
               ))}
           </ScrollView>

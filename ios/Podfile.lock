@@ -26,6 +26,9 @@ PODS:
     - ExpoModulesCore
   - ExpoHead (0.0.20):
     - ExpoModulesCore
+  - ExpoImageManipulator (11.3.0):
+    - EXImageLoader
+    - ExpoModulesCore
   - ExpoImagePicker (14.3.2):
     - ExpoModulesCore
   - ExpoKeepAwake (12.3.0):
@@ -526,6 +529,7 @@ DEPENDENCIES:
   - ExpoAppleAuthentication (from `../node_modules/expo-apple-authentication/ios`)
   - ExpoCrypto (from `../node_modules/expo-crypto/ios`)
   - ExpoHead (from `../node_modules/expo-head/ios`)
+  - ExpoImageManipulator (from `../node_modules/expo-image-manipulator/ios`)
   - ExpoImagePicker (from `../node_modules/expo-image-picker/ios`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core`)
@@ -622,6 +626,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-crypto/ios"
   ExpoHead:
     :path: "../node_modules/expo-head/ios"
+  ExpoImageManipulator:
+    :path: "../node_modules/expo-image-manipulator/ios"
   ExpoImagePicker:
     :path: "../node_modules/expo-image-picker/ios"
   ExpoKeepAwake:
@@ -748,6 +754,7 @@ SPEC CHECKSUMS:
   ExpoAppleAuthentication: 8c95178a99e7fdb8aea1e3f6385843708471c3df
   ExpoCrypto: a382ab9a2fa91f0b511ce1fe4d6baecee40a1615
   ExpoHead: ac95331e2a45cb94f6aee8ba6b8cb3d0a2cc6817
+  ExpoImageManipulator: 851be0965dd9f78019771b140282f1816dcc25ea
   ExpoImagePicker: c58fdf28be551681a8edc550bcec76c397a8dfcd
   ExpoKeepAwake: be4cbd52d9b177cde0fd66daa1913afa3161fc1d
   ExpoModulesCore: c480fd4e3c7c8e81f0a6ba3a7c56869f25fe016d
