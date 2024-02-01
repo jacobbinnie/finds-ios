@@ -706,6 +706,103 @@ export class AuthApi extends BaseAPI {
 
 
 /**
+ * DefaultApi - axios parameter creator
+ * @export
+ */
+export const DefaultApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        uploadControllerUploadFile: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/upload`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * DefaultApi - functional programming interface
+ * @export
+ */
+export const DefaultApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = DefaultApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async uploadControllerUploadFile(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.uploadControllerUploadFile(options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DefaultApi.uploadControllerUploadFile']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * DefaultApi - factory interface
+ * @export
+ */
+export const DefaultApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = DefaultApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        uploadControllerUploadFile(options?: any): AxiosPromise<void> {
+            return localVarFp.uploadControllerUploadFile(options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * DefaultApi - object-oriented interface
+ * @export
+ * @class DefaultApi
+ * @extends {BaseAPI}
+ */
+export class DefaultApi extends BaseAPI {
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public uploadControllerUploadFile(options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).uploadControllerUploadFile(options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
  * FindsApi - axios parameter creator
  * @export
  */
@@ -1042,64 +1139,6 @@ export const SavesApiAxiosParamCreator = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        savesControllerAddSave: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/saves/add-save`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        savesControllerDeleteSave: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/saves/delete-save`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
         savesControllerGetFindUserSave: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/saves/find-user-save`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -1153,6 +1192,35 @@ export const SavesApiAxiosParamCreator = function (configuration?: Configuration
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        savesControllerUpdateSave: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/saves/update-save`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -1163,28 +1231,6 @@ export const SavesApiAxiosParamCreator = function (configuration?: Configuration
 export const SavesApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = SavesApiAxiosParamCreator(configuration)
     return {
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async savesControllerAddSave(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ActiveSaveDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.savesControllerAddSave(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['SavesApi.savesControllerAddSave']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async savesControllerDeleteSave(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ActiveSaveDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.savesControllerDeleteSave(options);
-            const index = configuration?.serverIndex ?? 0;
-            const operationBasePath = operationServerMap['SavesApi.savesControllerDeleteSave']?.[index]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
-        },
         /**
          * 
          * @param {*} [options] Override http request option.
@@ -1207,6 +1253,17 @@ export const SavesApiFp = function(configuration?: Configuration) {
             const operationBasePath = operationServerMap['SavesApi.savesControllerGetUserSaves']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async savesControllerUpdateSave(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ActiveSaveDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.savesControllerUpdateSave(options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['SavesApi.savesControllerUpdateSave']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
     }
 };
 
@@ -1217,22 +1274,6 @@ export const SavesApiFp = function(configuration?: Configuration) {
 export const SavesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = SavesApiFp(configuration)
     return {
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        savesControllerAddSave(options?: any): AxiosPromise<ActiveSaveDto> {
-            return localVarFp.savesControllerAddSave(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        savesControllerDeleteSave(options?: any): AxiosPromise<ActiveSaveDto> {
-            return localVarFp.savesControllerDeleteSave(options).then((request) => request(axios, basePath));
-        },
         /**
          * 
          * @param {*} [options] Override http request option.
@@ -1249,6 +1290,14 @@ export const SavesApiFactory = function (configuration?: Configuration, basePath
         savesControllerGetUserSaves(options?: any): AxiosPromise<Array<UserSaveDto>> {
             return localVarFp.savesControllerGetUserSaves(options).then((request) => request(axios, basePath));
         },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        savesControllerUpdateSave(options?: any): AxiosPromise<ActiveSaveDto> {
+            return localVarFp.savesControllerUpdateSave(options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -1259,26 +1308,6 @@ export const SavesApiFactory = function (configuration?: Configuration, basePath
  * @extends {BaseAPI}
  */
 export class SavesApi extends BaseAPI {
-    /**
-     * 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SavesApi
-     */
-    public savesControllerAddSave(options?: RawAxiosRequestConfig) {
-        return SavesApiFp(this.configuration).savesControllerAddSave(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SavesApi
-     */
-    public savesControllerDeleteSave(options?: RawAxiosRequestConfig) {
-        return SavesApiFp(this.configuration).savesControllerDeleteSave(options).then((request) => request(this.axios, this.basePath));
-    }
-
     /**
      * 
      * @param {*} [options] Override http request option.
@@ -1297,6 +1326,16 @@ export class SavesApi extends BaseAPI {
      */
     public savesControllerGetUserSaves(options?: RawAxiosRequestConfig) {
         return SavesApiFp(this.configuration).savesControllerGetUserSaves(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SavesApi
+     */
+    public savesControllerUpdateSave(options?: RawAxiosRequestConfig) {
+        return SavesApiFp(this.configuration).savesControllerUpdateSave(options).then((request) => request(this.axios, this.basePath));
     }
 }
 

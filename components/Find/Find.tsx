@@ -1,4 +1,4 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, ActivityIndicator } from "react-native";
 import React, { useEffect, useState } from "react";
 import Colors from "@/constants/Colors";
 import { Theme } from "@/constants/Styles";
@@ -14,6 +14,7 @@ import { formatPostDate } from "@/utils/formatPostDate";
 import { savesApi } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { savesQuery } from "@/types/queries";
+import Toast from "react-native-root-toast";
 
 interface FindProps {
   isProfileFind?: boolean;
@@ -43,10 +44,6 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
     })
   );
 
-  useFocusEffect(() => {
-    refetchSave();
-  });
-
   const handleGoToProfile = () => {
     if (session) {
       session.profile.id === find.user.id
@@ -57,29 +54,19 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
     }
   };
 
-  const handleAction = async (action: FindAction) => {
+  const handleSave = async () => {
     if (!session) {
       return router.push("/(modals)/login");
     }
 
     try {
-      if (action === FindAction.ADD_SAVE) {
-        const res = await savesApi.savesControllerAddSave({
-          data: {
-            id: find.id,
-          },
-        });
+      await savesApi.savesControllerUpdateSave({
+        data: {
+          id: find.id,
+        },
+      });
 
-        refetchSave();
-      } else if (action === FindAction.DELETE_SAVE) {
-        const res = await savesApi.savesControllerDeleteSave({
-          data: {
-            id: find.id,
-          },
-        });
-
-        refetchSave();
-      }
+      refetchSave();
     } catch (error) {
       console.log("Error", error);
     }
@@ -93,6 +80,22 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
       params: { data: stringedFind },
     });
   };
+
+  useEffect(() => {
+    console.log(error);
+    if (error?.message.includes("429")) {
+      Toast.show("Too many requests...", {
+        duration: Toast.durations.LONG,
+        position: Toast.positions.BOTTOM,
+        shadow: false,
+        animation: true,
+        hideOnPress: true,
+        backgroundColor: "#FFF",
+        textStyle: Theme.BodyText,
+        delay: 0,
+      });
+    }
+  }, [error?.message]);
 
   return (
     <View
@@ -277,29 +280,23 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
                   gap: 20,
                 }}
               >
-                <TouchableOpacity
-                  onPress={() =>
-                    handleAction(
-                      save
-                        ? save.deleted_at
-                          ? FindAction.ADD_SAVE
-                          : FindAction.DELETE_SAVE
-                        : FindAction.ADD_SAVE
-                    )
-                  }
-                >
-                  <Ionicons
-                    name="ios-heart"
-                    size={30}
-                    color={
-                      save?.id
-                        ? save.deleted_at
-                          ? Colors.light
-                          : Colors.primary
-                        : Colors.light
-                    }
-                  />
-                </TouchableOpacity>
+                {isLoading ? (
+                  <ActivityIndicator />
+                ) : (
+                  <TouchableOpacity onPress={() => handleSave()}>
+                    <Ionicons
+                      name="ios-heart"
+                      size={30}
+                      color={
+                        save?.id
+                          ? save.deleted_at
+                            ? Colors.light
+                            : Colors.primary
+                          : Colors.light
+                      }
+                    />
+                  </TouchableOpacity>
+                )}
               </View>
             </View>
           </View>

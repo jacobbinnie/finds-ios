@@ -7,6 +7,7 @@ import { SplashScreen, Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import "react-native-url-polyfill/auto";
+import { RootSiblingParent } from "react-native-root-siblings";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -49,7 +50,9 @@ export default function RootLayout() {
   return (
     <AuthProvider>
       <QueryClientProvider client={queryClient}>
-        <RootLayoutNav />
+        <RootSiblingParent>
+          <RootLayoutNav />
+        </RootSiblingParent>
       </QueryClientProvider>
     </AuthProvider>
   );
