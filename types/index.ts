@@ -5,6 +5,7 @@ import {
   PlacesApi,
   SavesApi,
   SearchApi,
+  UploadApi,
   UsersApi,
 } from "./generated";
 import { storage } from "@/utils/storage";
@@ -43,3 +44,5 @@ export const authApi = new AuthApi(undefined, BASE_URL, instance);
 export const savesApi = new SavesApi(undefined, BASE_URL, instance);
 
 export const searchApi = new SearchApi(undefined, BASE_URL, instance);
+
+export const uploadApi = new UploadApi(undefined, BASE_URL, instance);

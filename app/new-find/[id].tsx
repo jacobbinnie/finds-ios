@@ -31,6 +31,10 @@ import { storage } from "@/utils/storage";
 const NewFind = () => {
   const { id, data } = useLocalSearchParams<{ id: string; data: string }>();
 
+  if (!data) {
+    return null;
+  }
+
   const place = JSON.parse(data) as PlaceDto;
 
   const router = useRouter();

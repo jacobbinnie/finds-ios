@@ -24,6 +24,7 @@ interface AuthContextValues {
   setSession: (session: Session | null) => void;
   isCheckingAuth: boolean;
   signout: () => void;
+  refreshSession: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValues>({
@@ -31,6 +32,7 @@ const AuthContext = createContext<AuthContextValues>({
   setSession: () => null,
   isCheckingAuth: false,
   signout: () => null,
+  refreshSession: () => Promise.resolve(),
 });
 
 interface AuthProviderOptions {
@@ -69,6 +71,31 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
         return res.data.access_token as string;
       } else {
         return null;
+      }
+    }
+  };
+
+  const refreshSession = async () => {
+    if (session?.refreshToken) {
+      const newAccessToken = await refreshAuth(session.refreshToken);
+
+      if (newAccessToken) {
+        console.log("New access token received. Updating auth state..");
+        const newSession = {
+          ...session,
+          accessToken: newAccessToken,
+        };
+
+        storage.delete("auth");
+        storage.set("auth", JSON.stringify(newSession));
+
+        setSession(newSession);
+      } else {
+        // Handle the case when refresh fails
+        console.log("Refresh failed. Deleting auth data..");
+        storage.delete("auth");
+        setSession(null);
+        router.push("/(modals)/login");
       }
     }
   };
@@ -166,6 +193,7 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
     setSession,
     isCheckingAuth,
     signout,
+    refreshSession,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

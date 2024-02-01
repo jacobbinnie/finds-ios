@@ -1,23 +1,16 @@
-import { View, Text, Image, ActivityIndicator } from "react-native";
-import React, { useEffect, useState } from "react";
+import { View, Text, Image } from "react-native";
+import React from "react";
 import Colors from "@/constants/Colors";
 import { Theme } from "@/constants/Styles";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { useFocusEffect, useRouter } from "expo-router";
-import { FindAction } from "@/types/types";
 import { Divider } from "react-native-elements";
 import ImageSwiper from "../ImageSwiper/ImageSwiper";
 import { useAuth } from "@/providers/AuthProvider";
 import { FindDto } from "@/types/generated";
 import { formatPostDate } from "@/utils/formatPostDate";
-import { savesApi } from "@/types";
-import { useQuery } from "@tanstack/react-query";
-import { savesQuery } from "@/types/queries";
-import Toast from "react-native-root-toast";
-import { storage } from "@/utils/storage";
-import * as Updates from "expo-updates";
 import SaveButton from "../SaveButton/SaveButton";
+import { useRouter } from "expo-router";
 
 interface FindProps {
   isProfileFind?: boolean;
