@@ -25,7 +25,7 @@ interface FindProps {
 
 const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
   const router = useRouter();
-  const { session } = useAuth();
+  const { session, signout } = useAuth();
 
   const bottomOffset = 15;
   const descriptionCardHeight = 200;
@@ -82,7 +82,6 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
   };
 
   useEffect(() => {
-    console.log(error);
     if (error?.message.includes("429")) {
       Toast.show("Too many requests...", {
         duration: Toast.durations.LONG,
@@ -94,6 +93,8 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
         textStyle: Theme.BodyText,
         delay: 0,
       });
+    } else if (error?.message.includes("401")) {
+      signout();
     }
   }, [error?.message]);
 

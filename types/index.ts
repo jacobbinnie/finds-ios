@@ -7,7 +7,6 @@ import {
   SearchApi,
   UsersApi,
 } from "./generated";
-import { useAuth } from "@/providers/AuthProvider";
 import { storage } from "@/utils/storage";
 
 const instance = axios.create();
