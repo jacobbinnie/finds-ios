@@ -1,19 +1,16 @@
 import {
   View,
   Text,
-  Touchable,
   TouchableOpacity,
   KeyboardAvoidingView,
-  Platform,
-  Dimensions,
   ActivityIndicator,
 } from "react-native";
-import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
-import { PlaceDto, CategoryDto, CreateFindDto } from "@/types/generated";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { PlaceDto, CreateFindDto } from "@/types/generated";
 import { Theme } from "@/constants/Styles";
-import { Controller, SubmitHandler, useForm, useWatch } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useAuth } from "@/providers/AuthProvider";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import Colors from "@/constants/Colors";
 import { useQuery } from "@tanstack/react-query";
@@ -23,10 +20,8 @@ import { FadeInLeft, FadeInRight, FadeOutRight } from "react-native-reanimated";
 import Animated from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "react-native-elements/dist/buttons/Button";
-import axios from "axios";
-import { authApi, findsApi } from "@/types";
+import { findsApi } from "@/types";
 import { jwtDecode } from "jwt-decode";
-import { storage } from "@/utils/storage";
 
 const NewFind = () => {
   const { id, data } = useLocalSearchParams<{ id: string; data: string }>();
