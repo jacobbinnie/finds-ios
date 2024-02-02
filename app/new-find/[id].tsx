@@ -82,11 +82,11 @@ const NewFind = () => {
     const dest = imgDir + filename;
 
     // Use the ImageManipulator from expo to correct the orientation
-    const processedImage = await manipulateAsync(
-      uri,
-      [{ rotate: orientation || 1 }],
-      { format: SaveFormat.JPEG, compress: 1, base64: false }
-    );
+    const processedImage = await manipulateAsync(uri, [], {
+      format: SaveFormat.JPEG,
+      compress: 1,
+      base64: false,
+    });
 
     await FileSystem.copyAsync({ from: processedImage.uri, to: dest });
     return dest;
