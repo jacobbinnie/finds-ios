@@ -1,4 +1,11 @@
-import { View, Text, TouchableOpacity, LayoutAnimation } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  LayoutAnimation,
+  Pressable,
+  ActivityIndicator,
+} from "react-native";
 import React, { useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
@@ -19,6 +26,7 @@ import Animated, {
   FadeOutRight,
 } from "react-native-reanimated";
 import { FlashList } from "@shopify/flash-list";
+import { usersApi } from "@/types";
 
 const ProfileDetails = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -29,13 +37,19 @@ const ProfileDetails = () => {
 
   const {
     data: profile,
-    isLoading,
+    isLoading: isLoadingProfile,
     isError,
     error,
-    refetch,
+    refetch: refetchProfile,
   } = useQuery(usersQuery.usersControllerGetProfileAndFinds(Number(id)));
 
-  if (isLoading) {
+  const {
+    data: isFollowing,
+    refetch: refetchIsFollowing,
+    isLoading: isCheckingFollowing,
+  } = useQuery(usersQuery.usersControllerGetFollowStatus(profile?.id!));
+
+  if (isLoadingProfile) {
     return <Text>Loading...</Text>;
   }
 
@@ -46,6 +60,25 @@ const ProfileDetails = () => {
   if (!profile) {
     return <Text>Profile not found</Text>;
   }
+
+  const handleFollow = async () => {
+    if (!session) {
+      return router.push("/(modals)/login");
+    }
+
+    try {
+      await usersApi.usersControllerFollowUser(profile.id, {
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+      });
+
+      refetchIsFollowing();
+      refetchProfile();
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -87,21 +120,38 @@ const ProfileDetails = () => {
               @{profile.username}
             </Animated.Text>
 
-            <TouchableOpacity>
-              <Animated.View
-                entering={FadeInRight.springify().delay(100)}
-                exiting={FadeOutRight}
-                style={{
-                  padding: 10,
-                  borderRadius: 99,
-                  overflow: "hidden",
-                  borderWidth: 1,
-                  borderColor: Colors.dark,
-                }}
-              >
-                <Text style={Theme.ButtonText}>Follow</Text>
-              </Animated.View>
-            </TouchableOpacity>
+            <Pressable
+              disabled={isCheckingFollowing || isLoadingProfile}
+              onPress={handleFollow}
+            >
+              {isLoadingProfile || isCheckingFollowing ? (
+                <ActivityIndicator />
+              ) : (
+                <Animated.View
+                  entering={FadeInRight.springify().delay(100)}
+                  exiting={FadeOutRight}
+                  style={{
+                    padding: 10,
+                    borderRadius: 99,
+                    overflow: "hidden",
+                    backgroundColor: isFollowing ? "transparent" : Colors.dark,
+                    borderWidth: 1,
+                    borderColor: Colors.dark,
+                  }}
+                >
+                  <Text
+                    style={[
+                      Theme.ButtonText,
+                      {
+                        color: isFollowing ? Colors.dark : Colors.light,
+                      },
+                    ]}
+                  >
+                    {isFollowing ? "Following" : "Follow"}
+                  </Text>
+                </Animated.View>
+              )}
+            </Pressable>
           </View>
 
           <View
@@ -205,8 +255,8 @@ const ProfileDetails = () => {
                 decelerationRate={"fast"}
                 viewabilityConfig={{ itemVisiblePercentThreshold: 80 }}
                 pagingEnabled={true}
-                onRefresh={() => refetch()}
-                refreshing={isLoading}
+                onRefresh={() => refetchProfile()}
+                refreshing={isLoadingProfile}
                 data={profile.finds}
                 keyExtractor={(item) => item.id.toString()}
                 showsVerticalScrollIndicator={false}
