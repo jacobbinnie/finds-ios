@@ -789,6 +789,39 @@ export const FindsApiAxiosParamCreator = function (configuration?: Configuration
                 baseOptions = configuration.baseOptions;
             }
 
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        findsControllerGetFindById: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('findsControllerGetFindById', 'id', id)
+            const localVarPath = `/finds/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
@@ -848,6 +881,18 @@ export const FindsApiFp = function(configuration?: Configuration) {
             const operationBasePath = operationServerMap['FindsApi.findsControllerGetAllCategories']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
+        /**
+         * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async findsControllerGetFindById(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FindDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.findsControllerGetFindById(id, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['FindsApi.findsControllerGetFindById']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
     }
 };
 
@@ -882,6 +927,15 @@ export const FindsApiFactory = function (configuration?: Configuration, basePath
          */
         findsControllerGetAllCategories(options?: any): AxiosPromise<Array<CategoryDto>> {
             return localVarFp.findsControllerGetAllCategories(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        findsControllerGetFindById(id: string, options?: any): AxiosPromise<FindDto> {
+            return localVarFp.findsControllerGetFindById(id, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -922,6 +976,17 @@ export class FindsApi extends BaseAPI {
      */
     public findsControllerGetAllCategories(options?: RawAxiosRequestConfig) {
         return FindsApiFp(this.configuration).findsControllerGetAllCategories(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FindsApi
+     */
+    public findsControllerGetFindById(id: string, options?: RawAxiosRequestConfig) {
+        return FindsApiFp(this.configuration).findsControllerGetFindById(id, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

@@ -6,16 +6,16 @@ import {
   ActivityIndicator,
   useWindowDimensions,
 } from "react-native";
-import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { PlaceDto, CreateFindDto } from "@/types/generated";
 import { Theme } from "@/constants/Styles";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useAuth } from "@/providers/AuthProvider";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import Colors from "@/constants/Colors";
 import { useQuery } from "@tanstack/react-query";
-import { findsQuery } from "@/types/queries";
+import { findsQuery, placesQuery, searchQuery } from "@/types/queries";
 import { Ionicons } from "@expo/vector-icons";
 import { FadeInLeft, FadeInRight, FadeOutRight } from "react-native-reanimated";
 import Animated from "react-native-reanimated";
@@ -39,19 +39,23 @@ const ensureDirExists = async () => {
 };
 
 const NewFind = () => {
-  const { id, data } = useLocalSearchParams<{ id: string; data: string }>();
-
-  if (!data) {
-    return null;
-  }
-
-  const place = JSON.parse(data) as PlaceDto;
+  const { id } = useLocalSearchParams<{ id: string }>();
 
   const router = useRouter();
   const { session, setSession, signout, refreshSession } = useAuth();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const { data: place } = useQuery(
+    searchQuery.searchControllerGetGooglePlaceById(id!)
+  );
+
+  const {
+    data: categories,
+    isLoading,
+    error: categoriesError,
+  } = useQuery(findsQuery.findsControllerGetAllCategories());
 
   const [images, setImages] = useState<
     { localImage: string; serverImage?: string }[]
@@ -151,12 +155,6 @@ const NewFind = () => {
   };
 
   const {
-    data: categories,
-    isLoading,
-    error: categoriesError,
-  } = useQuery(findsQuery.findsControllerGetAllCategories());
-
-  const {
     control,
     handleSubmit,
     formState: { errors },
@@ -168,7 +166,7 @@ const NewFind = () => {
       review: undefined,
       categoryId: undefined,
       tags: [],
-      googlePlaceId: place.googlePlaceId,
+      googlePlaceId: id,
       images: [],
     },
   });
@@ -268,7 +266,7 @@ const NewFind = () => {
             exiting={FadeOutRight}
             style={[Theme.Title]}
           >
-            {place.name}
+            {place?.displayName.text}
           </Animated.Text>
         </View>
       </SafeAreaView>

@@ -80,8 +80,7 @@ const PlaceDetails = () => {
     const stringedPlace = JSON.stringify(place);
 
     router.push({
-      pathname: `/new-find/${place.id}`,
-      params: { data: stringedPlace },
+      pathname: `/new-find/${place.googlePlaceId}`,
     });
   };
 

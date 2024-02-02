@@ -17,28 +17,40 @@ import { useRoute } from "@react-navigation/native";
 import { FindAction } from "@/types/types";
 import { useAuth } from "@/providers/AuthProvider";
 import { formatPostDate } from "@/utils/formatPostDate";
+import { useQuery } from "@tanstack/react-query";
+import { findsQuery } from "@/types/queries";
 
 const FindDetails = () => {
   const route = useRoute();
-  const { id, data } = useLocalSearchParams<{ id: string; data: string }>();
+  const { id } = useLocalSearchParams<{ id: string; data: string }>();
   const router = useRouter();
   const { session } = useAuth();
 
   const deviceHeight = useWindowDimensions().height;
 
-  const find = JSON.parse(data) as FindDto;
+  const {
+    data: find,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useQuery(findsQuery.findsControllerGetFindById(id!));
 
   const handleGoToProfile = () => {
     if (session) {
-      session.profile.id === find.user.id
+      session.profile.id === find?.user.id
         ? router.replace("/(tabs)/(auth)/my-profile")
-        : router.replace(`/profile/${find.user.id}`);
+        : router.replace(`/profile/${find?.user.id}`);
     } else {
-      router.replace(`/profile/${find.user.id}`);
+      router.replace(`/profile/${find?.user.id}`);
     }
   };
 
   const handleAction = async (action: FindAction) => {};
+
+  if (!find) {
+    return <Text>Loading...</Text>;
+  }
 
   return (
     <ScrollView
@@ -183,7 +195,7 @@ const FindDetails = () => {
                 justifyContent: "space-between",
               }}
             >
-              <Text style={[Theme.Title, { lineHeight: 22 }]}>
+              <Text style={[Theme.BodyText, { lineHeight: 22 }]}>
                 {find.review.replace("\\n", "\n")}
               </Text>
             </View>
