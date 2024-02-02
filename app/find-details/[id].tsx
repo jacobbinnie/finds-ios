@@ -3,6 +3,7 @@ import {
   Text,
   TouchableOpacity,
   useWindowDimensions,
+  TouchableHighlight,
 } from "react-native";
 import React from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -61,56 +62,35 @@ const FindDetails = () => {
         backgroundColor: "#FFF",
       }}
     >
-      <View
+      <TouchableOpacity
+        onPress={() => {
+          const stringedPlace = JSON.stringify(find.place);
+
+          router.replace({
+            pathname: `/place/${find.place.googlePlaceId}`,
+            params: { data: stringedPlace },
+          });
+        }}
         style={{
+          backgroundColor: Colors.light,
+          paddingHorizontal: 15,
+          paddingVertical: 10,
+          gap: 5,
+          borderRadius: 99,
           display: "flex",
-          position: "relative",
-          height: "100%",
-          borderRadius: 10,
-          overflow: "hidden",
-          shadowColor: Colors.grey,
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.2,
-          shadowRadius: 2.62,
-          backgroundColor: "#FFF",
-          elevation: 4,
+          flexDirection: "row",
+          alignItems: "center",
+          position: "absolute",
+          right: 15,
+          top: 15,
+          zIndex: 20,
         }}
       >
-        <TouchableOpacity
-          onPress={() => {
-            const stringedPlace = JSON.stringify(find.place);
+        <Text style={Theme.ButtonText}>Place details</Text>
+        <Ionicons name="arrow-forward-outline" size={20} color={Colors.dark} />
+      </TouchableOpacity>
 
-            router.replace({
-              pathname: `/place/${find.place.googlePlaceId}`,
-              params: { data: stringedPlace },
-            });
-          }}
-          style={{
-            backgroundColor: Colors.light,
-            paddingHorizontal: 15,
-            paddingVertical: 10,
-            gap: 5,
-            borderRadius: 99,
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            position: "absolute",
-            right: 15,
-            top: 15,
-            zIndex: 20,
-          }}
-        >
-          <Text style={Theme.ButtonText}>Place details</Text>
-          <Ionicons
-            name="arrow-forward-outline"
-            size={20}
-            color={Colors.dark}
-          />
-        </TouchableOpacity>
-
+      <ScrollView style={{ paddingBottom: 550 }}>
         <ImageSwiper
           isSwipable={find.images.length > 1}
           images={find.images}
@@ -127,6 +107,7 @@ const FindDetails = () => {
             borderEndEndRadius: 10,
             overflow: "hidden",
             gap: 15,
+            flex: 1,
           }}
         >
           <View
@@ -187,7 +168,8 @@ const FindDetails = () => {
             </View>
           </View>
 
-          <View style={{ gap: 10 }}>
+          <View style={{ gap: 15 }}>
+            <Text style={Theme.BigTitle}>Review</Text>
             <View
               style={{
                 display: "flex",
@@ -195,9 +177,36 @@ const FindDetails = () => {
                 justifyContent: "space-between",
               }}
             >
-              <Text style={[Theme.BodyText, { lineHeight: 22 }]}>
+              <Text style={[Theme.BodyText, { lineHeight: 20 }]}>
                 {find.review.replace("\\n", "\n")}
               </Text>
+            </View>
+
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                gap: 10,
+                marginBottom: 2,
+              }}
+            >
+              {find.tags.map((tag, index) => (
+                <Text
+                  key={index}
+                  style={[
+                    Theme.Caption,
+                    {
+                      backgroundColor: Colors.light,
+                      padding: 10,
+                      borderRadius: 10,
+                      overflow: "hidden",
+                      textAlign: "center",
+                    },
+                  ]}
+                >
+                  {tag}
+                </Text>
+              ))}
             </View>
 
             <View
@@ -243,7 +252,7 @@ const FindDetails = () => {
             </View>
           </View>
         </View>
-      </View>
+      </ScrollView>
     </ScrollView>
   );
 };

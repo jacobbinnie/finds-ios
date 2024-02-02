@@ -1,5 +1,6 @@
 import React, {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -11,7 +12,12 @@ import "core-js/stable/atob";
 import { storage } from "@/utils/storage";
 import { authApi, usersApi } from "@/types";
 import { AuthUserDto } from "@/types/generated";
-import { useRouter } from "expo-router";
+import {
+  useFocusEffect,
+  useNavigation,
+  usePathname,
+  useRouter,
+} from "expo-router";
 
 interface Session {
   accessToken: string;
@@ -24,7 +30,7 @@ interface AuthContextValues {
   setSession: (session: Session | null) => void;
   isCheckingAuth: boolean;
   signout: () => void;
-  refreshSession: () => Promise<void>;
+  checkJwt: (session: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValues>({
@@ -32,7 +38,7 @@ const AuthContext = createContext<AuthContextValues>({
   setSession: () => null,
   isCheckingAuth: false,
   signout: () => null,
-  refreshSession: () => Promise.resolve(),
+  checkJwt: () => Promise.resolve(),
 });
 
 interface AuthProviderOptions {
@@ -51,6 +57,7 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
   };
 
   const router = useRouter();
+  const pathname = usePathname();
 
   const refreshAuth = async (refreshToken: string) => {
     const decodedRefreshToken = jwtDecode(refreshToken);
@@ -71,31 +78,6 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
         return res.data.access_token as string;
       } else {
         return null;
-      }
-    }
-  };
-
-  const refreshSession = async () => {
-    if (session?.refreshToken) {
-      const newAccessToken = await refreshAuth(session.refreshToken);
-
-      if (newAccessToken) {
-        console.log("New access token received. Updating auth state..");
-        const newSession = {
-          ...session,
-          accessToken: newAccessToken,
-        };
-
-        storage.delete("auth");
-        storage.set("auth", JSON.stringify(newSession));
-
-        setSession(newSession);
-      } else {
-        // Handle the case when refresh fails
-        console.log("Refresh failed. Deleting auth data..");
-        storage.delete("auth");
-        setSession(null);
-        router.push("/(modals)/login");
       }
     }
   };
@@ -158,7 +140,7 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
             profile: res.data,
           });
         } else {
-          console.log("Error fetching user data. Deleting auth data..");
+          console.log("Error fetching user data. Resetting auth state...");
           storage.delete("auth");
         }
 
@@ -170,20 +152,38 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
     }
   };
 
-  useMemo(() => {
-    const session = storage.getString("auth");
+  const checkTokenExpiry = async () => {
+    console.log("Checking again...");
+    const storedSession = storage.getString("auth");
 
-    if (session) {
-      checkJwt(session);
+    if (storedSession) {
+      await checkJwt(storedSession);
     }
+  };
+
+  // Initial check when the component is mounted
+  useEffect(() => {
+    checkTokenExpiry();
+  }, []);
+
+  // Periodic token expiry check (adjust the interval as needed)
+  useEffect(() => {
+    console.log("Interval started");
+    const intervalId = setInterval(() => {
+      checkTokenExpiry();
+    }, 60000); // Check every minute, adjust as needed
+
+    return () => clearInterval(intervalId);
   }, []);
 
   useEffect(() => {
     if (session?.profile) {
-      if (session?.profile?.username) {
-        router.push("/");
-      } else {
+      if (!session?.profile?.username) {
         router.push("/(modals)/onboarding");
+      } else {
+        if (pathname === "/login" || pathname === "/onboarding") {
+          router.push("/");
+        }
       }
     }
   }, [session]);
@@ -193,7 +193,7 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
     setSession,
     isCheckingAuth,
     signout,
-    refreshSession,
+    checkJwt,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
