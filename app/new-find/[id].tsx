@@ -6,12 +6,12 @@ import {
   ActivityIndicator,
   useWindowDimensions,
 } from "react-native";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
 import { PlaceDto, CreateFindDto } from "@/types/generated";
 import { Theme } from "@/constants/Styles";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useAuth } from "@/providers/AuthProvider";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import Colors from "@/constants/Colors";
 import { useQuery } from "@tanstack/react-query";
@@ -27,6 +27,7 @@ import * as FileSystem from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
 import { Image } from "react-native-elements";
 import { SaveFormat, manipulateAsync } from "expo-image-manipulator";
+import { set } from "date-fns";
 
 const imgDir = FileSystem.documentDirectory + "images/";
 
@@ -47,7 +48,7 @@ const NewFind = () => {
   const place = JSON.parse(data) as PlaceDto;
 
   const router = useRouter();
-  const { session, setSession, signout } = useAuth();
+  const { session, setSession, signout, refreshSession } = useAuth();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -118,11 +119,10 @@ const NewFind = () => {
         })
       );
 
-      const updatedImages = savedImages.map((savedImage) => {
-        return { localImage: savedImage };
-      });
-
-      setImages((prevImages) => [...prevImages, ...updatedImages]);
+      setImages((prevImages) => [
+        ...prevImages,
+        ...savedImages.map((image) => ({ localImage: image })),
+      ]);
 
       const uploadedImages = await Promise.all(
         savedImages.map(async (savedImage) => {
@@ -134,14 +134,18 @@ const NewFind = () => {
 
       for (const item of uploadedImages) {
         const json_array: string[] = JSON.parse(item);
-        // Assuming each JSON array contains only one URL, you can use the first element
         const image_url: string = json_array[0];
         image_urls.push(image_url);
       }
 
-      setImages((prev) => [
-        ...prev.filter((image) => image.serverImage),
-        ...image_urls.map((url) => ({ localImage: url, serverImage: url })),
+      const updatedImages = savedImages.map((savedImage, index) => ({
+        localImage: savedImage,
+        serverImage: image_urls[index],
+      }));
+
+      setImages((prevImages) => [
+        ...prevImages.filter((image) => image.serverImage != null),
+        ...updatedImages,
       ]);
     }
   };
@@ -158,6 +162,7 @@ const NewFind = () => {
     formState: { errors },
     clearErrors,
     watch,
+    setValue,
   } = useForm<CreateFindDto>({
     defaultValues: {
       review: undefined,
@@ -170,6 +175,13 @@ const NewFind = () => {
 
   const selectedCategory = watch("categoryId");
   const currentTags = watch("tags");
+
+  useEffect(() => {
+    setValue(
+      "images",
+      images.map((image) => image.serverImage || "") // Use empty string if serverImage is undefined
+    );
+  }, [images]);
 
   const dimensions = useWindowDimensions();
 
@@ -286,66 +298,86 @@ const NewFind = () => {
             gap: 15,
           }}
         >
-          <ScrollView
-            style={{ height: 250 }}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-          >
-            <TouchableOpacity
-              onPress={() => selectImage(true)}
-              style={{
-                width:
-                  images && images?.length > 0 ? 150 : dimensions.width - 30,
-                height: "100%",
-                backgroundColor: Colors.light,
-                borderRadius: 10,
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                marginRight: 10,
-              }}
-            >
-              <Ionicons name="images-outline" size={24} color={Colors.grey} />
-            </TouchableOpacity>
-
-            {images &&
-              images.map((image, index) => (
+          <Controller
+            name="images"
+            control={control}
+            rules={{
+              required: "At least 1 image is required",
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <ScrollView
+                style={{ height: 250 }}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+              >
                 <TouchableOpacity
-                  key={index}
+                  onPress={() => selectImage(true)}
                   style={{
+                    width:
+                      images && images?.length > 0
+                        ? 150
+                        : dimensions.width - 30,
+                    height: "100%",
+                    backgroundColor: Colors.light,
+                    borderRadius: 10,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
                     marginRight: 10,
-                    position: "relative",
-                    alignItems: "center", // Center horizontally
-                    justifyContent: "center", // Center vertically
                   }}
                 >
-                  <Image
-                    source={{ uri: image.localImage }}
-                    style={{
-                      width: 150,
-                      flex: 1,
-                      borderRadius: 10,
-                    }}
+                  <Ionicons
+                    name="images-outline"
+                    size={24}
+                    color={Colors.grey}
                   />
-                  {!image.serverImage && (
-                    <View
+                </TouchableOpacity>
+
+                {images &&
+                  images.map((image, index) => (
+                    <TouchableOpacity
+                      key={index}
                       style={{
-                        position: "absolute",
-                        top: 0,
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        backgroundColor: "rgba(255, 255, 255, 0.483)", // Adjust the background color and opacity as needed
-                        alignItems: "center",
-                        justifyContent: "center",
+                        marginRight: 10,
+                        position: "relative",
+                        alignItems: "center", // Center horizontally
+                        justifyContent: "center", // Center vertically
                       }}
                     >
-                      <ActivityIndicator size="large" color="#FFF" />
-                    </View>
-                  )}
-                </TouchableOpacity>
-              ))}
-          </ScrollView>
+                      <Image
+                        source={{ uri: image.localImage }}
+                        style={{
+                          width: 150,
+                          flex: 1,
+                          borderRadius: 10,
+                        }}
+                      />
+                      {!image.serverImage && (
+                        <View
+                          style={{
+                            position: "absolute",
+                            top: 0,
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            backgroundColor: "rgba(255, 255, 255, 0.483)", // Adjust the background color and opacity as needed
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <ActivityIndicator size="large" color="#FFF" />
+                        </View>
+                      )}
+                    </TouchableOpacity>
+                  ))}
+              </ScrollView>
+            )}
+          />
+          {errors.images && (
+            <Text style={[Theme.Caption, { color: "red" }]}>
+              {errors.images.message}
+            </Text>
+          )}
 
           <Text style={[Theme.Title, { marginTop: 5 }]}>Category</Text>
           {categories && (
