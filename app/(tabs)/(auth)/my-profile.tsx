@@ -242,7 +242,7 @@ const MyProfile = () => {
               data={profile.finds}
               keyExtractor={(item) => item.id.toString()}
               showsVerticalScrollIndicator={false}
-              snapToInterval={findHeight - 20}
+              snapToInterval={findHeight - 40}
               renderItem={({ item }) => (
                 <Find isProfileFind findHeight={findHeight - 40} find={item} />
               )}
