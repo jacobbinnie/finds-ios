@@ -134,7 +134,11 @@ const ProfileDetails = () => {
                     padding: 10,
                     borderRadius: 99,
                     overflow: "hidden",
-                    backgroundColor: isFollowing ? "transparent" : Colors.dark,
+                    backgroundColor: session?.accessToken
+                      ? isFollowing
+                        ? "transparent"
+                        : Colors.dark
+                      : Colors.dark,
                     borderWidth: 1,
                     borderColor: Colors.dark,
                   }}
@@ -143,11 +147,19 @@ const ProfileDetails = () => {
                     style={[
                       Theme.ButtonText,
                       {
-                        color: isFollowing ? Colors.dark : Colors.light,
+                        color: session?.accessToken
+                          ? isFollowing
+                            ? Colors.dark
+                            : Colors.light
+                          : Colors.light,
                       },
                     ]}
                   >
-                    {isFollowing ? "Following" : "Follow"}
+                    {session?.accessToken
+                      ? isFollowing
+                        ? "Following"
+                        : "Follow"
+                      : "Follow"}
                   </Text>
                 </Animated.View>
               )}
