@@ -133,9 +133,21 @@ const ProfileDetails = () => {
               >
                 <Text style={Theme.Title}>{profile.firstname}</Text>
 
-                <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-                  {kFormatter(profile.followers)} followers
-                </Text>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: 10,
+                    alignItems: "center",
+                  }}
+                >
+                  <Text style={[Theme.BodyText, { color: Colors.grey }]}>
+                    {kFormatter(profile.followers)} followers
+                  </Text>
+                  <Text style={[Theme.BodyText, { color: Colors.grey }]}>
+                    {kFormatter(profile.following)} following
+                  </Text>
+                </View>
               </View>
             </View>
 

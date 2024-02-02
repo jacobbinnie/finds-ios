@@ -129,9 +129,21 @@ const MyProfile = () => {
             >
               <Text style={Theme.Title}>{session?.profile.firstname}</Text>
 
-              <Text style={[Theme.BodyText, { color: Colors.grey }]}>
-                {kFormatter(profile.followers)} followers
-              </Text>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: 10,
+                  alignItems: "center",
+                }}
+              >
+                <Text style={[Theme.BodyText, { color: Colors.grey }]}>
+                  {kFormatter(profile.followers)} followers
+                </Text>
+                <Text style={[Theme.BodyText, { color: Colors.grey }]}>
+                  {kFormatter(profile.following)} following
+                </Text>
+              </View>
             </View>
           </View>
           {profile.bio && profile.bio.length > 1 && (

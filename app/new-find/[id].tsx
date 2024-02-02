@@ -42,7 +42,7 @@ const NewFind = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
 
   const router = useRouter();
-  const { session, setSession, signout, refreshSession } = useAuth();
+  const { session, setSession, signout } = useAuth();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -519,7 +519,7 @@ const NewFind = () => {
                     if (e.nativeEvent.text.endsWith(",")) {
                       const newTag = e.nativeEvent.text.replace(",", "").trim();
                       if (newTag.length > 0) {
-                        onChange([...value, newTag]);
+                        onChange([...value, newTag.toLowerCase()]);
                         setInputTags(""); // Clear the TextInput
                       }
                     } else {
