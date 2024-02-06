@@ -121,204 +121,195 @@ const Login = () => {
   };
 
   return (
-    <>
-      <Marquee
-        spacing={20}
-        speed={0.5}
-        style={{
-          backgroundColor: Colors.light,
-          paddingVertical: 15,
-        }}
-      >
-        <Text style={[Theme.Title, { color: Colors.grey }]}>finds.nyc</Text>
-      </Marquee>
-
-      <View
+    <View
+      style={[
+        Theme.Container,
+        {
+          gap: 10,
+          backgroundColor: "#FFF",
+        },
+      ]}
+    >
+      <Text
         style={[
-          Theme.Container,
-          {
-            gap: 10,
-            backgroundColor: "#FFF",
-            paddingVertical: 30,
-          },
+          Theme.BigTitle,
+          { marginTop: 60, marginBottom: 30, textAlign: "center" },
         ]}
       >
-        <Text style={[Theme.BigTitle, { marginBottom: 15 }]}>
-          {screen === "login" ? "Log in" : "Sign up"}
-        </Text>
+        {screen === "login" ? "Log in" : "Sign up"}
+      </Text>
 
-        <Controller
-          control={control}
-          rules={{
-            required: "Email is required",
-            pattern: {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-              message: "Invalid email address",
-            },
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              placeholder="Email"
-              style={[
-                Theme.InputStyle,
-                errors.email ? { borderColor: "red", borderWidth: 1 } : null,
-              ]}
-              onBlur={onBlur}
-              onChangeText={(text) => {
-                onChange(text.toLowerCase());
-                clearErrors("email");
-              }}
-              value={value}
-            />
-          )}
-          name="email"
-        />
-        {errors.email && (
-          <Text style={[Theme.Caption, { color: "red" }]}>
-            {errors.email.message}
-          </Text>
+      <Controller
+        control={control}
+        rules={{
+          required: "Email is required",
+          pattern: {
+            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+            message: "Invalid email address",
+          },
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            placeholder="Email"
+            style={[
+              Theme.InputStyle,
+              errors.email ? { borderColor: "red", borderWidth: 1 } : null,
+            ]}
+            onBlur={onBlur}
+            onChangeText={(text) => {
+              onChange(text.toLowerCase());
+              clearErrors("email");
+            }}
+            value={value}
+          />
         )}
+        name="email"
+      />
+      {errors.email && (
+        <Text style={[Theme.Caption, { color: "red" }]}>
+          {errors.email.message}
+        </Text>
+      )}
 
+      <Controller
+        control={control}
+        rules={{
+          required: "Password is required",
+          minLength: {
+            value: 7,
+            message: "Password must be at least 7 characters",
+          },
+          validate: (value) => {
+            // Custom validation for at least one number
+            if (!/\d/.test(value)) {
+              return "Password must contain at least one number";
+            }
+            return true;
+          },
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            placeholder="Password"
+            style={[
+              Theme.InputStyle,
+              errors.password ? { borderColor: "red", borderWidth: 1 } : null,
+            ]}
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+            secureTextEntry
+          />
+        )}
+        name="password"
+      />
+      {errors.password && (
+        <Text style={[Theme.Caption, { color: "red" }]}>
+          {errors.password.message}
+        </Text>
+      )}
+
+      {screen === "signup" && (
         <Controller
           control={control}
           rules={{
-            required: "Password is required",
-            minLength: {
-              value: 7,
-              message: "Password must be at least 7 characters",
-            },
-            validate: (value) => {
-              // Custom validation for at least one number
-              if (!/\d/.test(value)) {
-                return "Password must contain at least one number";
-              }
-              return true;
-            },
+            required: "First name is required",
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
-              placeholder="Password"
+              placeholder="First name"
               style={[
                 Theme.InputStyle,
-                errors.password ? { borderColor: "red", borderWidth: 1 } : null,
+                errors.firstname
+                  ? { borderColor: "red", borderWidth: 1 }
+                  : null,
               ]}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
-              secureTextEntry
             />
           )}
-          name="password"
+          name="firstname"
         />
-        {errors.password && (
-          <Text style={[Theme.Caption, { color: "red" }]}>
-            {errors.password.message}
-          </Text>
-        )}
+      )}
+      {errors.firstname && (
+        <Text style={[Theme.Caption, { color: "red" }]}>
+          {errors.firstname.message}
+        </Text>
+      )}
 
-        {screen === "signup" && (
-          <Controller
-            control={control}
-            rules={{
-              required: "First name is required",
+      <TouchableOpacity
+        onPress={handleSubmit(onSubmit)}
+        style={{
+          width: "100%",
+          backgroundColor: Colors.primary,
+          height: 50,
+          borderRadius: 10,
+          marginTop: 15,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {isSubmitting ? (
+          <ActivityIndicator color={Colors.light} />
+        ) : (
+          <Text
+            style={{
+              fontFamily: "font-b",
+              fontSize: 16,
+              color: Colors.light,
+              textAlign: "center",
+              lineHeight: 50,
             }}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                placeholder="First name"
-                style={[
-                  Theme.InputStyle,
-                  errors.firstname
-                    ? { borderColor: "red", borderWidth: 1 }
-                    : null,
-                ]}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-              />
-            )}
-            name="firstname"
-          />
-        )}
-        {errors.firstname && (
-          <Text style={[Theme.Caption, { color: "red" }]}>
-            {errors.firstname.message}
+          >
+            {screen === "login" ? "Log in" : "Create account"}
           </Text>
         )}
+      </TouchableOpacity>
 
+      {error && (
+        <Text
+          style={[
+            Theme.Caption,
+            { color: "red", marginTop: 15, textAlign: "center" },
+          ]}
+        >
+          {error}
+        </Text>
+      )}
+
+      <View
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          gap: 10,
+          justifyContent: "center",
+          marginTop: 30,
+          alignItems: "center",
+        }}
+      >
+        <Text style={[Theme.Caption]}>
+          {screen === "login"
+            ? "Don't have an account?"
+            : "Already have an account?"}
+        </Text>
         <TouchableOpacity
-          onPress={handleSubmit(onSubmit)}
-          style={{
-            width: "100%",
-            backgroundColor: Colors.primary,
-            height: 50,
-            borderRadius: 10,
-            marginTop: 15,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+          onPress={() => {
+            setScreen((prev) => (prev === "login" ? "signup" : "login"));
+            clearErrors();
           }}
         >
-          {isSubmitting ? (
-            <ActivityIndicator color={Colors.light} />
-          ) : (
-            <Text
-              style={{
-                fontFamily: "font-b",
-                fontSize: 16,
-                color: Colors.light,
-                textAlign: "center",
-                lineHeight: 50,
-              }}
-            >
-              {screen === "login" ? "Log in" : "Create account"}
-            </Text>
-          )}
-        </TouchableOpacity>
-
-        {error && (
           <Text
             style={[
               Theme.Caption,
-              { color: "red", marginTop: 15, textAlign: "center" },
+              { fontSize: 14, fontFamily: "font-b", color: Colors.primary },
             ]}
           >
-            {error}
+            {screen === "login" ? "Sign up" : "Login"}
           </Text>
-        )}
-
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            gap: 10,
-            justifyContent: "center",
-            marginTop: 30,
-            alignItems: "center",
-          }}
-        >
-          <Text style={[Theme.Caption]}>
-            {screen === "login"
-              ? "Don't have an account?"
-              : "Already have an account?"}
-          </Text>
-          <TouchableOpacity
-            onPress={() => {
-              setScreen((prev) => (prev === "login" ? "signup" : "login"));
-              clearErrors();
-            }}
-          >
-            <Text
-              style={[
-                Theme.Caption,
-                { fontSize: 14, fontFamily: "font-b", color: Colors.primary },
-              ]}
-            >
-              {screen === "login" ? "Sign up" : "Login"}
-            </Text>
-          </TouchableOpacity>
-        </View>
+        </TouchableOpacity>
       </View>
-    </>
+    </View>
   );
 };
 
