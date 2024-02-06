@@ -60,8 +60,9 @@ const Page = () => {
           exiting={FadeOutLeft}
           style={Theme.BigTitle}
         >
-          finds.nyc
+          finds
         </Animated.Text>
+        <Text style={Theme.Title}>new york city</Text>
       </View>
 
       {/* <Categories /> */}
