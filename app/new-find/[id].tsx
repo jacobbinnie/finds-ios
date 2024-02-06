@@ -96,7 +96,7 @@ const NewFind = () => {
     return dest;
   };
 
-  const selectImage = async (useLibrary: boolean) => {
+  const selectImages = async (useLibrary: boolean) => {
     let result;
 
     if (useLibrary) {
@@ -309,7 +309,7 @@ const NewFind = () => {
                 showsHorizontalScrollIndicator={false}
               >
                 <TouchableOpacity
-                  onPress={() => selectImage(true)}
+                  onPress={() => selectImages(true)}
                   style={{
                     width:
                       images && images?.length > 0

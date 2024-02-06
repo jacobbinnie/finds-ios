@@ -4,6 +4,8 @@ import {
   Text,
   LayoutAnimation,
   TouchableOpacity,
+  Pressable,
+  ActivityIndicator,
 } from "react-native";
 import React, { useState } from "react";
 import { Theme } from "@/constants/Styles";
@@ -24,6 +26,19 @@ import Animated, {
 import { kFormatter } from "@/utils/kFormatter";
 import Loader from "@/components/Loader/Loader";
 import { FlashList } from "@shopify/flash-list";
+import { Feather, FontAwesome5, Ionicons } from "@expo/vector-icons";
+import { SaveFormat, manipulateAsync } from "expo-image-manipulator";
+import * as FileSystem from "expo-file-system";
+import * as ImagePicker from "expo-image-picker";
+
+const imgDir = FileSystem.documentDirectory + "images/";
+
+const ensureDirExists = async () => {
+  const dirInfo = await FileSystem.getInfoAsync(imgDir);
+  if (!dirInfo.exists) {
+    await FileSystem.makeDirectoryAsync(imgDir, { intermediates: true });
+  }
+};
 
 const MyProfile = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
@@ -42,6 +57,10 @@ const MyProfile = () => {
     usersQuery.usersControllerGetProfileAndFinds(session?.profile.id!)
   );
 
+  const [images, setImages] = useState<
+    { localImage: string; serverImage?: string }[]
+  >([]);
+
   if (isLoading) {
     return <Loader />;
   }
@@ -53,6 +72,95 @@ const MyProfile = () => {
   if (!profile) {
     return <Text>Profile not found</Text>;
   }
+
+  const uploadImage = async (uri: string) => {
+    const res = await FileSystem.uploadAsync(
+      process.env.EXPO_PUBLIC_API_URL + "/upload",
+      uri,
+      {
+        httpMethod: "POST",
+        uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+        fieldName: "files",
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+      }
+    );
+    return res.body;
+  };
+
+  const saveImage = async (uri: string, orientation: number) => {
+    await ensureDirExists();
+
+    const filename = new Date().getTime() + ".jpg";
+    const dest = imgDir + filename;
+
+    // Use the ImageManipulator from expo to correct the orientation
+    const processedImage = await manipulateAsync(uri, [], {
+      format: SaveFormat.JPEG,
+      compress: 1,
+      base64: false,
+    });
+
+    await FileSystem.copyAsync({ from: processedImage.uri, to: dest });
+    return dest;
+  };
+
+  const selectImages = async (useLibrary: boolean) => {
+    let result;
+
+    if (useLibrary) {
+      result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      });
+    } else {
+      await ImagePicker.requestCameraPermissionsAsync();
+
+      result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      });
+    }
+
+    if (!result.canceled) {
+      const savedImages = await Promise.all(
+        result.assets.map(async (asset) => {
+          const savedImage = await saveImage(
+            asset.uri,
+            asset?.exif?.Orientation
+          );
+          return savedImage;
+        })
+      );
+
+      setImages((prevImages) => [
+        ...savedImages.map((image) => ({ localImage: image })),
+      ]);
+
+      const uploadedImages = await Promise.all(
+        savedImages.map(async (savedImage) => {
+          return await uploadImage(savedImage);
+        })
+      );
+
+      const image_urls: string[] = [];
+
+      for (const item of uploadedImages) {
+        const json_array: string[] = JSON.parse(item);
+        const image_url: string = json_array[0];
+        image_urls.push(image_url);
+      }
+
+      const updatedImages = savedImages.map((savedImage, index) => ({
+        localImage: savedImage,
+        serverImage: image_urls[index],
+      }));
+
+      setImages((prevImages) => [
+        ...prevImages.filter((image) => image.serverImage != null),
+        ...updatedImages,
+      ]);
+    }
+  };
 
   return (
     <View style={{ flex: 1, gap: 15 }}>
@@ -115,10 +223,64 @@ const MyProfile = () => {
               gap: 10,
             }}
           >
-            <Image
-              source={{ uri: session?.profile.avatar }}
-              style={{ width: 70, height: 70, borderRadius: 99 }}
-            />
+            <TouchableOpacity
+              onPress={() => selectImages(true)}
+              style={{
+                width: 70,
+                height: 70,
+                borderColor: Colors.grey,
+                borderWidth: session?.profile.avatar ? 0 : 1,
+              }}
+            >
+              <View
+                style={{
+                  width: 70,
+                  height: 70,
+                  position: "absolute",
+                  zIndex: 10,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Feather
+                  name="edit"
+                  size={20}
+                  style={{ position: "absolute", bottom: 0, right: 0 }}
+                  color={Colors.dark}
+                />
+              </View>
+
+              {images[0] ? (
+                <>
+                  <Image
+                    source={{ uri: images[0].localImage }}
+                    style={{ width: 70, height: 70, borderRadius: 99 }}
+                  />
+                  {!images[0].serverImage && (
+                    <View
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        backgroundColor: "rgba(255, 255, 255, 0.483)", // Adjust the background color and opacity as needed
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <ActivityIndicator size="small" color={Colors.light} />
+                    </View>
+                  )}
+                </>
+              ) : (
+                <Image
+                  source={{ uri: session?.profile.avatar }}
+                  style={{ width: 70, height: 70, borderRadius: 99 }}
+                />
+              )}
+            </TouchableOpacity>
 
             <View
               style={{
