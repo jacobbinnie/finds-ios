@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import Colors from "@/constants/Colors";
-import { Theme } from "@/constants/Styles";
 import { MaterialIcons } from "@expo/vector-icons";
 
 interface ImageSwiperProps {
@@ -17,6 +16,7 @@ interface ImageSwiperProps {
   height: number;
   onPressCallback?: () => void;
   isSwipable?: boolean;
+  isCapturing?: boolean;
 }
 
 const ImageSwiper = ({
@@ -24,6 +24,7 @@ const ImageSwiper = ({
   height,
   onPressCallback,
   isSwipable,
+  isCapturing,
 }: ImageSwiperProps) => {
   const [displayWidth, setDisplayWidth] = useState<number>();
   const dimensions = useWindowDimensions();
@@ -55,7 +56,12 @@ const ImageSwiper = ({
             justifyContent: "center",
           }}
         >
-          <MaterialIcons name="photo-library" size={24} color={Colors.light} />
+          <MaterialIcons
+            style={{ opacity: isCapturing ? 0 : 1 }}
+            name="photo-library"
+            size={24}
+            color={Colors.light}
+          />
         </View>
       )}
 
