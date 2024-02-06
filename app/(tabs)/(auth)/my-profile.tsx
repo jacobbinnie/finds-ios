@@ -202,7 +202,7 @@ const MyProfile = () => {
                 borderColor: Colors.grey,
                 borderWidth: 1,
                 paddingHorizontal: 15,
-                paddingVertical: 5,
+                paddingVertical: 10,
                 gap: 5,
                 borderRadius: 99,
                 display: "flex",
