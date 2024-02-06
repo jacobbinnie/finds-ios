@@ -13,6 +13,7 @@ import SaveButton from "../SaveButton/SaveButton";
 import { useRouter } from "expo-router";
 import ViewShot from "react-native-view-shot";
 import * as Sharing from "expo-sharing";
+import { captureRef } from "react-native-view-shot";
 
 interface FindProps {
   isProfileFind?: boolean;
@@ -55,7 +56,6 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
       ref.current &&
       ref.current.capture &&
       ref.current.capture().then((uri: string) => {
-        console.log(uri);
         setIsCapturing(false); // Set capturing to false when capturing ends
         return uri;
       })
