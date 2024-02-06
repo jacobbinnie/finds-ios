@@ -325,7 +325,7 @@ const MyProfile = () => {
           )}
         </View>
 
-        <Animated.View
+        {/* <Animated.View
           entering={FadeInDown.springify().delay(50)}
           style={{
             display: "flex",
@@ -372,7 +372,7 @@ const MyProfile = () => {
               Share profile
             </Text>
           </TouchableOpacity>
-        </Animated.View>
+        </Animated.View> */}
       </View>
 
       <View
@@ -433,7 +433,7 @@ const MyProfile = () => {
             />
           </View>
         ) : (
-          <Text>Loading...</Text>
+          <Loader />
         )}
       </View>
     </View>

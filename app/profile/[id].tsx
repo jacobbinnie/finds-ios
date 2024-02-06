@@ -27,6 +27,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { FlashList } from "@shopify/flash-list";
 import { usersApi } from "@/types";
+import Loader from "@/components/Loader/Loader";
 
 const ProfileDetails = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -50,7 +51,7 @@ const ProfileDetails = () => {
   } = useQuery(usersQuery.usersControllerGetFollowStatus(profile?.id!));
 
   if (isLoadingProfile) {
-    return <Text>Loading...</Text>;
+    return <Loader />;
   }
 
   if (isError) {
@@ -283,7 +284,7 @@ const ProfileDetails = () => {
               />
             </View>
           ) : (
-            <Text>Loading...</Text>
+            <Loader />
           )}
         </View>
       </View>

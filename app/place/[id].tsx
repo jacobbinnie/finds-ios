@@ -24,6 +24,7 @@ import Animated, {
   FadeOutRight,
 } from "react-native-reanimated";
 import { FlashList } from "@shopify/flash-list";
+import Loader from "@/components/Loader/Loader";
 
 const PlaceDetails = () => {
   const { id, data } = useLocalSearchParams<{
@@ -56,11 +57,7 @@ const PlaceDetails = () => {
     : parsed;
 
   if (!place) {
-    return <Text>Loading...</Text>;
-  }
-
-  if (!place) {
-    return <Text>Loading...</Text>;
+    return <Loader />;
   }
 
   const {
@@ -256,7 +253,7 @@ const PlaceDetails = () => {
               />
             </View>
           ) : (
-            <Text>Loading...</Text>
+            <Loader />
           )}
         </View>
       </View>

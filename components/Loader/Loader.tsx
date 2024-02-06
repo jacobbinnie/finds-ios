@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, ActivityIndicator } from "react-native";
 import React from "react";
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 import { Theme } from "@/constants/Styles";
@@ -8,14 +8,15 @@ const Loader = () => {
     <View
       style={{
         height: "100%",
+        width: "100%",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
       }}
     >
-      <Animated.Text style={Theme.Title} entering={FadeIn} exiting={FadeOut}>
-        Loading...
-      </Animated.Text>
+      <Animated.View>
+        <ActivityIndicator />
+      </Animated.View>
     </View>
   );
 };

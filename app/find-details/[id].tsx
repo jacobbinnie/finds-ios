@@ -20,6 +20,7 @@ import { useAuth } from "@/providers/AuthProvider";
 import { formatPostDate } from "@/utils/formatPostDate";
 import { useQuery } from "@tanstack/react-query";
 import { findsQuery } from "@/types/queries";
+import Loader from "@/components/Loader/Loader";
 
 const FindDetails = () => {
   const route = useRoute();
@@ -50,7 +51,7 @@ const FindDetails = () => {
   const handleAction = async (action: FindAction) => {};
 
   if (!find) {
-    return <Text>Loading...</Text>;
+    return <Loader />;
   }
 
   return (
