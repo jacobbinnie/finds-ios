@@ -7,7 +7,7 @@ import {
   Pressable,
   ActivityIndicator,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Theme } from "@/constants/Styles";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/providers/AuthProvider";
@@ -30,6 +30,7 @@ import { Feather, FontAwesome5, Ionicons } from "@expo/vector-icons";
 import { SaveFormat, manipulateAsync } from "expo-image-manipulator";
 import * as FileSystem from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
+import { usersApi } from "@/types";
 
 const imgDir = FileSystem.documentDirectory + "images/";
 
@@ -154,6 +155,15 @@ const MyProfile = () => {
         localImage: savedImage,
         serverImage: image_urls[index],
       }));
+
+      await usersApi.usersControllerUpdateUserAvatar({
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+        data: {
+          avatar: updatedImages[0].serverImage,
+        },
+      });
 
       setImages((prevImages) => [
         ...prevImages.filter((image) => image.serverImage != null),
@@ -329,7 +339,7 @@ const MyProfile = () => {
               borderColor: Colors.grey,
               borderWidth: 1,
               paddingHorizontal: 15,
-              paddingVertical: 5,
+              paddingVertical: 10,
               gap: 5,
               flex: 1,
               borderRadius: 99,
@@ -348,7 +358,7 @@ const MyProfile = () => {
             style={{
               backgroundColor: Colors.dark,
               paddingHorizontal: 15,
-              paddingVertical: 5,
+              paddingVertical: 10,
               gap: 5,
               flex: 1,
               borderRadius: 99,
