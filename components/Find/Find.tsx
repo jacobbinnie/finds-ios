@@ -13,7 +13,6 @@ import SaveButton from "../SaveButton/SaveButton";
 import { useRouter } from "expo-router";
 import ViewShot from "react-native-view-shot";
 import * as Sharing from "expo-sharing";
-import { captureRef } from "react-native-view-shot";
 
 interface FindProps {
   isProfileFind?: boolean;
@@ -267,19 +266,21 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
                 {formatPostDate(find.createdAt)}
               </Text>
 
-              <TouchableOpacity onPress={() => handleShare()}>
-                <Feather name="share" size={30} color={Colors.light} />
-              </TouchableOpacity>
-
-              {session?.accessToken ? (
-                <SaveButton findId={find.id} />
-              ) : (
-                <TouchableOpacity
-                  onPress={() => router.push("/(modals)/login")}
-                >
-                  <Ionicons name="ios-heart" size={30} color={Colors.light} />
+              <View style={{ display: "flex", flexDirection: "row", gap: 15 }}>
+                <TouchableOpacity onPress={() => handleShare()}>
+                  <Feather name="share" size={30} color={Colors.light} />
                 </TouchableOpacity>
-              )}
+
+                {session?.accessToken ? (
+                  <SaveButton findId={find.id} />
+                ) : (
+                  <TouchableOpacity
+                    onPress={() => router.push("/(modals)/login")}
+                  >
+                    <Ionicons name="ios-heart" size={30} color={Colors.light} />
+                  </TouchableOpacity>
+                )}
+              </View>
             </View>
           </View>
         </TouchableOpacity>

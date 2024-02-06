@@ -5,10 +5,10 @@ import {
   useWindowDimensions,
   TouchableHighlight,
 } from "react-native";
-import React from "react";
+import React, { useRef, useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import Colors from "@/constants/Colors";
-import { Ionicons } from "@expo/vector-icons";
+import { Feather, Ionicons } from "@expo/vector-icons";
 import { Theme } from "@/constants/Styles";
 import { Divider, Image } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
@@ -21,6 +21,8 @@ import { formatPostDate } from "@/utils/formatPostDate";
 import { useQuery } from "@tanstack/react-query";
 import { findsQuery } from "@/types/queries";
 import Loader from "@/components/Loader/Loader";
+import ViewShot from "react-native-view-shot";
+import * as Sharing from "expo-sharing";
 
 const FindDetails = () => {
   const route = useRoute();
@@ -29,6 +31,8 @@ const FindDetails = () => {
   const { session } = useAuth();
 
   const deviceHeight = useWindowDimensions().height;
+
+  const [isCapturing, setIsCapturing] = useState(false);
 
   const {
     data: find,
@@ -49,6 +53,27 @@ const FindDetails = () => {
   };
 
   const handleAction = async (action: FindAction) => {};
+
+  const ref = useRef<ViewShot>(null);
+
+  const handleCapture = () => {
+    setIsCapturing(true); // Set capturing to true when capturing starts
+    return (
+      ref.current &&
+      ref.current.capture &&
+      ref.current.capture().then((uri: string) => {
+        setIsCapturing(false); // Set capturing to false when capturing ends
+        return uri;
+      })
+    );
+  };
+
+  const handleShare = async () => {
+    const uri = await handleCapture();
+    if (uri) {
+      Sharing.shareAsync(uri);
+    }
+  };
 
   if (!find) {
     return <Loader />;
@@ -92,11 +117,26 @@ const FindDetails = () => {
       </TouchableOpacity>
 
       <ScrollView style={{ paddingBottom: 550 }}>
-        <ImageSwiper
-          isSwipable={find.images.length > 1}
-          images={find.images}
-          height={deviceHeight * 0.5}
-        />
+        <ViewShot ref={ref} options={{ format: "jpg", quality: 1 }}>
+          <ImageSwiper
+            isSwipable={find.images.length > 1}
+            images={find.images}
+            height={deviceHeight * 0.5}
+            isCapturing={isCapturing}
+          />
+          <View
+            style={{
+              position: "absolute",
+              opacity: isCapturing ? 1 : 0,
+              bottom: 10,
+              left: 10,
+            }}
+          >
+            <Text style={[Theme.BigTitle, { color: Colors.light }]}>
+              finds.nyc
+            </Text>
+          </View>
+        </ViewShot>
 
         <View
           style={{
@@ -156,21 +196,36 @@ const FindDetails = () => {
             <View
               style={{
                 display: "flex",
+                flexDirection: "row",
+                gap: 15,
                 justifyContent: "center",
                 alignItems: "center",
-                backgroundColor: Colors.dark,
-                borderRadius: 99,
-                padding: 10,
               }}
             >
-              <Text style={[Theme.Caption, { color: Colors.light }]}>
-                {find.category.name}
-              </Text>
+              <View
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  backgroundColor: Colors.dark,
+                  borderRadius: 99,
+                  padding: 10,
+                }}
+              >
+                <Text style={[Theme.Caption, { color: Colors.light }]}>
+                  {find.category.name}
+                </Text>
+              </View>
+
+              <TouchableOpacity onPress={() => handleShare()}>
+                <Feather name="share" size={30} color={Colors.dark} />
+              </TouchableOpacity>
             </View>
           </View>
 
           <View style={{ gap: 15 }}>
             <Text style={Theme.BigTitle}>Review</Text>
+
             <View
               style={{
                 display: "flex",
