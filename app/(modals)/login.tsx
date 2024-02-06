@@ -150,6 +150,7 @@ const Login = () => {
         }}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
+            autoFocus
             placeholder="Email"
             style={[
               Theme.InputStyle,
