@@ -136,7 +136,7 @@ const Login = () => {
           { marginTop: 60, marginBottom: 30, textAlign: "center" },
         ]}
       >
-        {screen === "login" ? "Log in" : "Sign up"}
+        {screen === "login" ? "Sign in" : "Sign up"}
       </Text>
 
       <Controller
@@ -262,7 +262,7 @@ const Login = () => {
               lineHeight: 50,
             }}
           >
-            {screen === "login" ? "Log in" : "Create account"}
+            {screen === "login" ? "Sign in" : "Create account"}
           </Text>
         )}
       </TouchableOpacity>
@@ -305,7 +305,7 @@ const Login = () => {
               { fontSize: 14, fontFamily: "font-b", color: Colors.primary },
             ]}
           >
-            {screen === "login" ? "Sign up" : "Login"}
+            {screen === "login" ? "Sign up" : "Sign in"}
           </Text>
         </TouchableOpacity>
       </View>
