@@ -80,7 +80,13 @@ const Page = () => {
         <Animated.Text
           entering={FadeInLeft.springify()}
           exiting={FadeOutLeft}
-          style={Theme.BigTitle}
+          style={[
+            Theme.BigTitle,
+            {
+              fontFamily: "font-serif",
+              paddingHorizontal: 5,
+            },
+          ]}
         >
           Finds
         </Animated.Text>

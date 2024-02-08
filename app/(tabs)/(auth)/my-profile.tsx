@@ -239,6 +239,7 @@ const MyProfile = () => {
                 width: 70,
                 height: 70,
                 borderColor: Colors.grey,
+                borderRadius: 99,
                 borderWidth: session?.profile.avatar ? 0 : 1,
               }}
             >

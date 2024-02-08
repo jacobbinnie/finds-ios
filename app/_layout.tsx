@@ -28,6 +28,7 @@ export default function RootLayout() {
     "font-s": require("../assets/fonts/Gilroy-SemiBold.ttf"),
     "font-mi": require("../assets/fonts/Gilroy-MediumItalic.ttf"),
     "font-m": require("../assets/fonts/Gilroy-Medium.ttf"),
+    "font-serif": require("../assets/fonts/OliveVillage-Italic.ttf"),
   });
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
