@@ -13,6 +13,7 @@ import Colors from "@/constants/Colors";
 import { authApi } from "@/types";
 import { storage } from "@/utils/storage";
 import { Marquee } from "@animatereactnative/marquee";
+import Animated, { FadeInLeft, FadeOutLeft } from "react-native-reanimated";
 
 type FormInputs = {
   email: string;
@@ -127,17 +128,25 @@ const Login = () => {
         {
           gap: 10,
           backgroundColor: "#FFF",
+          paddingTop: 60,
         },
       ]}
     >
-      <Text
+      <Animated.Text
+        entering={FadeInLeft.springify()}
+        exiting={FadeOutLeft}
         style={[
           Theme.BigTitle,
-          { marginTop: 60, marginBottom: 30, textAlign: "center" },
+          {
+            fontFamily: "font-serif",
+            paddingHorizontal: 5,
+            textAlign: "center",
+            marginBottom: 30,
+          },
         ]}
       >
-        {screen === "login" ? "Sign in" : "Sign up"}
-      </Text>
+        finds.nyc
+      </Animated.Text>
 
       <Controller
         control={control}
