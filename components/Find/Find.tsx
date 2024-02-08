@@ -117,7 +117,16 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
                   left: 10,
                 }}
               >
-                <Text style={[Theme.BigTitle, { color: Colors.light }]}>
+                <Text
+                  style={[
+                    Theme.BigTitle,
+                    {
+                      color: Colors.light,
+                      fontFamily: "font-serif",
+                      paddingHorizontal: 5,
+                    },
+                  ]}
+                >
                   finds.nyc
                 </Text>
               </View>
