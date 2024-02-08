@@ -90,7 +90,6 @@ const Page = () => {
         >
           finds.nyc
         </Animated.Text>
-        <Text style={Theme.Title}>New York City</Text>
       </View>
 
       <View
