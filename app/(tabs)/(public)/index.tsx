@@ -90,63 +90,62 @@ const Page = () => {
         >
           finds.nyc
         </Animated.Text>
-      </View>
 
-      <View
-        style={{
-          paddingHorizontal: 15,
-          display: "flex",
-          flexDirection: "row",
-          gap: 10,
-          alignItems: "center",
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => setTab("all")}
+        <View
           style={{
-            backgroundColor: tab === "all" ? Colors.dark : Colors.light,
-            borderWidth: tab === "all" ? 0 : 1,
-            borderColor: Colors.dark,
-            padding: 10,
-            borderRadius: 99,
+            display: "flex",
+            flexDirection: "row",
+            gap: 10,
+            alignItems: "center",
           }}
         >
-          <Text
-            style={[
-              Theme.Caption,
-              { color: tab === "all" ? Colors.light : Colors.dark },
-            ]}
+          <TouchableOpacity
+            onPress={() => setTab("all")}
+            style={{
+              backgroundColor: tab === "all" ? Colors.dark : Colors.light,
+              borderWidth: tab === "all" ? 0 : 1,
+              borderColor: Colors.dark,
+              padding: 10,
+              borderRadius: 99,
+            }}
           >
-            All NYC
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            if (!session?.accessToken) {
-              router.push("/(modals)/login");
-            } else {
-              setTab("following");
-            }
-          }}
-          style={{
-            backgroundColor: tab === "following" ? Colors.dark : Colors.light,
-            borderWidth: tab === "following" ? 0 : 1,
-            borderColor: Colors.dark,
-            padding: 10,
-            borderRadius: 99,
-          }}
-        >
-          <Text
-            style={[
-              Theme.Caption,
-              {
-                color: tab === "following" ? Colors.light : Colors.dark,
-              },
-            ]}
+            <Text
+              style={[
+                Theme.Caption,
+                { color: tab === "all" ? Colors.light : Colors.dark },
+              ]}
+            >
+              All NYC
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              if (!session?.accessToken) {
+                router.push("/(modals)/login");
+              } else {
+                setTab("following");
+              }
+            }}
+            style={{
+              backgroundColor: tab === "following" ? Colors.dark : Colors.light,
+              borderWidth: tab === "following" ? 0 : 1,
+              borderColor: Colors.dark,
+              padding: 10,
+              borderRadius: 99,
+            }}
           >
-            Following
-          </Text>
-        </TouchableOpacity>
+            <Text
+              style={[
+                Theme.Caption,
+                {
+                  color: tab === "following" ? Colors.light : Colors.dark,
+                },
+              ]}
+            >
+              Following
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View
