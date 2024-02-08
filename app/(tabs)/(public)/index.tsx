@@ -15,16 +15,30 @@ import FindSkeleton from "@/components/Find/FindSkeleton";
 import Animated, { FadeInLeft, FadeOutLeft } from "react-native-reanimated";
 import Loader from "@/components/Loader/Loader";
 import { FlashList } from "@shopify/flash-list";
-import { useFocusEffect } from "expo-router";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { set } from "date-fns";
+import { useAuth } from "@/providers/AuthProvider";
+import { router } from "expo-router";
 
 const Page = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
+  const [tab, setTab] = useState<"following" | "all">("all");
+
+  const { session } = useAuth();
 
   useEffect(() => {
     // Enable layout animation
     UIManager.setLayoutAnimationEnabledExperimental &&
       UIManager.setLayoutAnimationEnabledExperimental(true);
   }, []);
+
+  const {
+    data: followingFinds,
+    isLoading: followingFindsLoading,
+    isError: followingFindsError,
+    error: followingFindsErrorObject,
+    refetch: refetchFollowingFinds,
+  } = useQuery(findsQuery.findsControllerFollowingFinds());
 
   const {
     data: finds,
@@ -34,7 +48,15 @@ const Page = () => {
     refetch,
   } = useQuery(findsQuery.findsControllerAllFinds());
 
-  if (isLoading) {
+  useEffect(() => {
+    if (tab === "following") {
+      refetchFollowingFinds();
+    } else {
+      refetch();
+    }
+  }, [tab]);
+
+  if (isLoading || (session?.accessToken && followingFindsLoading)) {
     return <Loader />;
   }
 
@@ -60,12 +82,67 @@ const Page = () => {
           exiting={FadeOutLeft}
           style={Theme.BigTitle}
         >
-          finds
+          Finds
         </Animated.Text>
-        <Text style={Theme.Title}>new york city</Text>
+        <Text style={Theme.Title}>New York City</Text>
       </View>
 
-      {/* <Categories /> */}
+      <View
+        style={{
+          paddingHorizontal: 15,
+          display: "flex",
+          flexDirection: "row",
+          gap: 10,
+          alignItems: "center",
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => setTab("all")}
+          style={{
+            backgroundColor: tab === "all" ? Colors.dark : Colors.light,
+            borderWidth: tab === "all" ? 0 : 1,
+            borderColor: Colors.dark,
+            padding: 10,
+            borderRadius: 99,
+          }}
+        >
+          <Text
+            style={[
+              Theme.Caption,
+              { color: tab === "all" ? Colors.light : Colors.dark },
+            ]}
+          >
+            All NYC
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            if (!session?.accessToken) {
+              router.push("/(modals)/login");
+            } else {
+              setTab("following");
+            }
+          }}
+          style={{
+            backgroundColor: tab === "following" ? Colors.dark : Colors.light,
+            borderWidth: tab === "following" ? 0 : 1,
+            borderColor: Colors.dark,
+            padding: 10,
+            borderRadius: 99,
+          }}
+        >
+          <Text
+            style={[
+              Theme.Caption,
+              {
+                color: tab === "following" ? Colors.light : Colors.dark,
+              },
+            ]}
+          >
+            Following
+          </Text>
+        </TouchableOpacity>
+      </View>
 
       <View
         style={Theme.Container}
@@ -114,7 +191,7 @@ const Page = () => {
                 pagingEnabled={true}
                 onRefresh={() => refetch()}
                 refreshing={isLoading}
-                data={finds}
+                data={tab === "all" ? finds : followingFinds}
                 keyExtractor={(item) => item.id.toString()}
                 showsVerticalScrollIndicator={false}
                 snapToInterval={findHeight - 40}
