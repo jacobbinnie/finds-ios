@@ -141,7 +141,7 @@ const Login = () => {
             fontFamily: "font-serif",
             paddingHorizontal: 5,
             textAlign: "center",
-            marginBottom: 30,
+            marginBottom: 15,
           },
         ]}
       >
