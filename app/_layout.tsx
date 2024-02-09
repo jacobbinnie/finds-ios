@@ -16,11 +16,8 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: "(tabs)",
+  initialRouteName: "(modals)/login",
 };
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -66,7 +63,7 @@ function RootLayoutNav() {
       <Stack.Screen
         name="(modals)/login"
         options={{
-          presentation: "modal",
+          presentation: "fullScreenModal",
           headerShown: false,
         }}
       />

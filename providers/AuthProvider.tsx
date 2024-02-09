@@ -26,7 +26,7 @@ interface Session {
 }
 
 interface AuthContextValues {
-  session: Session | null;
+  session: Session | null | undefined;
   setSession: (session: Session | null) => void;
   isCheckingAuth: boolean;
   signout: () => void;
@@ -46,7 +46,7 @@ interface AuthProviderOptions {
 }
 
 export const AuthProvider = ({ children }: AuthProviderOptions) => {
-  const [session, setSession] = useState<Session | null>(null);
+  const [session, setSession] = useState<Session | null | undefined>();
   const [isCheckingAuth, setIsCheckingAuth] = useState(false);
 
   const signout = () => {
@@ -185,6 +185,8 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
           router.push("/");
         }
       }
+    } else {
+      router.push("/(modals)/login");
     }
   }, [session]);
 

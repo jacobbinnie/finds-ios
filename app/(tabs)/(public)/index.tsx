@@ -5,7 +5,7 @@ import {
   UIManager,
   LayoutAnimation,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Theme } from "@/constants/Styles";
 import { useQuery } from "@tanstack/react-query";
 import Find from "@/components/Find/Find";
@@ -18,7 +18,7 @@ import { FlashList } from "@shopify/flash-list";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { set } from "date-fns";
 import { useAuth } from "@/providers/AuthProvider";
-import { router } from "expo-router";
+import { SplashScreen, router } from "expo-router";
 
 const Page = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
@@ -56,6 +56,19 @@ const Page = () => {
     }
   }, [tab]);
 
+  SplashScreen.preventAutoHideAsync();
+
+  const onLayoutRootView = useCallback(async () => {
+    if (session || session === null) {
+      // This tells the splash screen to hide immediately! If we call this after
+      // `setAppIsReady`, then we may see a blank screen while the app is
+      // loading its initial state and rendering its first pixels. So instead,
+      // we hide the splash screen once we know the root view has already
+      // performed layout.
+      void SplashScreen.hideAsync();
+    }
+  }, [session]);
+
   if (isLoading || (session?.accessToken && followingFindsLoading)) {
     return <Loader />;
   }
@@ -65,7 +78,7 @@ const Page = () => {
   }
 
   return (
-    <View style={{ flex: 1, gap: 15 }}>
+    <View onLayout={onLayoutRootView} style={{ flex: 1, gap: 15 }}>
       <SafeAreaView />
 
       <View

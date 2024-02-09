@@ -277,6 +277,7 @@ const MyProfile = () => {
                         backgroundColor: "rgba(255, 255, 255, 0.483)", // Adjust the background color and opacity as needed
                         alignItems: "center",
                         justifyContent: "center",
+                        borderRadius: 99,
                       }}
                     >
                       <ActivityIndicator size="small" color={Colors.light} />

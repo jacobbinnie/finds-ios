@@ -5,6 +5,8 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
+  KeyboardAvoidingView,
+  useWindowDimensions,
 } from "react-native";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { useRouter } from "expo-router";
@@ -16,6 +18,7 @@ import axios from "axios";
 import { authApi, usersApi } from "@/types";
 import { storage } from "@/utils/storage";
 import { AuthUserDto } from "@/types/generated";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type FormInputs = {
   username: string;
@@ -23,13 +26,11 @@ type FormInputs = {
 
 const Onboarding = () => {
   const { session, setSession } = useAuth();
-  const router = useRouter();
 
-  const [screen, setScreen] = useState<"login" | "signup">("login");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const BASE_URL = process.env.EXPO_PUBLIC_API_URL;
+  const dimensions = useWindowDimensions();
 
   const {
     control,
@@ -77,118 +78,126 @@ const Onboarding = () => {
   };
 
   return (
-    <View
-      style={[
-        Theme.Container,
-        {
-          justifyContent: "center",
-          alignItems: "center",
-          gap: 10,
-          backgroundColor: "#FFF",
-        },
-      ]}
+    <KeyboardAvoidingView
+      style={{
+        flex: 1,
+        alignItems: "flex-start",
+      }}
+      behavior={"position"}
+      keyboardVerticalOffset={-150}
     >
       <View
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: 15,
-          marginBottom: 15,
-        }}
+        style={[
+          Theme.Container,
+          {
+            justifyContent: "center",
+            gap: 10,
+            backgroundColor: "#FFF",
+            width: dimensions.width,
+          },
+        ]}
       >
-        <Text style={[Theme.Title, { fontSize: 36, color: Colors.primary }]}>
-          Hey, {session?.profile.firstname} 👋
-        </Text>
+        <View
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            gap: 15,
+            marginBottom: 15,
+          }}
+        >
+          <Text style={Theme.BigTitle}>
+            Welcome, {session?.profile.firstname} 🍕
+          </Text>
 
-        <Text style={Theme.Subtitle}>add a username</Text>
-      </View>
+          <Text style={Theme.Subtitle}>Choose a username</Text>
+        </View>
 
-      <Controller
-        control={control}
-        rules={{
-          required: "Username is required",
-          pattern: {
-            value: /^[A-Za-z0-9._%+-]{3,15}$/i,
-            message:
-              "Invalid username. It should only include letters, numbers, full stops, hyphens, and underscores.",
-          },
-          minLength: {
-            value: 3,
-            message: "Username must be at least 3 characters long",
-          },
-          maxLength: {
-            value: 15,
-            message: "Username must be at most 15 characters long",
-          },
-        }}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            autoComplete="off"
-            textAlign="center"
-            placeholder={"username"}
-            style={[
-              Theme.InputStyle,
-              errors.username ? { borderColor: "red", borderWidth: 1 } : null,
-            ]}
-            onBlur={onBlur}
-            onChangeText={(text) => {
-              onChange(text.toLowerCase());
-              setError(null);
-              clearErrors("username");
-            }}
-            value={value}
-          />
-        )}
-        name="username"
-      />
-      {errors.username && (
-        <Text style={[Theme.Caption, { color: "red" }]}>
-          {errors.username.message}
-        </Text>
-      )}
-
-      <TouchableOpacity
-        onPress={handleSubmit(onSubmit)}
-        style={{
-          width: "100%",
-          backgroundColor: Colors.primary,
-          height: 50,
-          borderRadius: 10,
-          marginTop: 15,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        {isSubmitting ? (
-          <ActivityIndicator color={Colors.light} />
-        ) : (
-          <Text
-            style={{
-              fontFamily: "font-b",
-              fontSize: 16,
-              color: Colors.light,
-              textAlign: "center",
-              lineHeight: 50,
-            }}
-          >
-            {"Check availability"}
+        <Controller
+          control={control}
+          rules={{
+            required: "Username is required",
+            pattern: {
+              value: /^[A-Za-z0-9._%+-]{3,15}$/i,
+              message:
+                "Invalid username. It should only include letters, numbers, full stops, hyphens, and underscores.",
+            },
+            minLength: {
+              value: 3,
+              message: "Username must be at least 3 characters long",
+            },
+            maxLength: {
+              value: 15,
+              message: "Username must be at most 15 characters long",
+            },
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextInput
+              autoComplete="off"
+              placeholder={"username"}
+              placeholderTextColor={Colors.grey}
+              style={[
+                Theme.InputStyle,
+                errors.username ? { borderColor: "red", borderWidth: 1 } : null,
+              ]}
+              onBlur={onBlur}
+              onChangeText={(text) => {
+                onChange(text.toLowerCase());
+                setError(null);
+                clearErrors("username");
+              }}
+              value={value}
+            />
+          )}
+          name="username"
+        />
+        {errors.username && (
+          <Text style={[Theme.Caption, { color: "red" }]}>
+            {errors.username.message}
           </Text>
         )}
-      </TouchableOpacity>
 
-      {error && (
-        <Text
-          style={[
-            Theme.Caption,
-            { color: "red", marginTop: 15, textAlign: "center" },
-          ]}
+        <TouchableOpacity
+          onPress={handleSubmit(onSubmit)}
+          style={{
+            width: "100%",
+            backgroundColor: Colors.primary,
+            height: 50,
+            borderRadius: 10,
+            marginTop: 15,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
         >
-          {error}
-        </Text>
-      )}
-    </View>
+          {isSubmitting ? (
+            <ActivityIndicator color={Colors.light} />
+          ) : (
+            <Text
+              style={{
+                fontFamily: "font-b",
+                fontSize: 16,
+                color: Colors.light,
+                textAlign: "center",
+                lineHeight: 50,
+              }}
+            >
+              {"Check availability"}
+            </Text>
+          )}
+        </TouchableOpacity>
+
+        {error && (
+          <Text
+            style={[
+              Theme.Caption,
+              { color: "red", marginTop: 15, textAlign: "center" },
+            ]}
+          >
+            {error}
+          </Text>
+        )}
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
