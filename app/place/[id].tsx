@@ -89,44 +89,47 @@ const PlaceDetails = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <SafeAreaView />
-
-      <TouchableOpacity onPress={() => router.back()}>
-        <Animated.View
-          entering={FadeInLeft.springify().delay(800)}
-          exiting={FadeOutRight}
+      <SafeAreaView edges={["top", "left", "right"]}>
+        <View
           style={{
-            padding: 10,
-            borderRadius: 99,
-            overflow: "hidden",
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            paddingRight: 100,
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            paddingHorizontal: 15,
           }}
         >
-          <Ionicons name="arrow-back" size={30} color="black" />
-        </Animated.View>
-      </TouchableOpacity>
+          <TouchableOpacity onPress={() => router.back()}>
+            <Animated.View
+              entering={FadeInLeft.springify().delay(800)}
+              exiting={FadeOutRight}
+              style={{
+                borderRadius: 99,
+                overflow: "hidden",
+                paddingRight: 100,
+              }}
+            >
+              <Ionicons name="arrow-back" size={30} color="black" />
+            </Animated.View>
+          </TouchableOpacity>
 
-      <TouchableOpacity onPress={handleAddNewFind}>
-        <Animated.View
-          entering={FadeInRight.springify().delay(100)}
-          exiting={FadeOutRight}
-          style={{
-            padding: 10,
-            borderRadius: 99,
-            overflow: "hidden",
-            borderWidth: 1,
-            borderColor: Colors.dark,
-            position: "absolute",
-            right: 15,
-            bottom: 0,
-          }}
-        >
-          <Text style={Theme.ButtonText}>Add find</Text>
-        </Animated.View>
-      </TouchableOpacity>
+          <TouchableOpacity onPress={handleAddNewFind}>
+            <Animated.View
+              entering={FadeInRight.springify().delay(100)}
+              exiting={FadeOutRight}
+              style={{
+                padding: 10,
+                borderRadius: 99,
+                overflow: "hidden",
+                borderWidth: 1,
+                borderColor: Colors.dark,
+              }}
+            >
+              <Text style={Theme.Caption}>Add find</Text>
+            </Animated.View>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
 
       <View style={{ flex: 1, gap: 15, paddingTop: 10 }}>
         <View style={{ paddingHorizontal: 15, gap: 5 }}>

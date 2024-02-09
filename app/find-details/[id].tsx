@@ -8,7 +8,7 @@ import {
 import React, { useRef, useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import Colors from "@/constants/Colors";
-import { Feather, Ionicons } from "@expo/vector-icons";
+import { Feather, FontAwesome, Ionicons } from "@expo/vector-icons";
 import { Theme } from "@/constants/Styles";
 import { Divider, Image } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
@@ -88,34 +88,6 @@ const FindDetails = () => {
         backgroundColor: "#FFF",
       }}
     >
-      <TouchableOpacity
-        onPress={() => {
-          const stringedPlace = JSON.stringify(find.place);
-
-          router.replace({
-            pathname: `/place/${find.place.googlePlaceId}`,
-            params: { data: stringedPlace },
-          });
-        }}
-        style={{
-          backgroundColor: Colors.light,
-          paddingHorizontal: 15,
-          paddingVertical: 10,
-          gap: 5,
-          borderRadius: 99,
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          position: "absolute",
-          right: 15,
-          top: 15,
-          zIndex: 20,
-        }}
-      >
-        <Text style={Theme.ButtonText}>Place details</Text>
-        <Ionicons name="arrow-forward-outline" size={20} color={Colors.dark} />
-      </TouchableOpacity>
-
       <ScrollView style={{ paddingBottom: 550 }}>
         <ViewShot ref={ref} options={{ format: "jpg", quality: 1 }}>
           <ImageSwiper
@@ -232,13 +204,25 @@ const FindDetails = () => {
                   })
                 }
               >
-                <Feather name="share" size={30} color={Colors.light} />
+                <Feather name="share" size={30} color={Colors.grey} />
               </TouchableOpacity>
             </View>
           </View>
 
           <View style={{ gap: 15 }}>
-            <Text style={Theme.BigTitle}>Review</Text>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Text style={Theme.BigTitle}>Review</Text>
+              <Text style={[Theme.Caption, { color: Colors.grey }]}>
+                {find.createdAt && formatPostDate(find.createdAt)}
+              </Text>
+            </View>
 
             <View
               style={{
@@ -261,47 +245,47 @@ const FindDetails = () => {
               }}
             >
               {find.tags.map((tag, index) => (
-                <Text
+                <View
                   key={index}
-                  style={[
-                    Theme.Caption,
-                    {
-                      backgroundColor: Colors.light,
-                      padding: 10,
-                      borderRadius: 10,
-                      overflow: "hidden",
-                      textAlign: "center",
-                    },
-                  ]}
+                  style={{
+                    backgroundColor: Colors.light,
+                    padding: 10,
+                    borderRadius: 99,
+                    overflow: "hidden",
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: 5,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
                 >
-                  {tag}
-                </Text>
+                  <FontAwesome name="tag" size={16} color={Colors.dark} />
+                  <Text
+                    key={index}
+                    style={[
+                      Theme.Caption,
+                      {
+                        textAlign: "center",
+                      },
+                    ]}
+                  >
+                    {tag}
+                  </Text>
+                </View>
               ))}
             </View>
 
             <View
               style={{
                 display: "flex",
-                gap: 5,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
               }}
             >
-              <Text
-                numberOfLines={1}
-                style={[
-                  Theme.Caption,
-                  {
-                    color: Colors.grey,
-                    fontFamily: "font-b",
-                  },
-                ]}
-              >
-                {find.place.name}
-              </Text>
               <View
                 style={{
                   display: "flex",
-                  flexDirection: "row",
-                  alignItems: "baseline",
                   gap: 5,
                 }}
               >
@@ -310,15 +294,64 @@ const FindDetails = () => {
                   style={[
                     Theme.Caption,
                     {
-                      color: Colors.grey,
-
-                      textAlign: "right",
+                      color: Colors.dark,
+                      fontFamily: "font-b",
                     },
                   ]}
                 >
-                  {find.place.address}
+                  {find.place.name}
                 </Text>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "baseline",
+                    gap: 5,
+                  }}
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={[
+                      Theme.Caption,
+                      {
+                        color: Colors.dark,
+
+                        textAlign: "right",
+                      },
+                    ]}
+                  >
+                    {find.place.address}
+                  </Text>
+                </View>
               </View>
+              <TouchableOpacity
+                onPress={() => {
+                  const stringedPlace = JSON.stringify(find.place);
+
+                  router.replace({
+                    pathname: `/place/${find.place.googlePlaceId}`,
+                    params: { data: stringedPlace },
+                  });
+                }}
+                style={{
+                  backgroundColor: Colors.dark,
+                  padding: 10,
+                  gap: 5,
+                  borderRadius: 99,
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <Text style={[Theme.Caption, { color: Colors.light }]}>
+                  Go to place
+                </Text>
+                <Ionicons
+                  name="arrow-forward-outline"
+                  size={15}
+                  color={Colors.light}
+                />
+              </TouchableOpacity>
             </View>
           </View>
         </View>

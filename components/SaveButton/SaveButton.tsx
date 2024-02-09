@@ -87,7 +87,7 @@ const SaveButton = ({ findId }: { findId: number }) => {
             color={
               save?.id
                 ? save.deleted_at
-                  ? Colors.light
+                  ? Colors.grey
                   : Colors.primary
                 : Colors.light
             }

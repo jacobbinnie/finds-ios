@@ -26,7 +26,12 @@ import Animated, {
 import { kFormatter } from "@/utils/kFormatter";
 import Loader from "@/components/Loader/Loader";
 import { FlashList } from "@shopify/flash-list";
-import { Feather, FontAwesome5, Ionicons } from "@expo/vector-icons";
+import {
+  Feather,
+  FontAwesome5,
+  Ionicons,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import { SaveFormat, manipulateAsync } from "expo-image-manipulator";
 import * as FileSystem from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
@@ -243,24 +248,17 @@ const MyProfile = () => {
                 borderWidth: session?.profile.avatar ? 0 : 1,
               }}
             >
-              <View
+              <MaterialCommunityIcons
+                name="pencil-circle"
+                size={24}
+                color="black"
                 style={{
-                  width: 70,
-                  height: 70,
                   position: "absolute",
+                  bottom: 0,
                   zIndex: 10,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  right: 0,
                 }}
-              >
-                <Feather
-                  name="edit"
-                  size={20}
-                  style={{ position: "absolute", bottom: 0, right: 0 }}
-                  color={Colors.dark}
-                />
-              </View>
+              />
 
               {images[0] ? (
                 <>
@@ -310,10 +308,10 @@ const MyProfile = () => {
                   alignItems: "center",
                 }}
               >
-                <Text style={[Theme.BodyText, { color: Colors.grey }]}>
+                <Text style={[Theme.BodyText, { color: Colors.dark }]}>
                   {kFormatter(profile.followers)} followers
                 </Text>
-                <Text style={[Theme.BodyText, { color: Colors.grey }]}>
+                <Text style={[Theme.BodyText, { color: Colors.dark }]}>
                   {kFormatter(profile.following)} following
                 </Text>
               </View>

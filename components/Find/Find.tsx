@@ -219,6 +219,16 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
               </Text>
 
               <View style={{ display: "flex", flexDirection: "row", gap: 15 }}>
+                {session?.accessToken ? (
+                  <SaveButton findId={find.id} />
+                ) : (
+                  <TouchableOpacity
+                    onPress={() => router.push("/(modals)/login")}
+                  >
+                    <Ionicons name="ios-heart" size={30} color={Colors.grey} />
+                  </TouchableOpacity>
+                )}
+
                 <TouchableOpacity
                   onPress={() =>
                     router.push({
@@ -226,18 +236,8 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
                     })
                   }
                 >
-                  <Feather name="share" size={30} color={Colors.light} />
+                  <Feather name="share" size={30} color={Colors.grey} />
                 </TouchableOpacity>
-
-                {session?.accessToken ? (
-                  <SaveButton findId={find.id} />
-                ) : (
-                  <TouchableOpacity
-                    onPress={() => router.push("/(modals)/login")}
-                  >
-                    <Ionicons name="ios-heart" size={30} color={Colors.light} />
-                  </TouchableOpacity>
-                )}
               </View>
             </View>
           </View>
