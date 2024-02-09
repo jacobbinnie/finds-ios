@@ -221,9 +221,7 @@ const Login = () => {
                   errors.email ? { borderColor: "red", borderWidth: 1 } : null,
                 ]}
                 onBlur={onBlur}
-                onChangeText={(text) => {
-                  onChange(text.toLowerCase());
-                }}
+                onChangeText={onChange}
                 value={value}
               />
             )}
