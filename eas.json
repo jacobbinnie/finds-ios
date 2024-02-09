@@ -5,12 +5,21 @@
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "extends": "production"
     },
     "preview": {
-      "distribution": "internal"
+      "distribution": "internal",
+      "extends": "production"
     },
-    "production": {}
+    "production": {
+      "yarn": "1.22.21",
+      "distribution": "internal",
+      "node": "18.17.1",
+      "ios": {
+        "cocoapods": "1.15.2"
+      }
+    }
   },
   "submit": {
     "production": {}

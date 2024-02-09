@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "finds-ios",
+    "name": "Finds",
     "slug": "finds-ios",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/finds-icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
@@ -20,19 +20,6 @@
       "infoPlist": {
         "LSApplicationQueriesSchemes": ["instagram"]
       }
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "permissions": ["android.permission.RECORD_AUDIO"],
-      "package": "com.jacobbinnie.findsios"
-    },
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
       "expo-router",
@@ -56,6 +43,10 @@
       "eas": {
         "projectId": "b5ebc237-16a8-41ab-97c4-0bacbe68e91d"
       }
+    },
+    "android": {
+      "permissions": ["android.permission.RECORD_AUDIO"],
+      "package": "com.jacobbinnie.findsios"
     }
   }
 }

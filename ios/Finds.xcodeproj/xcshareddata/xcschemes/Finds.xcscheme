@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "findsios.app"
-               BlueprintName = "findsios"
-               ReferencedContainer = "container:findsios.xcodeproj">
+               BuildableName = "Finds.app"
+               BlueprintName = "Finds"
+               ReferencedContainer = "container:Finds.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "findsiosTests.xctest"
-               BlueprintName = "findsiosTests"
-               ReferencedContainer = "container:findsios.xcodeproj">
+               BuildableName = "FindsTests.xctest"
+               BlueprintName = "FindsTests"
+               ReferencedContainer = "container:Finds.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "findsios.app"
-            BlueprintName = "findsios"
-            ReferencedContainer = "container:findsios.xcodeproj">
+            BuildableName = "Finds.app"
+            BlueprintName = "Finds"
+            ReferencedContainer = "container:Finds.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "findsios.app"
-            BlueprintName = "findsios"
-            ReferencedContainer = "container:findsios.xcodeproj">
+            BuildableName = "Finds.app"
+            BlueprintName = "Finds"
+            ReferencedContainer = "container:Finds.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
