@@ -16,7 +16,10 @@
     "ios": {
       "supportsTablet": true,
       "usesAppleSignIn": true,
-      "bundleIdentifier": "com.jacobbinnie.findsios"
+      "bundleIdentifier": "com.jacobbinnie.findsios",
+      "infoPlist": {
+        "LSApplicationQueriesSchemes": ["instagram"]
+      }
     },
     "android": {
       "adaptiveIcon": {

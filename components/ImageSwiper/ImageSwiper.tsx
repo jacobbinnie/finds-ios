@@ -16,7 +16,7 @@ interface ImageSwiperProps {
   height: number;
   onPressCallback?: () => void;
   isSwipable?: boolean;
-  isCapturing?: boolean;
+  hideOverlays?: boolean;
 }
 
 const ImageSwiper = ({
@@ -24,7 +24,7 @@ const ImageSwiper = ({
   height,
   onPressCallback,
   isSwipable,
-  isCapturing,
+  hideOverlays,
 }: ImageSwiperProps) => {
   const [displayWidth, setDisplayWidth] = useState<number>();
   const dimensions = useWindowDimensions();
@@ -57,7 +57,7 @@ const ImageSwiper = ({
           }}
         >
           <MaterialIcons
-            style={{ opacity: isCapturing ? 0 : 1 }}
+            style={{ opacity: hideOverlays ? 0 : 1 }}
             name="photo-library"
             size={24}
             color={Colors.light}

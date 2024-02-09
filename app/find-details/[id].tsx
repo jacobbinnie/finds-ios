@@ -122,7 +122,6 @@ const FindDetails = () => {
             isSwipable={find.images.length > 1}
             images={find.images}
             height={deviceHeight * 0.5}
-            isCapturing={isCapturing}
           />
           <View
             style={{
@@ -226,8 +225,14 @@ const FindDetails = () => {
                 </Text>
               </View>
 
-              <TouchableOpacity onPress={() => handleShare()}>
-                <Feather name="share" size={30} color={Colors.dark} />
+              <TouchableOpacity
+                onPress={() =>
+                  router.push({
+                    pathname: `/(modals)/sharing/${find.id}`,
+                  })
+                }
+              >
+                <Feather name="share" size={30} color={Colors.light} />
               </TouchableOpacity>
             </View>
           </View>

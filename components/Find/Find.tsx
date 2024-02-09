@@ -11,8 +11,6 @@ import { FindDto } from "@/types/generated";
 import { formatPostDate } from "@/utils/formatPostDate";
 import SaveButton from "../SaveButton/SaveButton";
 import { useRouter } from "expo-router";
-import ViewShot from "react-native-view-shot";
-import * as Sharing from "expo-sharing";
 
 interface FindProps {
   isProfileFind?: boolean;
@@ -24,8 +22,6 @@ interface FindProps {
 const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
   const router = useRouter();
   const { session, signout } = useAuth();
-
-  const [isCapturing, setIsCapturing] = useState(false);
 
   const bottomOffset = 15;
   const descriptionCardHeight = 200;
@@ -45,27 +41,6 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
     router.push({
       pathname: `/find-details/${find.id}`,
     });
-  };
-
-  const ref = useRef<ViewShot>(null);
-
-  const handleCapture = () => {
-    setIsCapturing(true); // Set capturing to true when capturing starts
-    return (
-      ref.current &&
-      ref.current.capture &&
-      ref.current.capture().then((uri: string) => {
-        setIsCapturing(false); // Set capturing to false when capturing ends
-        return uri;
-      })
-    );
-  };
-
-  const handleShare = async () => {
-    const uri = await handleCapture();
-    if (uri) {
-      Sharing.shareAsync(uri);
-    }
   };
 
   return (
@@ -100,38 +75,6 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
             height={imageheight}
             onPressCallback={onPressCallback}
           />
-
-          <View style={{ width: "100%", opacity: 0, position: "absolute" }}>
-            <ViewShot ref={ref} options={{ format: "jpg", quality: 1 }}>
-              <ImageSwiper
-                images={find.images}
-                height={imageheight}
-                onPressCallback={onPressCallback}
-                isCapturing={isCapturing}
-              />
-              <View
-                style={{
-                  position: "absolute",
-                  opacity: isCapturing ? 1 : 0,
-                  bottom: 10,
-                  left: 10,
-                }}
-              >
-                <Text
-                  style={[
-                    Theme.BigTitle,
-                    {
-                      color: Colors.light,
-                      fontFamily: "font-serif",
-                      paddingHorizontal: 5,
-                    },
-                  ]}
-                >
-                  finds.nyc
-                </Text>
-              </View>
-            </ViewShot>
-          </View>
 
           <View
             style={{
@@ -276,7 +219,13 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
               </Text>
 
               <View style={{ display: "flex", flexDirection: "row", gap: 15 }}>
-                <TouchableOpacity onPress={() => handleShare()}>
+                <TouchableOpacity
+                  onPress={() =>
+                    router.push({
+                      pathname: `/(modals)/sharing/${find.id}`,
+                    })
+                  }
+                >
                   <Feather name="share" size={30} color={Colors.light} />
                 </TouchableOpacity>
 

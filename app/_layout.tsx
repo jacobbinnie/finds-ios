@@ -28,7 +28,7 @@ export default function RootLayout() {
     "font-s": require("../assets/fonts/Gilroy-SemiBold.ttf"),
     "font-mi": require("../assets/fonts/Gilroy-MediumItalic.ttf"),
     "font-m": require("../assets/fonts/Gilroy-Medium.ttf"),
-    "font-serif": require("../assets/fonts/OliveVillage-Italic.ttf"),
+    "font-serif": require("../assets/fonts/HVAnalogueBold.ttf"),
   });
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
@@ -85,6 +85,16 @@ function RootLayoutNav() {
         options={{ headerShown: false, presentation: "modal" }}
       />
       <Stack.Screen name="new-find/[id]" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="(modals)/sharing/[id]"
+        options={{
+          presentation: "modal",
+          headerTitle: "Share find",
+          headerTitleStyle: Theme.Title,
+          headerBackTitle: "Back",
+          headerBackTitleStyle: Theme.Caption,
+        }}
+      />
     </Stack>
   );
 }
