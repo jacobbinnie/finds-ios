@@ -1,13 +1,12 @@
 import { Theme } from "@/constants/Styles";
 import { AuthProvider } from "@/providers/AuthProvider";
-import { Ionicons } from "@expo/vector-icons";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
-import { SplashScreen, Stack, useRouter } from "expo-router";
+import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import "react-native-url-polyfill/auto";
 import { RootSiblingParent } from "react-native-root-siblings";
+import { StatusBar } from "react-native";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -16,7 +15,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: "/",
+  initialRouteName: "(modals)/loading",
 };
 
 export default function RootLayout() {

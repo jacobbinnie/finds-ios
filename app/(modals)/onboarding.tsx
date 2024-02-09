@@ -135,6 +135,7 @@ const Onboarding = () => {
               autoComplete="off"
               placeholder={"username"}
               placeholderTextColor={Colors.grey}
+              autoCapitalize={"none"}
               style={[
                 Theme.InputStyle,
                 errors.username ? { borderColor: "red", borderWidth: 1 } : null,
@@ -142,8 +143,6 @@ const Onboarding = () => {
               onBlur={onBlur}
               onChangeText={(text) => {
                 onChange(text.toLowerCase());
-                setError(null);
-                clearErrors("username");
               }}
               value={value}
             />

@@ -233,10 +233,7 @@ const NewFind = () => {
       }}
       behavior={"position"}
     >
-      <SafeAreaView
-        edges={["top", "left", "right"]}
-        style={{ backgroundColor: "#FFF" }}
-      >
+      <SafeAreaView edges={["top", "left", "right"]}>
         <View
           style={{
             display: "flex",

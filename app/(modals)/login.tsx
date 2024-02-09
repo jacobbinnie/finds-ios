@@ -138,7 +138,6 @@ const Login = () => {
       <SafeAreaView
         edges={["top", "left", "right"]}
         style={{
-          backgroundColor: "#FFF",
           width: dimensions.width,
           minHeight: dimensions.height,
         }}
@@ -178,6 +177,7 @@ const Login = () => {
                 <TextInput
                   placeholder="First name"
                   placeholderTextColor={Colors.grey}
+                  autoCapitalize={"none"}
                   style={[
                     Theme.InputStyle,
                     errors.firstname
@@ -212,6 +212,7 @@ const Login = () => {
                 autoFocus
                 placeholder="Email"
                 placeholderTextColor={Colors.grey}
+                autoCapitalize={"none"}
                 style={[
                   Theme.InputStyle,
                   errors.email ? { borderColor: "red", borderWidth: 1 } : null,
@@ -219,7 +220,6 @@ const Login = () => {
                 onBlur={onBlur}
                 onChangeText={(text) => {
                   onChange(text.toLowerCase());
-                  clearErrors("email");
                 }}
                 value={value}
               />
@@ -252,6 +252,7 @@ const Login = () => {
               <TextInput
                 placeholder="Password"
                 placeholderTextColor={Colors.grey}
+                autoCapitalize={"none"}
                 style={[
                   Theme.InputStyle,
                   errors.password
