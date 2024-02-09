@@ -35,7 +35,7 @@ const Layout = () => {
         }}
       />
       <Tabs.Screen
-        name="(auth)/search/search"
+        name="(auth)/search"
         options={{
           headerShown: false,
           tabBarLabel: "Search",
@@ -49,7 +49,7 @@ const Layout = () => {
             if (!session) {
               router.push("/(modals)/login");
             } else {
-              router.push("/search/search");
+              router.push("/search");
             }
           },
         }}
