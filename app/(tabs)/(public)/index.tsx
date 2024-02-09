@@ -104,7 +104,7 @@ const Page = () => {
             style={{
               backgroundColor: tab === "all" ? Colors.dark : Colors.light,
               borderWidth: tab === "all" ? 0 : 1,
-              borderColor: Colors.dark,
+              borderColor: Colors.grey,
               padding: 10,
               borderRadius: 99,
             }}
@@ -112,7 +112,7 @@ const Page = () => {
             <Text
               style={[
                 Theme.Caption,
-                { color: tab === "all" ? Colors.light : Colors.dark },
+                { color: tab === "all" ? Colors.light : Colors.grey },
               ]}
             >
               All NYC
@@ -129,7 +129,7 @@ const Page = () => {
             style={{
               backgroundColor: tab === "following" ? Colors.dark : Colors.light,
               borderWidth: tab === "following" ? 0 : 1,
-              borderColor: Colors.dark,
+              borderColor: Colors.grey,
               padding: 10,
               borderRadius: 99,
             }}
@@ -138,7 +138,7 @@ const Page = () => {
               style={[
                 Theme.Caption,
                 {
-                  color: tab === "following" ? Colors.light : Colors.dark,
+                  color: tab === "following" ? Colors.light : Colors.grey,
                 },
               ]}
             >

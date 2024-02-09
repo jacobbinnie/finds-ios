@@ -211,7 +211,7 @@ const MyProfile = () => {
                 justifyContent: "center",
               }}
             >
-              <Text style={[Theme.ButtonText, { color: Colors.grey }]}>
+              <Text style={[Theme.Caption, { color: Colors.grey }]}>
                 Sign out
               </Text>
             </TouchableOpacity>

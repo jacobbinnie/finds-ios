@@ -24,7 +24,7 @@ const ProfileSearchResult = ({ profile }: SearchResultProps) => {
       {profile.avatar ? (
         <Image
           source={{ uri: profile.avatar }}
-          style={{ width: 25, height: 25 }}
+          style={{ width: 30, height: 30, borderRadius: 99 }}
         />
       ) : (
         <View
