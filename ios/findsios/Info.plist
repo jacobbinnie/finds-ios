@@ -38,7 +38,7 @@
     <string>1</string>
     <key>LSApplicationQueriesSchemes</key>
     <array>
-      <string>instagram-stories</string>
+      <string>instagram</string>
     </array>
     <key>LSRequiresIPhoneOS</key>
     <true/>
@@ -63,6 +63,7 @@
     <string>Finds needs access to your photos</string>
     <key>NSUserActivityTypes</key>
     <array>
+      <string>$(PRODUCT_BUNDLE_IDENTIFIER).expo.index_route</string>
       <string>$(PRODUCT_BUNDLE_IDENTIFIER).expo.index_route</string>
       <string>$(PRODUCT_BUNDLE_IDENTIFIER).expo.index_route</string>
     </array>
