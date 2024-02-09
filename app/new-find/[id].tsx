@@ -28,6 +28,7 @@ import * as ImagePicker from "expo-image-picker";
 import { Image } from "react-native-elements";
 import { SaveFormat, manipulateAsync } from "expo-image-manipulator";
 import { set } from "date-fns";
+import { StatusBar } from "expo-status-bar";
 
 const imgDir = FileSystem.documentDirectory + "images/";
 
@@ -233,7 +234,11 @@ const NewFind = () => {
       }}
       behavior={"position"}
     >
-      <SafeAreaView edges={["top", "left", "right"]}>
+      <SafeAreaView
+        style={{ backgroundColor: "#FFF" }}
+        edges={["top", "left", "right"]}
+      >
+        <StatusBar style="dark" />
         <View
           style={{
             display: "flex",

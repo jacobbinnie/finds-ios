@@ -36,6 +36,7 @@ import { SaveFormat, manipulateAsync } from "expo-image-manipulator";
 import * as FileSystem from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
 import { usersApi } from "@/types";
+import { StatusBar } from "expo-status-bar";
 
 const imgDir = FileSystem.documentDirectory + "images/";
 
@@ -180,6 +181,7 @@ const MyProfile = () => {
   return (
     <View style={{ flex: 1, gap: 15 }}>
       <SafeAreaView />
+      <StatusBar style="dark" />
 
       <View style={{ paddingHorizontal: 15, gap: 15 }}>
         <View

@@ -25,6 +25,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { FlashList } from "@shopify/flash-list";
 import Loader from "@/components/Loader/Loader";
+import { StatusBar } from "expo-status-bar";
 
 const PlaceDetails = () => {
   const { id, data } = useLocalSearchParams<{
@@ -90,6 +91,7 @@ const PlaceDetails = () => {
   return (
     <View style={{ flex: 1 }}>
       <SafeAreaView edges={["top", "left", "right"]}>
+        <StatusBar style="dark" />
         <View
           style={{
             display: "flex",

@@ -6,7 +6,6 @@ import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import "react-native-url-polyfill/auto";
 import { RootSiblingParent } from "react-native-root-siblings";
-import { StatusBar } from "react-native";
 
 export {
   // Catch any errors thrown by the Layout component.

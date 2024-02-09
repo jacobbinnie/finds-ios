@@ -23,6 +23,7 @@ import Animated, {
   FadeOutRight,
 } from "react-native-reanimated";
 import { FlashList } from "@shopify/flash-list";
+import { StatusBar } from "expo-status-bar";
 
 const Search = () => {
   const deviceHeight = useWindowDimensions().height;
@@ -42,6 +43,7 @@ const Search = () => {
   return (
     <View style={[Theme.Container, { backgroundColor: "#FFF" }]}>
       <SafeAreaView />
+      <StatusBar style="dark" />
 
       <View
         style={{

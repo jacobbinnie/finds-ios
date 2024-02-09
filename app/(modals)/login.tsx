@@ -17,6 +17,7 @@ import { storage } from "@/utils/storage";
 import { Marquee } from "@animatereactnative/marquee";
 import Animated, { FadeInLeft, FadeOutLeft } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
 
 type FormInputs = {
   email: string;
@@ -140,8 +141,10 @@ const Login = () => {
         style={{
           width: dimensions.width,
           minHeight: dimensions.height,
+          backgroundColor: "#FFF",
         }}
       >
+        <StatusBar style="dark" />
         <View
           style={[
             Theme.Container,

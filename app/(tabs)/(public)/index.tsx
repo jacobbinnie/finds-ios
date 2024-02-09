@@ -19,6 +19,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { set } from "date-fns";
 import { useAuth } from "@/providers/AuthProvider";
 import { SplashScreen, router } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 
 const Page = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
@@ -80,6 +81,7 @@ const Page = () => {
   return (
     <View onLayout={onLayoutRootView} style={{ flex: 1, gap: 15 }}>
       <SafeAreaView />
+      <StatusBar style="dark" />
 
       <View
         style={{

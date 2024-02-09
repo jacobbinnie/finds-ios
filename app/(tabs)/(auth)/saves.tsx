@@ -16,6 +16,7 @@ import Animated, { FadeInLeft, FadeInDown } from "react-native-reanimated";
 import Loader from "@/components/Loader/Loader";
 import { FlashList } from "@shopify/flash-list";
 import Find from "@/components/Find/Find";
+import { StatusBar } from "expo-status-bar";
 
 const Saves = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
@@ -45,6 +46,7 @@ const Saves = () => {
   return (
     <View style={{ flex: 1, gap: 15 }}>
       <SafeAreaView />
+      <StatusBar style="dark" />
 
       {/* <Categories /> */}
 
