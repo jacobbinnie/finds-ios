@@ -51,7 +51,7 @@ const Saves = () => {
       {/* <Categories /> */}
 
       <View
-        style={Theme.Container}
+        style={[Theme.Container, { marginTop: 5 }]}
         onLayout={(e) => {
           if (findHeight) {
             e.nativeEvent.layout.height < findHeight &&

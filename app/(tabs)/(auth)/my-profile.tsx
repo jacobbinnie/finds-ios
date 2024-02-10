@@ -183,7 +183,7 @@ const MyProfile = () => {
       <SafeAreaView />
       <StatusBar style="dark" />
 
-      <View style={{ paddingHorizontal: 15, gap: 15 }}>
+      <View style={{ paddingHorizontal: 15, gap: 15, marginTop: 5 }}>
         <View
           style={{
             display: "flex",

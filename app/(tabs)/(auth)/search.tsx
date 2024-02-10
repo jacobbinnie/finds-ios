@@ -53,6 +53,7 @@ const Search = () => {
           justifyContent: "space-between",
           alignItems: "center",
           gap: 15,
+          marginTop: 15,
         }}
       >
         {isSearching ? (

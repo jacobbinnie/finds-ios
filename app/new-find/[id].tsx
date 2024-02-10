@@ -250,6 +250,8 @@ const NewFind = () => {
             justifyContent: "space-between",
             alignItems: "center",
             paddingHorizontal: 15,
+            marginTop: 15,
+            marginBottom: 5,
           }}
         >
           <TouchableOpacity onPress={() => router.back()}>

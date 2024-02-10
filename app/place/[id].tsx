@@ -95,8 +95,8 @@ const PlaceDetails = () => {
             display: "flex",
             flexDirection: "row",
             justifyContent: "space-between",
-            alignItems: "center",
             paddingHorizontal: 15,
+            marginTop: 15,
           }}
         >
           <TouchableOpacity onPress={() => router.back()}>
@@ -118,13 +118,15 @@ const PlaceDetails = () => {
               entering={FadeInRight.springify().delay(100)}
               exiting={FadeOutRight}
               style={{
-                padding: 10,
+                padding: 15,
                 borderRadius: 99,
                 overflow: "hidden",
                 backgroundColor: Colors.primary,
               }}
             >
-              <Text style={Theme.Caption}>Add find</Text>
+              <Text style={[Theme.Caption, { fontFamily: "font-b" }]}>
+                Add find
+              </Text>
             </Animated.View>
           </TouchableOpacity>
         </View>
