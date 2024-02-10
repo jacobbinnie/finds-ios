@@ -179,9 +179,11 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
   useEffect(() => {
     if (session?.profile) {
       if (!session?.profile?.username) {
-        router.push("/(modals)/onboarding");
+        router.push("/(modals)/onboarding-username");
+      } else if (!session.profile.firstname) {
+        router.push("/(modals)/onboarding-firstname");
       } else {
-        if (pathname === "/login" || pathname === "/onboarding") {
+        if (pathname === "/login" || pathname === "/onboarding-firstname") {
           router.push("/");
         }
       }

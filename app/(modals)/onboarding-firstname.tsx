@@ -21,10 +21,10 @@ import { AuthUserDto } from "@/types/generated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 type FormInputs = {
-  username: string;
+  firstname: string;
 };
 
-const Onboarding = () => {
+const OnboardingFirstname = () => {
   const { session, setSession } = useAuth();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -39,7 +39,7 @@ const Onboarding = () => {
     clearErrors,
   } = useForm<FormInputs>({
     defaultValues: {
-      username: "",
+      firstname: "",
     },
   });
 
@@ -47,8 +47,8 @@ const Onboarding = () => {
     setIsSubmitting(true);
     setError(null);
     try {
-      const res: any = await usersApi.usersControllerUpdateUsername(
-        data.username
+      const res: any = await usersApi.usersControllerUpdateFirstname(
+        data.firstname
       );
 
       if (session && res.data) {
@@ -100,58 +100,63 @@ const Onboarding = () => {
         <View
           style={{
             display: "flex",
+            marginBottom: 15,
+            flexDirection: "row",
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: Colors.dark,
+              padding: 10,
+              borderRadius: 99,
+            }}
+          >
+            <Text style={[Theme.Caption, { color: Colors.light }]}>
+              Step 2 of 2
+            </Text>
+          </View>
+        </View>
+        <View
+          style={{
+            display: "flex",
             justifyContent: "center",
             gap: 15,
             marginBottom: 15,
           }}
         >
-          <Text style={Theme.BigTitle}>
-            Welcome, {session?.profile.firstname} 🍕
-          </Text>
-
-          <Text style={Theme.Subtitle}>Choose a username</Text>
+          <Text style={Theme.BigTitle}>What's your first name?</Text>
         </View>
 
         <Controller
           control={control}
           rules={{
-            required: "Username is required",
+            required: "First name is required",
             pattern: {
-              value: /^[A-Za-z0-9._%+-]{3,15}$/i,
-              message:
-                "Invalid username. It should only include letters, numbers, full stops, hyphens, and underscores.",
-            },
-            minLength: {
-              value: 3,
-              message: "Username must be at least 3 characters long",
-            },
-            maxLength: {
-              value: 15,
-              message: "Username must be at most 15 characters long",
+              value: /^[a-z ,.'-]+$/i,
+              message: "Invalid first name. It should only include letters.",
             },
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
               autoComplete="off"
-              placeholder={"username"}
+              placeholder={"eg. Jessica"}
               placeholderTextColor={Colors.grey}
-              autoCapitalize={"none"}
               style={[
                 Theme.InputStyle,
-                errors.username ? { borderColor: "red", borderWidth: 1 } : null,
+                errors.firstname
+                  ? { borderColor: "red", borderWidth: 1 }
+                  : null,
               ]}
               onBlur={onBlur}
-              onChangeText={(text) => {
-                onChange(text.toLowerCase());
-              }}
+              onChangeText={(text) => onChange(text)}
               value={value}
             />
           )}
-          name="username"
+          name="firstname"
         />
-        {errors.username && (
+        {errors.firstname && (
           <Text style={[Theme.Caption, { color: "red" }]}>
-            {errors.username.message}
+            {errors.firstname.message}
           </Text>
         )}
 
@@ -180,7 +185,7 @@ const Onboarding = () => {
                 lineHeight: 50,
               }}
             >
-              {"Check availability"}
+              {"Let's get started"}
             </Text>
           )}
         </TouchableOpacity>
@@ -200,4 +205,4 @@ const Onboarding = () => {
   );
 };
 
-export default Onboarding;
+export default OnboardingFirstname;
