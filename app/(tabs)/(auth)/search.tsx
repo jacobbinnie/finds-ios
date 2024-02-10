@@ -75,6 +75,9 @@ const Search = () => {
               onChangeText={(e) => setQuery(e)}
               placeholder="Search people & places"
               autoFocus={true}
+              autoComplete="off"
+              spellCheck={false}
+              autoCorrect={false}
               focusable={isSearching}
               style={[
                 Theme.BodyText,

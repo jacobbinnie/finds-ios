@@ -14,7 +14,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: "(modals)/login",
+  initialRouteName: "(tabs)",
 };
 
 // SplashScreen.preventAutoHideAsync();
@@ -72,6 +72,7 @@ function RootLayoutNav() {
         options={{
           presentation: "fullScreenModal",
           headerShown: false,
+          animation: "slide_from_bottom",
         }}
       />
       <Stack.Screen

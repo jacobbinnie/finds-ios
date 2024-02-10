@@ -49,8 +49,6 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
   const [session, setSession] = useState<Session | null | undefined>();
   const [isCheckingAuth, setIsCheckingAuth] = useState(false);
 
-  console.log(session === null, "session");
-
   const signout = () => {
     storage.delete("auth");
     setSession(null);
@@ -134,6 +132,8 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
             Authorization: `Bearer ${parsed.accessToken}`,
           },
         });
+
+        console.log(res.data);
 
         if (res.data) {
           setSession({
