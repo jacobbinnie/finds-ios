@@ -1,9 +1,9 @@
 import { Theme } from "@/constants/Styles";
-import { AuthProvider } from "@/providers/AuthProvider";
+import { AuthProvider, useAuth } from "@/providers/AuthProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import "react-native-url-polyfill/auto";
 import { RootSiblingParent } from "react-native-root-siblings";
 
@@ -14,8 +14,10 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: "(modals)/loading",
+  initialRouteName: "(modals)/login",
 };
+
+// SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -30,12 +32,6 @@ export default function RootLayout() {
   useEffect(() => {
     if (error) throw error;
   }, [error]);
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
 
   if (!loaded) {
     return null;
@@ -55,6 +51,19 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
+  const { session } = useAuth();
+
+  useEffect(() => {
+    if (session || session === null) {
+      // This tells the splash screen to hide immediately! If we call this after
+      // `setAppIsReady`, then we may see a blank screen while the app is
+      // loading its initial state and rendering its first pixels. So instead,
+      // we hide the splash screen once we know the root view has already
+      // performed layout.
+      void SplashScreen.hideAsync();
+    }
+  }, [session]);
+
   return (
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />

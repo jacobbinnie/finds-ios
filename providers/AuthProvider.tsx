@@ -49,6 +49,8 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
   const [session, setSession] = useState<Session | null | undefined>();
   const [isCheckingAuth, setIsCheckingAuth] = useState(false);
 
+  console.log(session === null, "session");
+
   const signout = () => {
     storage.delete("auth");
     setSession(null);
@@ -158,6 +160,8 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
 
     if (storedSession) {
       await checkJwt(storedSession);
+    } else {
+      setSession(null);
     }
   };
 
@@ -187,10 +191,10 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
           router.push("/");
         }
       }
-    } else {
+    } else if (session === null) {
       router.push("/(modals)/login");
     }
-  }, [session?.profile]);
+  }, [session]);
 
   const value = {
     session,
