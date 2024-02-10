@@ -124,9 +124,7 @@ const PlaceDetails = () => {
                 backgroundColor: Colors.primary,
               }}
             >
-              <Text style={[Theme.Caption, { fontFamily: "font-b" }]}>
-                Add find
-              </Text>
+              <Text style={Theme.Title}>Add find</Text>
             </Animated.View>
           </TouchableOpacity>
         </View>
@@ -243,9 +241,13 @@ const PlaceDetails = () => {
                     </Text>
                     <TouchableOpacity
                       onPress={handleAddNewFind}
-                      style={[Theme.Button, { backgroundColor: Colors.dark }]}
+                      style={{
+                        backgroundColor: Colors.primary,
+                        padding: 15,
+                        borderRadius: 99,
+                      }}
                     >
-                      <Text style={[Theme.ButtonText, { color: Colors.light }]}>
+                      <Text style={[Theme.Title, { textAlign: "center" }]}>
                         Add find
                       </Text>
                     </TouchableOpacity>

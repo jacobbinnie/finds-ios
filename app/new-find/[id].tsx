@@ -592,7 +592,7 @@ const NewFind = () => {
 
             <Button
               disabled={isSubmitting || isUploading}
-              titleStyle={[Theme.Title, { color: Colors.light }]}
+              titleStyle={Theme.Title}
               onPress={handleSubmit(onSubmit)}
               loading={isSubmitting || isUploading}
               loadingProps={{
@@ -600,14 +600,13 @@ const NewFind = () => {
                   <ActivityIndicator size="small" color={Colors.light} />
                 ),
               }}
-              title={"Submit find"}
-              style={[
-                Theme.Button,
-                {
-                  backgroundColor: Colors.dark,
-                  marginBottom: 100,
-                },
-              ]}
+              title={"Publish"}
+              style={{
+                backgroundColor: Colors.primary,
+                marginBottom: 100,
+                padding: 5,
+                borderRadius: 99,
+              }}
             ></Button>
           </View>
         </View>
