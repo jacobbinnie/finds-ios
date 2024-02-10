@@ -18,6 +18,9 @@ import { Marquee } from "@animatereactnative/marquee";
 import Animated, { FadeInLeft, FadeOutLeft } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
+import * as AppleAuthentication from "expo-apple-authentication";
+import axios from "axios";
+import { set } from "date-fns";
 
 type FormInputs = {
   email: string;
@@ -28,104 +31,10 @@ type FormInputs = {
 const Login = () => {
   const { session, setSession } = useAuth();
 
-  const [screen, setScreen] = useState<"login" | "signup">("login");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSigningIn, setIsSigningIn] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const dimensions = useWindowDimensions();
-
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    clearErrors,
-  } = useForm<FormInputs>({
-    defaultValues: {
-      email: "",
-      password: "",
-      firstname: "",
-    },
-  });
-
-  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
-    setIsSubmitting(true);
-    setError(null);
-    try {
-      if (screen === "login") {
-        const res: any = await authApi.authControllerLogin({
-          data: {
-            username: data.email,
-            password: data.password,
-          },
-        });
-
-        if (
-          res.data.access_token !== null &&
-          res.data.refresh_token !== null &&
-          res.data.user.id
-        ) {
-          const session = {
-            accessToken: res.data.accessToken,
-            refreshToken: res.data.refreshToken,
-            profile: {
-              id: res.data.user.id,
-              firstname: res.data.user.firstname,
-              created_at: res.data.user.created_at,
-              email: res.data.user.email,
-              avatar: res.data.user.avatar,
-              username: res.data.user.username,
-            },
-          };
-
-          storage.set("auth", JSON.stringify(session));
-
-          setSession(session);
-          setIsSubmitting(false);
-        }
-      } else {
-        if (data.firstname) {
-          const res: any = await authApi.authControllerRegisterUser({
-            email: data.email,
-            firstname: data.firstname,
-            password: data.password,
-          });
-
-          if (
-            res.data.access_token !== null &&
-            res.data.refresh_token !== null &&
-            res.data.user.id
-          ) {
-            const session = {
-              accessToken: res.data.accessToken,
-              refreshToken: res.data.refreshToken,
-              profile: {
-                id: res.data.user.id,
-                firstname: res.data.user.firstname,
-                created_at: res.data.user.created_at,
-                email: res.data.user.email,
-                avatar: res.data.user.avatar,
-                username: res.data.user.username,
-              },
-            };
-
-            storage.set("auth", JSON.stringify(session));
-
-            setSession(session);
-            setIsSubmitting(false);
-          }
-          setIsSubmitting(false);
-        }
-      }
-    } catch (err: any) {
-      if (err.response.data.statusCode === 409) {
-        setError(err.response.data.message);
-      } else {
-        setError("Something went wrong");
-      }
-
-      setIsSubmitting(false);
-    }
-  };
 
   return (
     <KeyboardAvoidingView
@@ -168,7 +77,63 @@ const Login = () => {
             finds
           </Text>
 
-          {screen === "signup" && (
+          <AppleAuthentication.AppleAuthenticationButton
+            buttonType={
+              AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
+            }
+            buttonStyle={
+              AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
+            }
+            cornerRadius={5}
+            style={{ width: "100%", height: 50 }}
+            onPress={async () => {
+              try {
+                setIsSigningIn(true);
+                const credential = await AppleAuthentication.signInAsync({
+                  requestedScopes: [
+                    AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+                    AppleAuthentication.AppleAuthenticationScope.EMAIL,
+                  ],
+                });
+
+                if (credential.identityToken) {
+                  const res =
+                    await authApi.authControllerRegisterOrLoginWithApple({
+                      data: {
+                        jwt: credential.identityToken,
+                      },
+                    });
+
+                  const authSession = {
+                    accessToken: res.data.accessToken,
+                    refreshToken: res.data.refreshToken,
+                    profile: {
+                      id: res.data.user.id,
+                      firstname: res.data.user.firstname,
+                      email: res.data.user.email,
+                      avatar: res.data.user.avatar,
+                      username: res.data.user.username,
+                    },
+                  };
+
+                  storage.set("auth", JSON.stringify(authSession));
+                  setSession(authSession);
+                } else {
+                  setIsSigningIn(false);
+                }
+                // signed in
+              } catch (e) {
+                setIsSigningIn(false);
+                // if (e.code === "ERR_REQUEST_CANCELED") {
+                //   // handle that the user canceled the sign-in flow
+                // } else {
+                //   // handle other errors
+                // }
+              }
+            }}
+          />
+
+          {/* {screen === "signup" && (
             <Controller
               control={control}
               rules={{
@@ -271,9 +236,9 @@ const Login = () => {
             <Text style={[Theme.Caption, { color: "red" }]}>
               {errors.password.message}
             </Text>
-          )}
+          )} */}
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={handleSubmit(onSubmit)}
             style={{
               width: "100%",
@@ -344,7 +309,7 @@ const Login = () => {
                 {screen === "login" ? "Sign up" : "Sign in"}
               </Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
       </SafeAreaView>
     </KeyboardAvoidingView>

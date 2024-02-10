@@ -71,19 +71,19 @@ export interface AuthUserDto {
      * @type {string}
      * @memberof AuthUserDto
      */
-    'username': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof AuthUserDto
-     */
-    'firstname': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof AuthUserDto
-     */
     'email': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AuthUserDto
+     */
+    'username'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AuthUserDto
+     */
+    'firstname'?: string;
     /**
      * 
      * @type {string}
@@ -158,19 +158,7 @@ export interface CreateUserDto {
      * @type {string}
      * @memberof CreateUserDto
      */
-    'firstname': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateUserDto
-     */
     'email': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateUserDto
-     */
-    'password': string;
 }
 /**
  * 
@@ -598,6 +586,35 @@ export const AuthApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        authControllerRegisterOrLoginWithApple: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/auth/registerOrLoginWithApple`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {CreateUserDto} createUserDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -665,6 +682,17 @@ export const AuthApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async authControllerRegisterOrLoginWithApple(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LoginResDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.authControllerRegisterOrLoginWithApple(options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['AuthApi.authControllerRegisterOrLoginWithApple']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * 
          * @param {CreateUserDto} createUserDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -700,6 +728,14 @@ export const AuthApiFactory = function (configuration?: Configuration, basePath?
          */
         authControllerRefreshToken(options?: any): AxiosPromise<void> {
             return localVarFp.authControllerRefreshToken(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        authControllerRegisterOrLoginWithApple(options?: any): AxiosPromise<LoginResDto> {
+            return localVarFp.authControllerRegisterOrLoginWithApple(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -742,6 +778,16 @@ export class AuthApi extends BaseAPI {
 
     /**
      * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AuthApi
+     */
+    public authControllerRegisterOrLoginWithApple(options?: RawAxiosRequestConfig) {
+        return AuthApiFp(this.configuration).authControllerRegisterOrLoginWithApple(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @param {CreateUserDto} createUserDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -777,10 +823,6 @@ export const FindsApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication bearer required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     

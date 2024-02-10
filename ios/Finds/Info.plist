@@ -39,6 +39,7 @@
     <key>LSApplicationQueriesSchemes</key>
     <array>
       <string>instagram</string>
+      <string>instagram-stories</string>
     </array>
     <key>LSRequiresIPhoneOS</key>
     <true/>
