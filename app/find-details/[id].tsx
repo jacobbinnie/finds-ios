@@ -344,7 +344,7 @@ const FindDetails = () => {
                 }}
               >
                 <Text style={[Theme.Caption, { color: Colors.light }]}>
-                  Go to place
+                  Place details
                 </Text>
                 <Ionicons
                   name="arrow-forward-outline"

@@ -189,7 +189,6 @@ const Login = () => {
                   ]}
                   onBlur={onBlur}
                   onChangeText={onChange}
-                  value={value}
                 />
               )}
               name="firstname"
@@ -221,7 +220,9 @@ const Login = () => {
                   errors.email ? { borderColor: "red", borderWidth: 1 } : null,
                 ]}
                 onBlur={onBlur}
-                onChangeText={onChange}
+                onChangeText={(text) => {
+                  onChange(text);
+                }}
                 value={value}
               />
             )}

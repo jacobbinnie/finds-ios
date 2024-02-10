@@ -48,6 +48,8 @@ const NewFind = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const [isUploading, setIsUploading] = useState(false);
+
   const { data: place } = useQuery(
     searchQuery.searchControllerGetGooglePlaceById(id!)
   );
@@ -114,6 +116,7 @@ const NewFind = () => {
     }
 
     if (!result.canceled) {
+      setIsUploading(true);
       const savedImages = await Promise.all(
         result.assets.map(async (asset) => {
           const savedImage = await saveImage(
@@ -152,6 +155,7 @@ const NewFind = () => {
         ...prevImages.filter((image) => image.serverImage != null),
         ...updatedImages,
       ]);
+      setIsUploading(false);
     }
   };
 
@@ -585,7 +589,7 @@ const NewFind = () => {
             )}
 
             <Button
-              disabled={isSubmitting}
+              disabled={isSubmitting || isUploading}
               titleStyle={[Theme.Title, { color: Colors.light }]}
               onPress={handleSubmit(onSubmit)}
               loading={isSubmitting}

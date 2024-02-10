@@ -75,8 +75,6 @@ const PlaceDetails = () => {
       return router.push("/(modals)/login");
     }
 
-    const stringedPlace = JSON.stringify(place);
-
     router.push({
       pathname: `/new-find/${place.googlePlaceId}`,
     });
@@ -123,8 +121,7 @@ const PlaceDetails = () => {
                 padding: 10,
                 borderRadius: 99,
                 overflow: "hidden",
-                borderWidth: 1,
-                borderColor: Colors.dark,
+                backgroundColor: Colors.primary,
               }}
             >
               <Text style={Theme.Caption}>Add find</Text>
