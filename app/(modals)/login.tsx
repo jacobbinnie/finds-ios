@@ -158,16 +158,14 @@ const Login = () => {
         >
           <Text
             style={[
-              Theme.BigTitle,
+              Theme.Logo,
               {
-                fontFamily: "font-serif",
-                paddingHorizontal: 5,
                 textAlign: "center",
                 marginBottom: 15,
               },
             ]}
           >
-            finds.nyc
+            finds
           </Text>
 
           {screen === "signup" && (

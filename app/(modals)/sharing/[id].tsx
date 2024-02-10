@@ -96,15 +96,13 @@ const Sharing = () => {
           >
             <Text
               style={[
-                Theme.BigTitle,
+                Theme.Logo,
                 {
                   color: Colors.light,
-                  fontFamily: "font-serif",
-                  paddingHorizontal: 5,
                 },
               ]}
             >
-              finds.nyc
+              finds
             </Text>
           </View>
         </ViewShot>

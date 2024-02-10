@@ -95,15 +95,9 @@ const Page = () => {
         <Animated.Text
           entering={FadeInLeft.springify()}
           exiting={FadeOutLeft}
-          style={[
-            Theme.BigTitle,
-            {
-              fontFamily: "font-serif",
-              paddingHorizontal: 5,
-            },
-          ]}
+          style={Theme.Logo}
         >
-          finds.nyc
+          finds
         </Animated.Text>
 
         <View

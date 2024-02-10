@@ -89,34 +89,11 @@ const FindDetails = () => {
       }}
     >
       <ScrollView style={{ paddingBottom: 550 }}>
-        <ViewShot ref={ref} options={{ format: "jpg", quality: 1 }}>
-          <ImageSwiper
-            isSwipable={find.images.length > 1}
-            images={find.images}
-            height={deviceHeight * 0.5}
-          />
-          <View
-            style={{
-              position: "absolute",
-              opacity: isCapturing ? 1 : 0,
-              bottom: 10,
-              left: 10,
-            }}
-          >
-            <Text
-              style={[
-                Theme.BigTitle,
-                {
-                  color: Colors.light,
-                  fontFamily: "font-serif",
-                  paddingHorizontal: 5,
-                },
-              ]}
-            >
-              finds.nyc
-            </Text>
-          </View>
-        </ViewShot>
+        <ImageSwiper
+          isSwipable={find.images.length > 1}
+          images={find.images}
+          height={deviceHeight * 0.5}
+        />
 
         <View
           style={{
@@ -182,20 +159,9 @@ const FindDetails = () => {
                 alignItems: "center",
               }}
             >
-              <View
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  backgroundColor: Colors.dark,
-                  borderRadius: 99,
-                  padding: 10,
-                }}
-              >
-                <Text style={[Theme.Caption, { color: Colors.light }]}>
-                  {find.category.name}
-                </Text>
-              </View>
+              <Text style={[Theme.Caption, { color: Colors.grey }]}>
+                {find.createdAt && formatPostDate(find.createdAt)}
+              </Text>
 
               <TouchableOpacity
                 onPress={() =>
@@ -219,9 +185,20 @@ const FindDetails = () => {
               }}
             >
               <Text style={Theme.BigTitle}>Review</Text>
-              <Text style={[Theme.Caption, { color: Colors.grey }]}>
-                {find.createdAt && formatPostDate(find.createdAt)}
-              </Text>
+              <View
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  backgroundColor: Colors.dark,
+                  borderRadius: 99,
+                  padding: 10,
+                }}
+              >
+                <Text style={[Theme.Caption, { color: Colors.light }]}>
+                  {find.category.name}
+                </Text>
+              </View>
             </View>
 
             <View
@@ -334,7 +311,7 @@ const FindDetails = () => {
                   });
                 }}
                 style={{
-                  backgroundColor: Colors.dark,
+                  backgroundColor: Colors.light,
                   padding: 10,
                   gap: 5,
                   borderRadius: 99,
@@ -343,13 +320,13 @@ const FindDetails = () => {
                   alignItems: "center",
                 }}
               >
-                <Text style={[Theme.Caption, { color: Colors.light }]}>
-                  Place details
+                <Text style={[Theme.Caption, { color: Colors.dark }]}>
+                  See more
                 </Text>
                 <Ionicons
                   name="arrow-forward-outline"
                   size={15}
-                  color={Colors.light}
+                  color={Colors.dark}
                 />
               </TouchableOpacity>
             </View>
