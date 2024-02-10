@@ -30,6 +30,7 @@
     "eas-cli": "^7.1.3",
     "expo": "~49.0.15",
     "expo-apple-authentication": "^6.3.0",
+    "expo-build-properties": "^0.11.1",
     "expo-crypto": "~12.4.1",
     "expo-font": "~11.4.0",
     "expo-image-manipulator": "~11.3.0",

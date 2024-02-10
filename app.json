@@ -30,6 +30,14 @@
           "photosPermission": "Finds needs access to your photos",
           "cameraPermission": "Finds needs access to your camera"
         }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "13.4"
+          }
+        }
       ]
     ],
     "experiments": {
