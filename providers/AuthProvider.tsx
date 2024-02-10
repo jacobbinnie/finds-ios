@@ -190,7 +190,7 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
     } else {
       router.push("/(modals)/login");
     }
-  }, [session]);
+  }, [session?.profile]);
 
   const value = {
     session,

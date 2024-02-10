@@ -47,9 +47,7 @@ const OnboardingUsername = () => {
     setIsSubmitting(true);
     setError(null);
     try {
-      const res: any = await usersApi.usersControllerUpdateUsername(
-        data.username
-      );
+      const res = await usersApi.usersControllerUpdateUsername(data.username);
 
       if (session && res.data) {
         const updatedSession = {
