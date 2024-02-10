@@ -592,7 +592,7 @@ const NewFind = () => {
               disabled={isSubmitting || isUploading}
               titleStyle={[Theme.Title, { color: Colors.light }]}
               onPress={handleSubmit(onSubmit)}
-              loading={isSubmitting}
+              loading={isSubmitting || isUploading}
               loadingProps={{
                 children: (
                   <ActivityIndicator size="small" color={Colors.light} />
