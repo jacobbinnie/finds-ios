@@ -133,8 +133,6 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
           },
         });
 
-        console.log(res.data);
-
         if (res.data) {
           setSession({
             accessToken: parsed.accessToken,
