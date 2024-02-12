@@ -4,11 +4,7 @@ import { Theme } from "@/constants/Styles";
 import Search from "./search";
 import { StatusBar } from "expo-status-bar";
 import { Marquee } from "@animatereactnative/marquee";
-import Animated, {
-  FadeInDown,
-  FadeInLeft,
-  FadeInUp,
-} from "react-native-reanimated";
+import Animated, { FadeInLeft, FadeInUp } from "react-native-reanimated";
 
 const NewFindTab = () => {
   return (
@@ -38,13 +34,13 @@ const NewFindTab = () => {
             entering={FadeInLeft.springify().delay(100)}
             style={Theme.BigTitle}
           >
-            Discover something?
+            Find something?
           </Animated.Text>
           <Animated.Text
             entering={FadeInLeft.springify().delay(200)}
             style={Theme.BodyText}
           >
-            Let's goooooo! Search for the place below and let's share it with
+            Let's goooooo! Search the place below and let's share your find with
             the world
           </Animated.Text>
         </View>

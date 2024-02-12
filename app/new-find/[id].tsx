@@ -489,7 +489,7 @@ const NewFind = () => {
           )}
 
           <Text style={[Theme.Title, { marginTop: 5 }]}>
-            Tags (add at least 2)
+            Tags (separated by commas)
           </Text>
           <Controller
             control={control}
