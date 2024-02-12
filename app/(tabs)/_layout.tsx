@@ -4,6 +4,7 @@ import Colors from "@/constants/Colors";
 
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAuth } from "@/providers/AuthProvider";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const Layout = () => {
   const segments = useSegments();
@@ -52,6 +53,19 @@ const Layout = () => {
               router.push("/search");
             }
           },
+        }}
+      />
+
+      <Tabs.Screen
+        name="(auth)/new-find-tab"
+        options={{
+          headerShown: false,
+          tabBarLabel: "New Find",
+          tabBarIcon: ({ color, size }) => (
+            <TouchableOpacity>
+              <Feather name="plus-square" size={size} color={color} />
+            </TouchableOpacity>
+          ),
         }}
       />
 

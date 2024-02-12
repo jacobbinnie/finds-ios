@@ -26,7 +26,6 @@ import { FlashList } from "@shopify/flash-list";
 import { StatusBar } from "expo-status-bar";
 
 const Search = () => {
-  const deviceHeight = useWindowDimensions().height;
   const [isSearching, setIsSearching] = useState<boolean>(false);
 
   const [query, setQuery] = useState<string>("");
