@@ -14,7 +14,7 @@
     },
     "production": {
       "yarn": "1.22.21",
-      "distribution": "internal",
+      "distribution": "store",
       "node": "18.17.1",
       "ios": {
         "cocoapods": "1.15.2"

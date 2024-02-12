@@ -42,7 +42,7 @@ const ProfileDetails = () => {
     isError,
     error,
     refetch: refetchProfile,
-  } = useQuery(usersQuery.usersControllerGetProfileAndFinds(Number(id)));
+  } = useQuery(usersQuery.usersControllerGetProfileAndFinds(id));
 
   const {
     data: isFollowing,

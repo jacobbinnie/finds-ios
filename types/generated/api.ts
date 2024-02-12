@@ -37,10 +37,10 @@ export interface ActiveSaveDto {
     'id': number;
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof ActiveSaveDto
      */
-    'userId': number;
+    'userId': string;
     /**
      * 
      * @type {number}
@@ -62,10 +62,10 @@ export interface ActiveSaveDto {
 export interface AuthUserDto {
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof AuthUserDto
      */
-    'id': number;
+    'id': string;
     /**
      * 
      * @type {string}
@@ -229,16 +229,16 @@ export interface FollowDto {
     'id': number;
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof FollowDto
      */
-    'followerId': number;
+    'followerId': string;
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof FollowDto
      */
-    'followingId': number;
+    'followingId': string;
     /**
      * 
      * @type {string}
@@ -416,10 +416,10 @@ export interface PlacesAndProfilesDto {
 export interface ProfileDto {
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof ProfileDto
      */
-    'id': number;
+    'id': string;
     /**
      * 
      * @type {string}
@@ -447,10 +447,10 @@ export interface ProfileDto {
 export interface UserProfileDto {
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof UserProfileDto
      */
-    'id': number;
+    'id': string;
     /**
      * 
      * @type {string}
@@ -1322,7 +1322,7 @@ export const SavesApiAxiosParamCreator = function (configuration?: Configuration
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1780,11 +1780,11 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
     return {
         /**
          * 
-         * @param {number} id 
+         * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersControllerFollowUser: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        usersControllerFollowUser: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('usersControllerFollowUser', 'id', id)
             const localVarPath = `/user/follow/{id}`
@@ -1817,11 +1817,11 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @param {number} id 
+         * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersControllerGetFollowStatus: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        usersControllerGetFollowStatus: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('usersControllerGetFollowStatus', 'id', id)
             const localVarPath = `/user/follow-status/{id}`
@@ -1854,11 +1854,11 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
         },
         /**
          * 
-         * @param {number} id 
+         * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersControllerGetProfileAndFinds: async (id: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        usersControllerGetProfileAndFinds: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('usersControllerGetProfileAndFinds', 'id', id)
             const localVarPath = `/user/profile/{id}`
@@ -2041,11 +2041,11 @@ export const UsersApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @param {number} id 
+         * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersControllerFollowUser(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FollowDto>> {
+        async usersControllerFollowUser(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FollowDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.usersControllerFollowUser(id, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['UsersApi.usersControllerFollowUser']?.[index]?.url;
@@ -2053,11 +2053,11 @@ export const UsersApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {number} id 
+         * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersControllerGetFollowStatus(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+        async usersControllerGetFollowStatus(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.usersControllerGetFollowStatus(id, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['UsersApi.usersControllerGetFollowStatus']?.[index]?.url;
@@ -2065,11 +2065,11 @@ export const UsersApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {number} id 
+         * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersControllerGetProfileAndFinds(id: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserProfileDto>> {
+        async usersControllerGetProfileAndFinds(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserProfileDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.usersControllerGetProfileAndFinds(id, options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['UsersApi.usersControllerGetProfileAndFinds']?.[index]?.url;
@@ -2133,29 +2133,29 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
     return {
         /**
          * 
-         * @param {number} id 
+         * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersControllerFollowUser(id: number, options?: any): AxiosPromise<FollowDto> {
+        usersControllerFollowUser(id: string, options?: any): AxiosPromise<FollowDto> {
             return localVarFp.usersControllerFollowUser(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @param {number} id 
+         * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersControllerGetFollowStatus(id: number, options?: any): AxiosPromise<boolean> {
+        usersControllerGetFollowStatus(id: string, options?: any): AxiosPromise<boolean> {
             return localVarFp.usersControllerGetFollowStatus(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @param {number} id 
+         * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersControllerGetProfileAndFinds(id: number, options?: any): AxiosPromise<UserProfileDto> {
+        usersControllerGetProfileAndFinds(id: string, options?: any): AxiosPromise<UserProfileDto> {
             return localVarFp.usersControllerGetProfileAndFinds(id, options).then((request) => request(axios, basePath));
         },
         /**
@@ -2204,34 +2204,34 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
 export class UsersApi extends BaseAPI {
     /**
      * 
-     * @param {number} id 
+     * @param {string} id 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UsersApi
      */
-    public usersControllerFollowUser(id: number, options?: RawAxiosRequestConfig) {
+    public usersControllerFollowUser(id: string, options?: RawAxiosRequestConfig) {
         return UsersApiFp(this.configuration).usersControllerFollowUser(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
-     * @param {number} id 
+     * @param {string} id 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UsersApi
      */
-    public usersControllerGetFollowStatus(id: number, options?: RawAxiosRequestConfig) {
+    public usersControllerGetFollowStatus(id: string, options?: RawAxiosRequestConfig) {
         return UsersApiFp(this.configuration).usersControllerGetFollowStatus(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
-     * @param {number} id 
+     * @param {string} id 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UsersApi
      */
-    public usersControllerGetProfileAndFinds(id: number, options?: RawAxiosRequestConfig) {
+    public usersControllerGetProfileAndFinds(id: string, options?: RawAxiosRequestConfig) {
         return UsersApiFp(this.configuration).usersControllerGetProfileAndFinds(id, options).then((request) => request(this.axios, this.basePath));
     }
 
