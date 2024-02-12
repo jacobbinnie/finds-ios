@@ -22,7 +22,7 @@ const NewFindTab = () => {
         ]}
       >
         <Animated.View entering={FadeInUp.springify().delay(400)}>
-          <Marquee spacing={10}>
+          <Marquee speed={0.5} spacing={10}>
             <Text style={[Theme.BigTitle, { letterSpacing: 30 }]}>
               🍔🍟🍕🌭🥪🌮🌯🥙🥚🥓🥩🍖🍗🍤🍣🍱🍛🍝🍜🍲🍥🍙🍚🍘🍢🍡🥟🥠🥮🍦🍧🍨🍩🍪🎂🍰🧁🥧🍫🍬🍭🍮🍯☕🍵🍾🍷🍸🍹🍺🍻🥂🥃🥤🧃🧉
             </Text>
