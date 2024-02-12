@@ -27,7 +27,6 @@ import * as FileSystem from "expo-file-system";
 import * as ImagePicker from "expo-image-picker";
 import { Image } from "react-native-elements";
 import { SaveFormat, manipulateAsync } from "expo-image-manipulator";
-import { set } from "date-fns";
 import { StatusBar } from "expo-status-bar";
 
 const imgDir = FileSystem.documentDirectory + "images/";
@@ -65,21 +64,25 @@ const NewFind = () => {
   >([]);
 
   const uploadImage = async (uri: string) => {
-    // setImageUploading(true);
+    try {
+      // setImageUploading(true);
 
-    const res = await FileSystem.uploadAsync(
-      process.env.EXPO_PUBLIC_API_URL + "/upload",
-      uri,
-      {
-        httpMethod: "POST",
-        uploadType: FileSystem.FileSystemUploadType.MULTIPART,
-        fieldName: "files",
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-      }
-    );
-    return res.body;
+      const res = await FileSystem.uploadAsync(
+        process.env.EXPO_PUBLIC_API_URL + "/upload",
+        uri,
+        {
+          httpMethod: "POST",
+          uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+          fieldName: "files",
+          headers: {
+            Authorization: `Bearer ${session?.accessToken}`,
+          },
+        }
+      );
+      return res.body;
+    } catch (err) {
+      setError("Something went wrong");
+    }
   };
 
   const saveImage = async (uri: string, orientation: number) => {
@@ -117,6 +120,7 @@ const NewFind = () => {
 
     if (!result.canceled) {
       setIsUploading(true);
+
       const savedImages = await Promise.all(
         result.assets.map(async (asset) => {
           const savedImage = await saveImage(
@@ -141,7 +145,7 @@ const NewFind = () => {
       const image_urls: string[] = [];
 
       for (const item of uploadedImages) {
-        const json_array: string[] = JSON.parse(item);
+        const json_array: string[] = item ? JSON.parse(item) : [];
         const image_url: string = json_array[0];
         image_urls.push(image_url);
       }
@@ -341,7 +345,7 @@ const NewFind = () => {
 
                 {images &&
                   images.map((image, index) => (
-                    <TouchableOpacity
+                    <View
                       key={index}
                       style={{
                         marginRight: 10,
@@ -374,7 +378,26 @@ const NewFind = () => {
                           <ActivityIndicator size="large" color="#FFF" />
                         </View>
                       )}
-                    </TouchableOpacity>
+                      <TouchableOpacity
+                        style={{
+                          position: "absolute",
+                          top: 0,
+                          right: 0,
+                          zIndex: 99,
+                        }}
+                        onPress={() => {
+                          setImages((prevImages) =>
+                            prevImages.filter((_, i) => i !== index)
+                          );
+                        }}
+                      >
+                        <Ionicons
+                          name="remove-circle"
+                          size={24}
+                          color={"red"}
+                        />
+                      </TouchableOpacity>
+                    </View>
                   ))}
               </ScrollView>
             )}
@@ -400,7 +423,6 @@ const NewFind = () => {
                     gap: 10,
                     flexDirection: "row",
                     flexWrap: "wrap",
-                    justifyContent: "space-between",
                   }}
                 >
                   {categories.map((category, key) => (
@@ -446,7 +468,12 @@ const NewFind = () => {
             </Text>
           )}
 
-          <Text style={[Theme.Title, { marginTop: 5 }]}>Review</Text>
+          <View style={{ gap: 10, marginTop: 5 }}>
+            <Text style={Theme.Title}>Review</Text>
+            <Text style={Theme.Caption}>
+              We love details! What made this find special?
+            </Text>
+          </View>
           <Controller
             control={control}
             rules={{
@@ -454,9 +481,7 @@ const NewFind = () => {
             }}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                placeholder={
-                  "Sooooo how was it? Describe what made this find worth sharing.."
-                }
+                placeholder={"Let's hear it..."}
                 multiline
                 style={[
                   Theme.InputStyle,
@@ -488,9 +513,12 @@ const NewFind = () => {
             </Text>
           )}
 
-          <Text style={[Theme.Title, { marginTop: 5 }]}>
-            Tags (separated by commas)
-          </Text>
+          <View style={{ gap: 10, marginTop: 5 }}>
+            <Text style={Theme.Title}>Tags</Text>
+            <Text style={Theme.Caption}>
+              Get discovered by adding relevant tags
+            </Text>
+          </View>
           <Controller
             control={control}
             name="tags"
@@ -507,7 +535,7 @@ const NewFind = () => {
                 }}
               >
                 <TextInput
-                  placeholder={"pasta, filter coffee, cocktails..."}
+                  placeholder={"pasta, linguine, italian"}
                   style={[
                     Theme.InputStyle,
                     {
@@ -524,10 +552,21 @@ const NewFind = () => {
                   value={inputTags}
                   onChange={(e) => {
                     // only add tag if comma is entered
-                    if (e.nativeEvent.text.endsWith(",")) {
+                    if (e.nativeEvent.text.endsWith(" ")) {
+                      const newTag = e.nativeEvent.text.replace(" ", "").trim();
+
+                      if (newTag.length > 0) {
+                        if (!value.includes(newTag.toLowerCase())) {
+                          onChange([...value, newTag.toLowerCase()]);
+                        }
+                        setInputTags(""); // Clear the TextInput
+                      }
+                    } else if (e.nativeEvent.text.endsWith(",")) {
                       const newTag = e.nativeEvent.text.replace(",", "").trim();
                       if (newTag.length > 0) {
-                        onChange([...value, newTag.toLowerCase()]);
+                        if (!value.includes(newTag.toLowerCase())) {
+                          onChange([...value, newTag.toLowerCase()]);
+                        }
                         setInputTags(""); // Clear the TextInput
                       }
                     } else {
@@ -592,7 +631,7 @@ const NewFind = () => {
 
             <Button
               disabled={isSubmitting || isUploading}
-              titleStyle={Theme.Title}
+              titleStyle={Theme.BodyText}
               onPress={handleSubmit(onSubmit)}
               loading={isSubmitting || isUploading}
               loadingProps={{
@@ -600,7 +639,7 @@ const NewFind = () => {
                   <ActivityIndicator size="small" color={Colors.light} />
                 ),
               }}
-              title={"Publish"}
+              title={"Publish find"}
               style={{
                 backgroundColor: Colors.primary,
                 marginBottom: 100,

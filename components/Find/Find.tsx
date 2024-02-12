@@ -104,31 +104,27 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
                     flexDirection: "row",
                     gap: 5,
                     alignItems: "center",
-                    borderRadius: 99,
-                    borderWidth: 1,
-                    borderColor: Colors.light,
-                    padding: 5,
                   }}
                 >
                   {find.user.avatar ? (
                     <Image
                       source={{ uri: find.user.avatar }}
-                      style={{ width: 25, height: 25, borderRadius: 99 }}
+                      style={{ width: 35, height: 35, borderRadius: 99 }}
                     />
                   ) : (
                     <View
                       style={{
-                        width: 22,
-                        height: 22,
+                        width: 35,
+                        height: 35,
                         borderRadius: 99,
                         backgroundColor: Colors.light,
                       }}
                     />
                   )}
 
-                  <Text
-                    style={[Theme.Caption]}
-                  >{`@${find.user.username}`}</Text>
+                  <Text style={[Theme.Caption]}>
+                    {`@${find.user.username}`}
+                  </Text>
                 </TouchableOpacity>
               )}
 
@@ -137,7 +133,7 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  backgroundColor: Colors.dark,
+                  backgroundColor: Colors.primary,
                   borderRadius: 99,
                   padding: 10,
                 }}

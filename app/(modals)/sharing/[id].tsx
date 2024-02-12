@@ -24,7 +24,13 @@ const Sharing = () => {
     id: string;
   }>();
 
-  const { data } = useQuery(findsQuery.findsControllerGetFindById(id));
+  const { data } = useQuery(
+    findsQuery.findsControllerGetFindById({
+      data: {
+        id,
+      },
+    })
+  );
 
   const dimensions = useWindowDimensions();
 

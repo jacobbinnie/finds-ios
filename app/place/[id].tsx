@@ -9,7 +9,7 @@ import React, { useCallback, useState } from "react";
 import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
 import Colors from "@/constants/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import { Feather, FontAwesome, Ionicons } from "@expo/vector-icons";
 import { Theme } from "@/constants/Styles";
 import { useQuery } from "@tanstack/react-query";
 import Find from "@/components/Find/Find";
@@ -118,13 +118,21 @@ const PlaceDetails = () => {
               entering={FadeInRight.springify().delay(100)}
               exiting={FadeOutRight}
               style={{
-                padding: 15,
+                padding: 10,
                 borderRadius: 99,
                 overflow: "hidden",
-                backgroundColor: Colors.primary,
+                backgroundColor: Colors.dark,
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: 5,
               }}
             >
-              <Text style={Theme.Title}>Add find</Text>
+              <Text style={[Theme.BodyText, { color: Colors.light }]}>
+                Add find
+              </Text>
+              <Feather name="plus-square" size={18} color={Colors.light} />
             </Animated.View>
           </TouchableOpacity>
         </View>
@@ -239,18 +247,6 @@ const PlaceDetails = () => {
                       Yoooooooo {session?.profile.firstname}! You're the first
                       one here 🎉 Go ahead and add your find!
                     </Text>
-                    <TouchableOpacity
-                      onPress={handleAddNewFind}
-                      style={{
-                        backgroundColor: Colors.primary,
-                        padding: 15,
-                        borderRadius: 99,
-                      }}
-                    >
-                      <Text style={[Theme.Title, { textAlign: "center" }]}>
-                        Add find
-                      </Text>
-                    </TouchableOpacity>
                   </View>
                 }
                 renderItem={({ item }) => (
