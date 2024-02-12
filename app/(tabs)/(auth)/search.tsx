@@ -24,6 +24,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { FlashList } from "@shopify/flash-list";
 import { StatusBar } from "expo-status-bar";
+import { useAuth } from "@/providers/AuthProvider";
 
 const Search = () => {
   const [isSearching, setIsSearching] = useState<boolean>(false);
@@ -31,6 +32,7 @@ const Search = () => {
   const [query, setQuery] = useState<string>("");
 
   const router = useRouter();
+  const { session } = useAuth();
 
   const { data, isLoading, isError, error, refetch } = useQuery(
     searchQuery.searchControllerSearch(query)
@@ -38,6 +40,16 @@ const Search = () => {
 
   // Combine profiles and places into a single array
   const combinedData = [...(data?.profiles ?? []), ...(data?.places ?? [])];
+
+  const handleGoToProfile = (userId: string) => {
+    if (session) {
+      session.profile.id === userId
+        ? router.push("/(tabs)/(auth)/my-profile")
+        : router.push(`/profile/${userId}`);
+    } else {
+      router.push(`/profile/${userId}`);
+    }
+  };
 
   return (
     <View style={[Theme.Container, { backgroundColor: "#FFF" }]}>
@@ -144,9 +156,7 @@ const Search = () => {
           if ("firstname" in item) {
             // This is a profile item
             return (
-              <TouchableOpacity
-                onPress={() => router.push(`/profile/${item.id}`)}
-              >
+              <TouchableOpacity onPress={() => handleGoToProfile(item.id)}>
                 <ProfileSearchResult
                   profile={{
                     id: item.id,
