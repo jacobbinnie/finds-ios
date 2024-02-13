@@ -33,6 +33,7 @@ import * as ImagePicker from "expo-image-picker";
 import { Image } from "react-native-elements";
 import { SaveFormat, manipulateAsync } from "expo-image-manipulator";
 import { StatusBar } from "expo-status-bar";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const imgDir = FileSystem.documentDirectory + "images/";
 
@@ -191,7 +192,7 @@ const NewFind = () => {
   useEffect(() => {
     setValue(
       "images",
-      images.map((image) => image.serverImage || "") // Use empty string if serverImage is undefined
+      images.map((image) => image.serverImage || "")
     );
   }, [images]);
 
@@ -240,13 +241,7 @@ const NewFind = () => {
   }
 
   return (
-    <KeyboardAvoidingView
-      style={{
-        flex: 1,
-        alignItems: "flex-start",
-      }}
-      behavior={"position"}
-    >
+    <>
       <SafeAreaView
         style={{ backgroundColor: "#FFF" }}
         edges={["top", "left", "right"]}
@@ -288,376 +283,383 @@ const NewFind = () => {
         </View>
       </SafeAreaView>
 
-      <ScrollView
-        style={{
-          backgroundColor: "#FFF",
-          paddingHorizontal: 15,
-          flex: 1,
-          paddingTop: 15,
-        }}
-      >
-        <Animated.Text
-          entering={FadeInLeft.springify().delay(500)}
-          style={[
-            Theme.BigTitle,
-            {
-              marginBottom: 15,
-            },
-          ]}
-        >
-          Add find
-        </Animated.Text>
-        <Animated.View
-          entering={FadeInDown.springify().delay(1000)}
+      <KeyboardAwareScrollView extraHeight={200}>
+        <ScrollView
           style={{
+            backgroundColor: "#FFF",
+            paddingHorizontal: 15,
             flex: 1,
-            display: "flex",
-            gap: 15,
+            paddingTop: 15,
           }}
         >
-          <Controller
-            name="images"
-            control={control}
-            rules={{
-              required: "At least 1 image is required",
+          <Animated.Text
+            entering={FadeInLeft.springify().delay(500)}
+            style={[
+              Theme.BigTitle,
+              {
+                marginBottom: 15,
+              },
+            ]}
+          >
+            Add find
+          </Animated.Text>
+          <Animated.View
+            entering={FadeInDown.springify().delay(1000)}
+            style={{
+              flex: 1,
+              display: "flex",
+              gap: 15,
             }}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <ScrollView
-                style={{ height: 250 }}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-              >
-                <TouchableOpacity
-                  onPress={() => selectImages(true)}
-                  style={{
-                    width:
-                      images && images?.length > 0
-                        ? 150
-                        : dimensions.width - 30,
-                    height: "100%",
-                    backgroundColor: Colors.light,
-                    borderRadius: 10,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    marginRight: 10,
-                  }}
+          >
+            <Controller
+              name="images"
+              control={control}
+              rules={{
+                required: "At least 1 image is required",
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <ScrollView
+                  style={{ height: 250 }}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
                 >
-                  <Ionicons
-                    name="images-outline"
-                    size={24}
-                    color={Colors.grey}
-                  />
-                </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => selectImages(true)}
+                    style={{
+                      width:
+                        images && images?.length > 0
+                          ? 150
+                          : dimensions.width - 30,
+                      height: "100%",
+                      backgroundColor: Colors.light,
+                      borderRadius: 10,
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginRight: 10,
+                    }}
+                  >
+                    <Ionicons
+                      name="images-outline"
+                      size={24}
+                      color={Colors.grey}
+                    />
+                  </TouchableOpacity>
 
-                {images &&
-                  images.map((image, index) => (
-                    <View
-                      key={index}
-                      style={{
-                        marginRight: 10,
-                        position: "relative",
-                        alignItems: "center", // Center horizontally
-                        justifyContent: "center", // Center vertically
-                      }}
-                    >
-                      <Image
-                        source={{ uri: image.localImage }}
+                  {images &&
+                    images.map((image, index) => (
+                      <View
+                        key={index}
                         style={{
-                          width: 150,
-                          flex: 1,
-                          borderRadius: 10,
+                          marginRight: 10,
+                          position: "relative",
+                          alignItems: "center", // Center horizontally
+                          justifyContent: "center", // Center vertically
                         }}
-                      />
-                      {!image.serverImage && (
-                        <View
+                      >
+                        <Image
+                          source={{ uri: image.localImage }}
+                          style={{
+                            width: 150,
+                            flex: 1,
+                            borderRadius: 10,
+                          }}
+                        />
+                        {!image.serverImage && (
+                          <View
+                            style={{
+                              position: "absolute",
+                              top: 0,
+                              bottom: 0,
+                              left: 0,
+                              right: 0,
+                              backgroundColor: "rgba(255, 255, 255, 0.483)", // Adjust the background color and opacity as needed
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <ActivityIndicator size="large" color="#FFF" />
+                          </View>
+                        )}
+                        <TouchableOpacity
                           style={{
                             position: "absolute",
                             top: 0,
-                            bottom: 0,
-                            left: 0,
                             right: 0,
-                            backgroundColor: "rgba(255, 255, 255, 0.483)", // Adjust the background color and opacity as needed
-                            alignItems: "center",
-                            justifyContent: "center",
+                            zIndex: 99,
+                          }}
+                          onPress={() => {
+                            setImages((prevImages) =>
+                              prevImages.filter((_, i) => i !== index)
+                            );
                           }}
                         >
-                          <ActivityIndicator size="large" color="#FFF" />
-                        </View>
-                      )}
-                      <TouchableOpacity
-                        style={{
-                          position: "absolute",
-                          top: 0,
-                          right: 0,
-                          zIndex: 99,
-                        }}
-                        onPress={() => {
-                          setImages((prevImages) =>
-                            prevImages.filter((_, i) => i !== index)
-                          );
-                        }}
-                      >
-                        <Ionicons
-                          name="remove-circle"
-                          size={24}
-                          color={"red"}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  ))}
-              </ScrollView>
-            )}
-          />
-          {errors.images && (
-            <Text style={[Theme.Caption, { color: "red" }]}>
-              {errors.images.message}
-            </Text>
-          )}
-
-          <Text style={[Theme.Title, { marginTop: 5 }]}>Category</Text>
-          {categories && (
-            <Controller
-              control={control}
-              name="categoryId"
-              rules={{
-                required: "Category is required",
-              }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <View
-                  style={{
-                    display: "flex",
-                    gap: 10,
-                    flexDirection: "row",
-                    flexWrap: "wrap",
-                  }}
-                >
-                  {categories.map((category, key) => (
-                    <TouchableOpacity
-                      key={key}
-                      onPress={() => onChange(category.id)}
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        backgroundColor:
-                          selectedCategory === category.id
-                            ? Colors.dark
-                            : Colors.light,
-                        borderRadius: 99,
-                        paddingHorizontal: 10,
-                        paddingVertical: 10,
-                      }}
-                    >
-                      <Text
-                        style={[
-                          Theme.Caption,
-                          {
-                            color:
-                              selectedCategory === category.id
-                                ? Colors.light
-                                : Colors.dark,
-                          },
-                        ]}
-                        key={category.id}
-                      >
-                        {category.name}
-                      </Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
+                          <Ionicons
+                            name="remove-circle"
+                            size={24}
+                            color={"red"}
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    ))}
+                </ScrollView>
               )}
             />
-          )}
-          {errors.categoryId && (
-            <Text style={[Theme.Caption, { color: "red" }]}>
-              {errors.categoryId.message}
-            </Text>
-          )}
+            {errors.images && (
+              <Text style={[Theme.Caption, { color: "red" }]}>
+                {errors.images.message}
+              </Text>
+            )}
 
-          <View style={{ gap: 10, marginTop: 5 }}>
-            <Text style={Theme.Title}>Review</Text>
-            <Text style={Theme.Caption}>
-              We love details! What made this find special?
-            </Text>
-          </View>
-          <Controller
-            control={control}
-            rules={{
-              required: "Review is required",
-            }}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                placeholder={"Let's hear it..."}
-                multiline
-                style={[
-                  Theme.InputStyle,
-                  {
-                    minHeight: 100,
-                    paddingTop: 10,
-                    lineHeight: 20,
-                    backgroundColor: "#FFF",
-                    borderWidth: 1,
-                  },
-                  errors.review
-                    ? { borderColor: "red" }
-                    : { borderColor: Colors.grey },
-                ]}
-                onBlur={onBlur}
-                onChangeText={(text) => {
-                  const formattedText = text.replace(/\\n/g, "\n");
-                  onChange(text);
-                  clearErrors("review");
+            <Text style={[Theme.Title, { marginTop: 5 }]}>Category</Text>
+            {categories && (
+              <Controller
+                control={control}
+                name="categoryId"
+                rules={{
+                  required: "Category is required",
                 }}
-                value={value}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <View
+                    style={{
+                      display: "flex",
+                      gap: 10,
+                      flexDirection: "row",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    {categories.map((category, key) => (
+                      <TouchableOpacity
+                        key={key}
+                        onPress={() => onChange(category.id)}
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          backgroundColor:
+                            selectedCategory === category.id
+                              ? Colors.dark
+                              : Colors.light,
+                          borderRadius: 99,
+                          paddingHorizontal: 10,
+                          paddingVertical: 10,
+                        }}
+                      >
+                        <Text
+                          style={[
+                            Theme.Caption,
+                            {
+                              color:
+                                selectedCategory === category.id
+                                  ? Colors.light
+                                  : Colors.dark,
+                            },
+                          ]}
+                          key={category.id}
+                        >
+                          {category.name}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
               />
             )}
-            name="review"
-          />
-          {errors.review && (
-            <Text style={[Theme.Caption, { color: "red" }]}>
-              {errors.review.message}
-            </Text>
-          )}
+            {errors.categoryId && (
+              <Text style={[Theme.Caption, { color: "red" }]}>
+                {errors.categoryId.message}
+              </Text>
+            )}
 
-          <View style={{ gap: 10, marginTop: 5 }}>
-            <Text style={Theme.Title}>Tags</Text>
-            <Text style={Theme.Caption}>
-              Get discovered by adding relevant tags
-            </Text>
-          </View>
-          <Controller
-            control={control}
-            name="tags"
-            rules={{
-              required: "At least 1 tag is required",
-            }}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <View
-                style={{
-                  display: "flex",
-                  gap: 15,
-                  flexDirection: "row",
-                  flexWrap: "wrap",
-                }}
-              >
+            <View style={{ gap: 10, marginTop: 5 }}>
+              <Text style={Theme.Title}>Review</Text>
+              <Text style={Theme.Caption}>
+                We love details! What made this find special?
+              </Text>
+            </View>
+            <Controller
+              control={control}
+              rules={{
+                required: "Review is required",
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
-                  placeholder={"pasta, linguine, italian"}
+                  placeholder={"Let's hear it..."}
+                  multiline
                   style={[
                     Theme.InputStyle,
                     {
+                      minHeight: 100,
+                      paddingTop: 10,
+                      lineHeight: 20,
                       backgroundColor: "#FFF",
                       borderWidth: 1,
-                      textTransform: "lowercase",
                     },
                     errors.review
                       ? { borderColor: "red" }
                       : { borderColor: Colors.grey },
                   ]}
                   onBlur={onBlur}
-                  autoCapitalize="none"
-                  value={inputTags}
-                  onChange={(e) => {
-                    // only add tag if comma is entered
-                    if (e.nativeEvent.text.endsWith(" ")) {
-                      const newTag = e.nativeEvent.text.replace(" ", "").trim();
-
-                      if (newTag.length > 0) {
-                        if (!value.includes(newTag.toLowerCase())) {
-                          onChange([...value, newTag.toLowerCase()]);
-                        }
-                        setInputTags(""); // Clear the TextInput
-                      }
-                    } else if (e.nativeEvent.text.endsWith(",")) {
-                      const newTag = e.nativeEvent.text.replace(",", "").trim();
-                      if (newTag.length > 0) {
-                        if (!value.includes(newTag.toLowerCase())) {
-                          onChange([...value, newTag.toLowerCase()]);
-                        }
-                        setInputTags(""); // Clear the TextInput
-                      }
-                    } else {
-                      setInputTags(e.nativeEvent.text.toLowerCase()); // Update the TextInput value
-                    }
+                  onChangeText={(text) => {
+                    const formattedText = text.replace(/\\n/g, "\n");
+                    onChange(text);
+                    clearErrors("review");
                   }}
-                  onSubmitEditing={() => {
-                    // Add the current input as a new tag
-                    const newTag = inputTags.trim();
-                    if (newTag.length > 0) {
-                      onChange([...value, newTag]);
-                      setInputTags(""); // Clear the TextInput
-                    }
-                  }}
+                  value={value}
                 />
-                {currentTags.map((tag, key) => (
-                  <TouchableOpacity
-                    key={key}
-                    onPress={() => {
-                      const newTags = currentTags.filter((t) => t !== tag);
-                      onChange(newTags);
+              )}
+              name="review"
+            />
+            {errors.review && (
+              <Text style={[Theme.Caption, { color: "red" }]}>
+                {errors.review.message}
+              </Text>
+            )}
+
+            <View style={{ gap: 10, marginTop: 5 }}>
+              <Text style={Theme.Title}>Tags</Text>
+              <Text style={Theme.Caption}>
+                Get discovered by adding relevant tags
+              </Text>
+            </View>
+            <Controller
+              control={control}
+              name="tags"
+              rules={{
+                required: "At least 1 tag is required",
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <View
+                  style={{
+                    display: "flex",
+                    gap: 15,
+                    flexDirection: "row",
+                    flexWrap: "wrap",
+                    marginBottom: 20,
+                  }}
+                >
+                  <TextInput
+                    placeholder={"pasta, linguine, italian"}
+                    style={[
+                      Theme.InputStyle,
+                      {
+                        backgroundColor: "#FFF",
+                        borderWidth: 1,
+                        textTransform: "lowercase",
+                      },
+                      errors.review
+                        ? { borderColor: "red" }
+                        : { borderColor: Colors.grey },
+                    ]}
+                    onBlur={onBlur}
+                    autoCapitalize="none"
+                    value={inputTags}
+                    onChange={(e) => {
+                      // only add tag if comma is entered
+                      if (e.nativeEvent.text.endsWith(" ")) {
+                        const newTag = e.nativeEvent.text
+                          .replace(" ", "")
+                          .trim();
+
+                        if (newTag.length > 0) {
+                          if (!value.includes(newTag.toLowerCase())) {
+                            onChange([...value, newTag.toLowerCase()]);
+                          }
+                          setInputTags(""); // Clear the TextInput
+                        }
+                      } else if (e.nativeEvent.text.endsWith(",")) {
+                        const newTag = e.nativeEvent.text
+                          .replace(",", "")
+                          .trim();
+                        if (newTag.length > 0) {
+                          if (!value.includes(newTag.toLowerCase())) {
+                            onChange([...value, newTag.toLowerCase()]);
+                          }
+                          setInputTags(""); // Clear the TextInput
+                        }
+                      } else {
+                        setInputTags(e.nativeEvent.text.toLowerCase()); // Update the TextInput value
+                      }
                     }}
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      backgroundColor: Colors.light,
-                      borderRadius: 99,
-                      paddingHorizontal: 10,
-                      paddingVertical: 10,
-                      flexDirection: "row",
+                    onSubmitEditing={() => {
+                      // Add the current input as a new tag
+                      const newTag = inputTags.trim();
+                      if (newTag.length > 0) {
+                        onChange([...value, newTag]);
+                        setInputTags(""); // Clear the TextInput
+                      }
                     }}
-                  >
-                    <Text
-                      style={[
-                        Theme.Caption,
-                        {
-                          color: Colors.dark,
-                        },
-                      ]}
-                      key={tag}
+                  />
+                  {currentTags.map((tag, key) => (
+                    <TouchableOpacity
+                      key={key}
+                      onPress={() => {
+                        const newTags = currentTags.filter((t) => t !== tag);
+                        onChange(newTags);
+                      }}
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        backgroundColor: Colors.light,
+                        borderRadius: 99,
+                        paddingHorizontal: 10,
+                        paddingVertical: 10,
+                        flexDirection: "row",
+                      }}
                     >
-                      {tag}
-                    </Text>
-                    <Ionicons name="close" size={16} color={Colors.dark} />
-                  </TouchableOpacity>
-                ))}
-              </View>
+                      <Text
+                        style={[
+                          Theme.Caption,
+                          {
+                            color: Colors.dark,
+                          },
+                        ]}
+                        key={tag}
+                      >
+                        {tag}
+                      </Text>
+                      <Ionicons name="close" size={16} color={Colors.dark} />
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              )}
+            />
+
+            {errors.tags && (
+              <Text style={[Theme.Caption, { color: "red" }]}>
+                {errors.tags.message}
+              </Text>
             )}
-          />
 
-          {errors.tags && (
-            <Text style={[Theme.Caption, { color: "red" }]}>
-              {errors.tags.message}
-            </Text>
-          )}
+            <View style={{ paddingTop: 15, gap: 15 }}>
+              {error && (
+                <Text style={[Theme.Caption, { color: "red" }]}>{error}</Text>
+              )}
 
-          <View style={{ paddingTop: 15, gap: 15 }}>
-            {error && (
-              <Text style={[Theme.Caption, { color: "red" }]}>{error}</Text>
-            )}
-
-            <Button
-              disabled={isSubmitting || isUploading}
-              titleStyle={Theme.BodyText}
-              onPress={handleSubmit(onSubmit)}
-              loading={isSubmitting || isUploading}
-              loadingProps={{
-                children: (
-                  <ActivityIndicator size="small" color={Colors.light} />
-                ),
-              }}
-              title={"Publish find"}
-              style={{
-                backgroundColor: Colors.primary,
-                marginBottom: 100,
-                padding: 5,
-                borderRadius: 99,
-              }}
-            ></Button>
-          </View>
-        </Animated.View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+              <Button
+                disabled={isSubmitting || isUploading}
+                titleStyle={Theme.BodyText}
+                onPress={handleSubmit(onSubmit)}
+                loading={isSubmitting || isUploading}
+                loadingProps={{
+                  children: (
+                    <ActivityIndicator size="small" color={Colors.light} />
+                  ),
+                }}
+                title={"Publish find"}
+                style={{
+                  backgroundColor: Colors.primary,
+                  marginBottom: 100,
+                  padding: 5,
+                  borderRadius: 99,
+                }}
+              ></Button>
+            </View>
+          </Animated.View>
+        </ScrollView>
+      </KeyboardAwareScrollView>
+    </>
   );
 };
 
