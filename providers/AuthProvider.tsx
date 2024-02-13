@@ -55,7 +55,6 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
     storage.delete("auth");
     setSession(null);
     queryClient.clear();
-    router.push("/");
     router.push("/(modals)/login");
   };
 
