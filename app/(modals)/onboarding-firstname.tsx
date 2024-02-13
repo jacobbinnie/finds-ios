@@ -19,6 +19,7 @@ import { authApi, usersApi } from "@/types";
 import { storage } from "@/utils/storage";
 import { AuthUserDto } from "@/types/generated";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Animated, { FadeInLeft } from "react-native-reanimated";
 
 type FormInputs = {
   firstname: string;
@@ -104,17 +105,12 @@ const OnboardingFirstname = () => {
             flexDirection: "row",
           }}
         >
-          <View
-            style={{
-              backgroundColor: Colors.dark,
-              padding: 10,
-              borderRadius: 99,
-            }}
+          <Animated.Text
+            entering={FadeInLeft.springify().delay(200)}
+            style={Theme.BodyText}
           >
-            <Text style={[Theme.Caption, { color: Colors.light }]}>
-              Step 2 of 2
-            </Text>
-          </View>
+            Step 2 of 2
+          </Animated.Text>
         </View>
         <View
           style={{
@@ -139,6 +135,8 @@ const OnboardingFirstname = () => {
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
               autoComplete="off"
+              autoCorrect={false}
+              spellCheck={false}
               placeholder={"eg. Jessica"}
               placeholderTextColor={Colors.grey}
               style={[

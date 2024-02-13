@@ -127,21 +127,30 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
           `Access token is still valid. Updating auth state... Remaining time is ${remainingTime}ms`
         );
 
-        const res = await usersApi.usersControllerGetUser({
-          headers: {
-            Authorization: `Bearer ${parsed.accessToken}`,
-          },
-        });
-
-        if (res.data) {
-          setSession({
-            accessToken: parsed.accessToken,
-            refreshToken: parsed.refreshToken,
-            profile: res.data,
+        try {
+          const res = await usersApi.usersControllerGetUser({
+            headers: {
+              Authorization: `Bearer ${parsed.accessToken}`,
+            },
           });
-        } else {
-          console.log("Error fetching user data. Resetting auth state...");
-          storage.delete("auth");
+
+          if (res.data) {
+            setSession({
+              accessToken: parsed.accessToken,
+              refreshToken: parsed.refreshToken,
+              profile: res.data,
+            });
+          } else {
+            console.log("Error fetching user data. Resetting auth state...");
+            storage.delete("auth");
+          }
+        } catch (e: any) {
+          if (e.response?.status === 404) {
+            console.log("User not found. Resetting auth state...");
+            signout();
+          } else {
+            console.log(e);
+          }
         }
 
         setIsCheckingAuth(false);

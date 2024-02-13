@@ -21,7 +21,7 @@ const NewFindTab = () => {
           },
         ]}
       >
-        <Animated.View entering={FadeInUp.springify().delay(400)}>
+        <Animated.View entering={FadeInUp.springify().delay(600)}>
           <Marquee speed={0.5} spacing={10}>
             <Text style={[Theme.BigTitle, { letterSpacing: 30 }]}>
               🍔🍟🍕🌭🥪🌮🌯🥙🥚🥓🥩🍖🍗🍤🍣🍱🍛🍝🍜🍲🍥🍙🍚🍘🍢🍡🥟🥠🥮🍦🍧🍨🍩🍪🎂🍰🧁🥧🍫🍬🍭🍮🍯☕🍵🍾🍷🍸🍹🍺🍻🥂🥃🥤🧃🧉
@@ -37,7 +37,7 @@ const NewFindTab = () => {
             Find something?
           </Animated.Text>
           <Animated.Text
-            entering={FadeInLeft.springify().delay(200)}
+            entering={FadeInLeft.springify().delay(300)}
             style={Theme.BodyText}
           >
             Let's goooooo! Search the place below and let's share your find with
