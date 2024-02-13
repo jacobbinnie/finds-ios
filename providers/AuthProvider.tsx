@@ -18,6 +18,7 @@ import {
   usePathname,
   useRouter,
 } from "expo-router";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface Session {
   accessToken: string;
@@ -48,10 +49,12 @@ interface AuthProviderOptions {
 export const AuthProvider = ({ children }: AuthProviderOptions) => {
   const [session, setSession] = useState<Session | null | undefined>();
   const [isCheckingAuth, setIsCheckingAuth] = useState(false);
+  const queryClient = useQueryClient();
 
   const signout = () => {
     storage.delete("auth");
     setSession(null);
+    queryClient.clear();
     router.push("/");
     router.push("/(modals)/login");
   };

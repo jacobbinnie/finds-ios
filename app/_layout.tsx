@@ -40,13 +40,13 @@ export default function RootLayout() {
   const queryClient = new QueryClient();
 
   return (
-    <AuthProvider>
-      <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
         <RootSiblingParent>
           <RootLayoutNav />
         </RootSiblingParent>
-      </QueryClientProvider>
-    </AuthProvider>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
 

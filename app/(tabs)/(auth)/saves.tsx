@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import { Theme } from "@/constants/Styles";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/providers/AuthProvider";
 import Colors from "@/constants/Colors";
 import Save from "@/components/Save/Save";
@@ -21,7 +21,6 @@ import { useFocusEffect } from "expo-router";
 
 const Saves = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
-  const { session } = useAuth();
 
   useEffect(() => {
     // Enable layout animation

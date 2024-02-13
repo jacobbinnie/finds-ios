@@ -83,7 +83,7 @@ const MyProfile = () => {
   }
 
   if (!profile) {
-    return <Text>Profile not found</Text>;
+    return signout();
   }
 
   const uploadImage = async (uri: string) => {
