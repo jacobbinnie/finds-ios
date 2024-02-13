@@ -34,7 +34,7 @@ const ProfileDetails = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
 
   const router = useRouter();
-  const { session } = useAuth();
+  const { session, signout } = useAuth();
 
   const {
     data: profile,
@@ -59,7 +59,7 @@ const ProfileDetails = () => {
   }
 
   if (!profile) {
-    return <Text>Profile not found</Text>;
+    return signout();
   }
 
   const handleFollow = async () => {

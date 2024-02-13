@@ -7,13 +7,13 @@ import {
   Pressable,
   ActivityIndicator,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Theme } from "@/constants/Styles";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/providers/AuthProvider";
 import Colors from "@/constants/Colors";
 import { usersQuery } from "@/types/queries";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import Find from "@/components/Find/Find";
 import { Image } from "react-native-elements";
 import Animated, {
@@ -67,6 +67,12 @@ const MyProfile = () => {
   const [images, setImages] = useState<
     { localImage: string; serverImage?: string }[]
   >([]);
+
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, [])
+  );
 
   if (isLoading) {
     return <Loader />;
@@ -194,15 +200,11 @@ const MyProfile = () => {
         >
           <Animated.Text
             entering={FadeInLeft.springify()}
-            exiting={FadeOutLeft}
             style={Theme.BigTitle}
           >
             @{profile.username}
           </Animated.Text>
-          <Animated.View
-            entering={FadeInRight.springify()}
-            exiting={FadeOutRight}
-          >
+          <Animated.View entering={FadeInRight.springify()}>
             <TouchableOpacity
               onPress={() => signout()}
               style={{

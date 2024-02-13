@@ -18,8 +18,9 @@ import { FlashList } from "@shopify/flash-list";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { set } from "date-fns";
 import { useAuth } from "@/providers/AuthProvider";
-import { SplashScreen, router } from "expo-router";
+import { SplashScreen, router, useFocusEffect } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { findsApi } from "@/types";
 
 const Page = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
@@ -47,6 +48,7 @@ const Page = () => {
     isError,
     error,
     refetch,
+    isRefetching,
   } = useQuery(findsQuery.findsControllerAllFinds());
 
   useEffect(() => {

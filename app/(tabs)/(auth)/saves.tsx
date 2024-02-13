@@ -5,7 +5,7 @@ import {
   UIManager,
   LayoutAnimation,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Theme } from "@/constants/Styles";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/providers/AuthProvider";
@@ -17,6 +17,7 @@ import Loader from "@/components/Loader/Loader";
 import { FlashList } from "@shopify/flash-list";
 import Find from "@/components/Find/Find";
 import { StatusBar } from "expo-status-bar";
+import { useFocusEffect } from "expo-router";
 
 const Saves = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
@@ -34,6 +35,12 @@ const Saves = () => {
     isError,
     refetch,
   } = useQuery(savesQuery.savesControllerGetUserSaves());
+
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, [])
+  );
 
   if (isLoading) {
     return <Loader />;
@@ -70,6 +77,15 @@ const Saves = () => {
         >
           Your saves
         </Animated.Text>
+
+        {saves?.length === 0 && (
+          <Animated.Text
+            entering={FadeInLeft.springify().delay(100)}
+            style={Theme.BodyText}
+          >
+            You have no saves
+          </Animated.Text>
+        )}
 
         {findHeight && (
           <View

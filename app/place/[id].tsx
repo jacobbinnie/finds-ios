@@ -118,21 +118,19 @@ const PlaceDetails = () => {
               entering={FadeInRight.springify().delay(100)}
               exiting={FadeOutRight}
               style={{
+                borderWidth: 1,
                 padding: 10,
+                gap: 5,
                 borderRadius: 99,
-                overflow: "hidden",
-                backgroundColor: Colors.dark,
                 display: "flex",
                 flexDirection: "row",
-                justifyContent: "center",
                 alignItems: "center",
-                gap: 5,
               }}
             >
-              <Text style={[Theme.BodyText, { color: Colors.light }]}>
-                Add find
+              <Text style={[Theme.Caption, { color: Colors.dark }]}>
+                Add new find
               </Text>
-              <Feather name="plus-square" size={18} color={Colors.light} />
+              <Feather name="plus" size={15} color={Colors.dark} />
             </Animated.View>
           </TouchableOpacity>
         </View>

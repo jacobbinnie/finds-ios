@@ -86,6 +86,7 @@ const Search = () => {
             <TextInput
               onChangeText={(e) => setQuery(e)}
               placeholder="Search people & places"
+              placeholderTextColor={Colors.grey}
               autoFocus={true}
               autoComplete="off"
               spellCheck={false}
@@ -94,10 +95,8 @@ const Search = () => {
               style={[
                 Theme.BodyText,
                 {
-                  display: "flex",
-                  flexDirection: "row",
-                  marginTop: -2,
-                  color: Colors.grey,
+                  color: Colors.dark,
+                  paddingBottom: 5,
                 },
               ]}
             />
@@ -118,12 +117,11 @@ const Search = () => {
               alignItems: "center",
               gap: 5,
               flex: 1,
+              paddingVertical: 13.5,
             }}
           >
             <Ionicons name="search" size={20} color={Colors.grey} />
-            <Text
-              style={[Theme.BodyText, { color: Colors.grey, marginTop: 2 }]}
-            >
+            <Text style={[Theme.BodyText, { color: Colors.grey }]}>
               Search people & places
             </Text>
           </Animated.View>
@@ -148,6 +146,7 @@ const Search = () => {
       </View>
 
       <FlashList
+        keyboardShouldPersistTaps="handled"
         estimatedItemSize={25}
         data={combinedData}
         ItemSeparatorComponent={() => <Divider />}

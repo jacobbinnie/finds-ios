@@ -17,7 +17,12 @@ import Colors from "@/constants/Colors";
 import { useQuery } from "@tanstack/react-query";
 import { findsQuery, placesQuery, searchQuery } from "@/types/queries";
 import { Ionicons } from "@expo/vector-icons";
-import { FadeInLeft, FadeInRight, FadeOutRight } from "react-native-reanimated";
+import {
+  FadeInDown,
+  FadeInLeft,
+  FadeInRight,
+  FadeOutRight,
+} from "react-native-reanimated";
 import Animated from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "react-native-elements/dist/buttons/Button";
@@ -291,7 +296,8 @@ const NewFind = () => {
           paddingTop: 15,
         }}
       >
-        <Text
+        <Animated.Text
+          entering={FadeInLeft.springify().delay(500)}
           style={[
             Theme.BigTitle,
             {
@@ -300,8 +306,9 @@ const NewFind = () => {
           ]}
         >
           Add find
-        </Text>
-        <View
+        </Animated.Text>
+        <Animated.View
+          entering={FadeInDown.springify().delay(1000)}
           style={{
             flex: 1,
             display: "flex",
@@ -648,7 +655,7 @@ const NewFind = () => {
               }}
             ></Button>
           </View>
-        </View>
+        </Animated.View>
       </ScrollView>
     </KeyboardAvoidingView>
   );
