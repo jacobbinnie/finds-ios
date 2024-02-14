@@ -55,7 +55,6 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
     storage.delete("auth");
     setSession(null);
     queryClient.clear();
-    router.push("/(modals)/login");
   };
 
   const router = useRouter();
@@ -190,18 +189,27 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
   }, []);
 
   useEffect(() => {
-    if (session?.profile) {
-      if (!session?.profile?.username) {
-        router.push("/(modals)/onboarding-username");
-      } else if (!session.profile.firstname) {
-        router.push("/(modals)/onboarding-firstname");
-      } else {
-        if (pathname === "/login" || pathname === "/onboarding-firstname") {
+    if (session) {
+      if (session?.profile.username && session.profile.firstname) {
+        if (pathname !== "/") {
+          console.log("Redirecting to /");
           router.push("/");
         }
+      } else if (!session?.profile.username) {
+        if (pathname !== "/onboarding-username") {
+          router.push("/onboarding-username");
+        }
+      } else if (!session?.profile.firstname) {
+        if (pathname !== "/onboarding-firstname") {
+          router.push("/onboarding-firstname");
+        }
       }
-    } else if (session === null) {
-      router.push("/(modals)/login");
+    } else {
+      if (session === null) {
+        if (pathname !== "/login") {
+          router.push("/login");
+        }
+      }
     }
   }, [session]);
 

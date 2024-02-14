@@ -78,7 +78,6 @@ function RootLayoutNav() {
       <Stack.Screen
         name="(modals)/onboarding-username"
         options={{
-          presentation: "fullScreenModal",
           animation: "slide_from_right",
           headerShown: false,
         }}
@@ -86,7 +85,6 @@ function RootLayoutNav() {
       <Stack.Screen
         name="(modals)/onboarding-firstname"
         options={{
-          presentation: "fullScreenModal",
           animation: "slide_from_right",
           headerShown: false,
         }}

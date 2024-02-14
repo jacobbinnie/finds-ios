@@ -33,6 +33,8 @@ const OnboardingUsername = () => {
 
   const dimensions = useWindowDimensions();
 
+  const router = useRouter();
+
   const {
     control,
     handleSubmit,
@@ -50,20 +52,14 @@ const OnboardingUsername = () => {
     try {
       const res = await usersApi.usersControllerUpdateUsername(data.username);
 
-      if (session && res.data) {
-        const updatedSession = {
-          accessToken: session.accessToken,
-          refreshToken: session.refreshToken,
-          profile: res.data as AuthUserDto,
-        };
-
-        storage.set("auth", JSON.stringify(updatedSession));
-
-        setSession(updatedSession);
-        setIsSubmitting(false);
-      } else {
-        setError("Something went wrong");
-        setIsSubmitting(false);
+      if (session?.profile && res.data.username) {
+        setSession({
+          ...session,
+          profile: {
+            ...session?.profile,
+            username: res.data.username,
+          },
+        });
       }
     } catch (err: any) {
       if (err.response.data.statusCode === 409) {
