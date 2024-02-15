@@ -14,7 +14,7 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "buildNumber": "1.0.1",
+      "buildNumber": "2",
       "supportsTablet": true,
       "usesAppleSignIn": true,
       "bundleIdentifier": "com.jacobbinnie.findsios",
