@@ -2,7 +2,7 @@
   "expo": {
     "name": "Finds - NYC's Best Eats",
     "slug": "finds-ios",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -12,18 +12,13 @@
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "usesAppleSignIn": true,
       "bundleIdentifier": "com.jacobbinnie.findsios",
       "infoPlist": {
-        "LSApplicationQueriesSchemes": [
-          "instagram",
-          "instagram-stories"
-        ]
+        "LSApplicationQueriesSchemes": ["instagram", "instagram-stories"]
       }
     },
     "plugins": [
@@ -64,9 +59,7 @@
       }
     },
     "android": {
-      "permissions": [
-        "android.permission.RECORD_AUDIO"
-      ],
+      "permissions": ["android.permission.RECORD_AUDIO"],
       "package": "com.jacobbinnie.findsios"
     },
     "runtimeVersion": "1.0.0",
