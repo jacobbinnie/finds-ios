@@ -94,7 +94,8 @@ const NewFind = () => {
   const saveImage = async (uri: string, orientation: number) => {
     await ensureDirExists();
 
-    const filename = new Date().getTime() + ".jpg";
+    const randomId = Math.floor(Math.random() * 10000); // Generate random number between 0 and 9999
+    const filename = `${new Date().getTime()}_${randomId}.jpg`; // Combine timestamp and random number for uniqueness
     const dest = imgDir + filename;
 
     // Use the ImageManipulator from expo to correct the orientation
