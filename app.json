@@ -2,7 +2,7 @@
   "expo": {
     "name": "Finds - NYC's Best Eats",
     "slug": "finds-ios",
-    "version": "1.0.1",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -14,6 +14,7 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
+      "buildNumber": "1.0.1",
       "supportsTablet": true,
       "usesAppleSignIn": true,
       "bundleIdentifier": "com.jacobbinnie.findsios",
