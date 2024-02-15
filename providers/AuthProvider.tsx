@@ -31,7 +31,7 @@ interface AuthContextValues {
   setSession: (session: Session | null) => void;
   isCheckingAuth: boolean;
   signout: () => void;
-  checkJwt: (session: string) => Promise<void>;
+  checkTokenExpiry: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValues>({
@@ -39,7 +39,7 @@ const AuthContext = createContext<AuthContextValues>({
   setSession: () => null,
   isCheckingAuth: false,
   signout: () => null,
-  checkJwt: () => Promise.resolve(),
+  checkTokenExpiry: () => Promise.resolve(),
 });
 
 interface AuthProviderOptions {
@@ -191,7 +191,11 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
   useEffect(() => {
     if (session) {
       if (session?.profile.username && session.profile.firstname) {
-        if (pathname !== "/") {
+        if (
+          pathname === "/login" ||
+          pathname === "/onboarding-username" ||
+          pathname === "/onboarding-firstname"
+        ) {
           console.log("Redirecting to /");
           router.push("/");
         }
@@ -218,7 +222,7 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
     setSession,
     isCheckingAuth,
     signout,
-    checkJwt,
+    checkTokenExpiry,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

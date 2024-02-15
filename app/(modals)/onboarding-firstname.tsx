@@ -140,7 +140,7 @@ const OnboardingFirstname = () => {
                   : null,
               ]}
               onBlur={onBlur}
-              onChangeText={(text) => onChange(text)}
+              onChangeText={(text) => onChange(text.replace(/\s/g, ""))}
               value={value}
             />
           )}

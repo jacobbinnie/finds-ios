@@ -148,9 +148,9 @@ const OnboardingUsername = () => {
                 errors.username ? { borderColor: "red", borderWidth: 1 } : null,
               ]}
               onBlur={onBlur}
-              onChangeText={(text) => {
-                onChange(text.toLowerCase());
-              }}
+              onChangeText={(text) =>
+                onChange(text.replace(/\s/g, "").toLowerCase())
+              }
               value={value}
             />
           )}

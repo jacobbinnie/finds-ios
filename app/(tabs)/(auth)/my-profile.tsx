@@ -50,7 +50,7 @@ const ensureDirExists = async () => {
 const MyProfile = () => {
   const [findHeight, setFindHeight] = useState<number | undefined>(undefined);
 
-  const { session, signout } = useAuth();
+  const { session, signout, checkTokenExpiry } = useAuth();
 
   const router = useRouter();
 
@@ -83,7 +83,7 @@ const MyProfile = () => {
   }
 
   if (!profile) {
-    return signout();
+    return checkTokenExpiry();
   }
 
   const uploadImage = async (uri: string) => {
