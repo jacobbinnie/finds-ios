@@ -12,16 +12,27 @@
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "usesAppleSignIn": true,
       "bundleIdentifier": "com.jacobbinnie.findsios",
       "infoPlist": {
-        "LSApplicationQueriesSchemes": ["instagram", "instagram-stories"]
+        "LSApplicationQueriesSchemes": [
+          "instagram",
+          "instagram-stories"
+        ]
       }
     },
     "plugins": [
+      [
+        "expo-updates",
+        {
+          "username": "jacobbinnie"
+        }
+      ],
       "expo-router",
       "expo-apple-authentication",
       [
@@ -53,8 +64,14 @@
       }
     },
     "android": {
-      "permissions": ["android.permission.RECORD_AUDIO"],
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
       "package": "com.jacobbinnie.findsios"
+    },
+    "runtimeVersion": "1.0.0",
+    "updates": {
+      "url": "https://u.expo.dev/b5ebc237-16a8-41ab-97c4-0bacbe68e91d"
     }
   }
 }

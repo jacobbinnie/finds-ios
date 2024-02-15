@@ -6,6 +6,7 @@ import { SplashScreen, Stack } from "expo-router";
 import { useCallback, useEffect } from "react";
 import "react-native-url-polyfill/auto";
 import { RootSiblingParent } from "react-native-root-siblings";
+import * as Updates from "expo-updates";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -53,6 +54,20 @@ export default function RootLayout() {
 function RootLayoutNav() {
   const { session } = useAuth();
 
+  async function onFetchUpdateAsync() {
+    try {
+      const update = await Updates.checkForUpdateAsync();
+
+      if (update.isAvailable) {
+        await Updates.fetchUpdateAsync();
+        await Updates.reloadAsync();
+      }
+    } catch (error) {
+      // You can also add an alert() to see the error message in case of an error when fetching updates.
+      alert(`Error fetching latest Expo update: ${error}`);
+    }
+  }
+
   useEffect(() => {
     if (session || session === null) {
       // This tells the splash screen to hide immediately! If we call this after
@@ -63,6 +78,12 @@ function RootLayoutNav() {
       void SplashScreen.hideAsync();
     }
   }, [session]);
+
+  useEffect(() => {
+    if (!__DEV__) {
+      onFetchUpdateAsync();
+    }
+  }, []);
 
   return (
     <Stack>

@@ -6,11 +6,13 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
-      "extends": "production"
+      "extends": "production",
+      "channel": "development"
     },
     "preview": {
       "distribution": "internal",
-      "extends": "production"
+      "extends": "production",
+      "channel": "preview"
     },
     "production": {
       "yarn": "1.22.21",
@@ -19,7 +21,8 @@
       "ios": {
         "cocoapods": "1.15.2",
         "image": "latest"
-      }
+      },
+      "channel": "production"
     }
   },
   "submit": {
