@@ -13,7 +13,7 @@
 	<li><strong>Follow Friends:</strong> Stay updated with your friends&#39; latest food discoveries.</li>
 	<li><strong>Save Finds:</strong> Bookmark places to explore later.</li>
 	<li><strong>Search:</strong> Easily find restaurants and bars using our intuitive search feature.</li>
-  <li>Apple OAuth authentication integration</li>
+  	<li><strong>Authentication:</strong> Apple OAuth integration</li>
 </ul>
 
 <h2>Technical Stack</h2>
