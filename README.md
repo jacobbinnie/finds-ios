@@ -1,6 +1,6 @@
 <h1>Finds iOS: Share NYC Food Discoveries!</h1>
 
-<p>Welcome to Finds, the iOS app designed for sharing your New York City food finds with friends! With Finds, you can rate, review, and upload multiple images of your favorite food spots, follow friends to see their recommendations, save finds to explore later, and easily search for restaurants and cocktail bars all over the Big Apple.</p>
+<p>With Finds, you can rate, review, and upload multiple images of your favorite food spots, follow friends to see their recommendations, save finds to explore later, and easily search for restaurants and cocktail bars all over the Big Apple.</p>
 
 ![Showcase Banner](https://github.com/jacobbinnie/finds-ios/assets/83803154/70fe7c2e-d40f-418f-8699-abc91c523b4d)
 
