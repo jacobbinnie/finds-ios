@@ -11,6 +11,7 @@ import { FindDto } from "@/types/generated";
 import { formatPostDate } from "@/utils/formatPostDate";
 import SaveButton from "../SaveButton/SaveButton";
 import { useRouter } from "expo-router";
+import LikeButton from "../LikeButton/LikeButton";
 
 interface FindProps {
   isProfileFind?: boolean;
@@ -221,7 +222,17 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
                   <TouchableOpacity
                     onPress={() => router.push("/(modals)/login")}
                   >
-                    <Ionicons name="ios-heart" size={30} color={Colors.grey} />
+                    <Ionicons name="ios-heart" size={25} color={Colors.grey} />
+                  </TouchableOpacity>
+                )}
+
+                {session?.accessToken ? (
+                  <LikeButton findId={find.id} />
+                ) : (
+                  <TouchableOpacity
+                    onPress={() => router.push("/(modals)/login")}
+                  >
+                    <Ionicons name="ios-heart" size={25} color={Colors.grey} />
                   </TouchableOpacity>
                 )}
 
@@ -232,7 +243,7 @@ const Find = ({ isProfileFind, isPlaceFind, findHeight, find }: FindProps) => {
                     })
                   }
                 >
-                  <Feather name="share" size={30} color={Colors.grey} />
+                  <Feather name="share" size={25} color={Colors.grey} />
                 </TouchableOpacity>
               </View>
             </View>

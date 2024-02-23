@@ -1,46 +1,46 @@
-import { View, Text, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import React, { useEffect } from "react";
 import Colors from "@/constants/Colors";
 import { useQuery } from "@tanstack/react-query";
-import { savesQuery } from "@/types/queries";
+import { likesQuery } from "@/types/queries";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { Feather, Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAuth } from "@/providers/AuthProvider";
 import { useRouter } from "expo-router";
-import { savesApi } from "@/types";
+import { likesApi } from "@/types";
 import Toast from "react-native-root-toast";
 import { Theme } from "@/constants/Styles";
 
-const SaveButton = ({ findId }: { findId: number }) => {
+const LikeButton = ({ findId }: { findId: number }) => {
   const { session } = useAuth();
   const router = useRouter();
 
   const {
-    data: save,
-    refetch: refetchSave,
+    data: like,
+    refetch: refetchLike,
     error,
     isLoading,
   } = useQuery(
-    savesQuery.savesControllerGetFindUserSave({
+    likesQuery.likesControllerGetFindUserLike({
       data: {
         id: findId,
       },
     })
   );
 
-  const handleSave = async () => {
+  const handleLike = async () => {
     if (!session) {
       return router.push("/(modals)/login");
     }
 
     try {
-      await savesApi.savesControllerUpdateSave({
+      await likesApi.likesControllerUpdateLike({
         data: {
           id: findId,
         },
       });
 
-      refetchSave();
+      refetchLike();
     } catch (error) {
       console.log("Error", error);
     }
@@ -53,7 +53,7 @@ const SaveButton = ({ findId }: { findId: number }) => {
           ? error.message && error?.message.includes("409")
             ? "Too many requests..."
             : error?.message
-          : "Something went wrong with saves",
+          : "Something went wrong with Likes",
         {
           duration: Toast.durations.LONG,
           position: Toast.positions.BOTTOM,
@@ -80,13 +80,13 @@ const SaveButton = ({ findId }: { findId: number }) => {
       {isLoading ? (
         <ActivityIndicator />
       ) : (
-        <TouchableOpacity onPress={() => handleSave()}>
-          <Ionicons
-            name="bookmark"
+        <TouchableOpacity onPress={() => handleLike()}>
+          <MaterialCommunityIcons
+            name="hand-clap"
             size={25}
             color={
-              save?.id
-                ? save.deleted_at
+              like?.id
+                ? like.deleted_at
                   ? Colors.grey
                   : Colors.primary
                 : Colors.grey
@@ -98,4 +98,4 @@ const SaveButton = ({ findId }: { findId: number }) => {
   );
 };
 
-export default SaveButton;
+export default LikeButton;

@@ -1,6 +1,13 @@
 import { UseQueryOptions } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { findsApi, placesApi, savesApi, searchApi, usersApi } from ".";
+import {
+  findsApi,
+  likesApi,
+  placesApi,
+  savesApi,
+  searchApi,
+  usersApi,
+} from ".";
 
 type queryFns<T> = {
   [k in keyof T]: {
@@ -94,4 +101,5 @@ export const findsQuery = apiToReactQuery(findsApi);
 export const placesQuery = apiToReactQuery(placesApi);
 export const usersQuery = apiToReactQuery(usersApi);
 export const savesQuery = apiToReactQuery(savesApi);
+export const likesQuery = apiToReactQuery(likesApi);
 export const searchQuery = apiToReactQuery(searchApi);

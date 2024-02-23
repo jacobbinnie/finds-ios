@@ -286,7 +286,7 @@ const FindDetails = () => {
                   })
                 }
               >
-                <Feather name="share" size={30} color={Colors.grey} />
+                <Feather name="share" size={25} color={Colors.grey} />
               </TouchableOpacity>
             </View>
           </View>

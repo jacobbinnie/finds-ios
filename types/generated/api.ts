@@ -26,6 +26,37 @@ import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerM
 /**
  * 
  * @export
+ * @interface ActiveLikeDto
+ */
+export interface ActiveLikeDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof ActiveLikeDto
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ActiveLikeDto
+     */
+    'userId': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ActiveLikeDto
+     */
+    'findId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ActiveLikeDto
+     */
+    'deleted_at': string;
+}
+/**
+ * 
+ * @export
  * @interface ActiveSaveDto
  */
 export interface ActiveSaveDto {
@@ -442,6 +473,31 @@ export interface ProfileDto {
 /**
  * 
  * @export
+ * @interface UserLikeDto
+ */
+export interface UserLikeDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof UserLikeDto
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserLikeDto
+     */
+    'created_at': string;
+    /**
+     * 
+     * @type {FindDto}
+     * @memberof UserLikeDto
+     */
+    'find': FindDto;
+}
+/**
+ * 
+ * @export
  * @interface UserProfileDto
  */
 export interface UserProfileDto {
@@ -518,6 +574,31 @@ export interface UserSaveDto {
      * @memberof UserSaveDto
      */
     'find': FindDto;
+}
+/**
+ * 
+ * @export
+ * @interface WaitlistSignupDto
+ */
+export interface WaitlistSignupDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof WaitlistSignupDto
+     */
+    'email': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof WaitlistSignupDto
+     */
+    'instagram': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof WaitlistSignupDto
+     */
+    'location': string;
 }
 
 /**
@@ -1153,6 +1234,231 @@ export class FindsApi extends BaseAPI {
      */
     public findsControllerGetFindById(options?: RawAxiosRequestConfig) {
         return FindsApiFp(this.configuration).findsControllerGetFindById(options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * LikesApi - axios parameter creator
+ * @export
+ */
+export const LikesApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        likesControllerGetFindUserLike: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/likes/find-user-like`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        likesControllerGetUserLikes: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/likes/user-likes`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        likesControllerUpdateLike: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/likes/update-like`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication bearer required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * LikesApi - functional programming interface
+ * @export
+ */
+export const LikesApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = LikesApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async likesControllerGetFindUserLike(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ActiveLikeDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.likesControllerGetFindUserLike(options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['LikesApi.likesControllerGetFindUserLike']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async likesControllerGetUserLikes(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<UserLikeDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.likesControllerGetUserLikes(options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['LikesApi.likesControllerGetUserLikes']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async likesControllerUpdateLike(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ActiveLikeDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.likesControllerUpdateLike(options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['LikesApi.likesControllerUpdateLike']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * LikesApi - factory interface
+ * @export
+ */
+export const LikesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = LikesApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        likesControllerGetFindUserLike(options?: any): AxiosPromise<ActiveLikeDto> {
+            return localVarFp.likesControllerGetFindUserLike(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        likesControllerGetUserLikes(options?: any): AxiosPromise<Array<UserLikeDto>> {
+            return localVarFp.likesControllerGetUserLikes(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        likesControllerUpdateLike(options?: any): AxiosPromise<ActiveLikeDto> {
+            return localVarFp.likesControllerUpdateLike(options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * LikesApi - object-oriented interface
+ * @export
+ * @class LikesApi
+ * @extends {BaseAPI}
+ */
+export class LikesApi extends BaseAPI {
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LikesApi
+     */
+    public likesControllerGetFindUserLike(options?: RawAxiosRequestConfig) {
+        return LikesApiFp(this.configuration).likesControllerGetFindUserLike(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LikesApi
+     */
+    public likesControllerGetUserLikes(options?: RawAxiosRequestConfig) {
+        return LikesApiFp(this.configuration).likesControllerGetUserLikes(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LikesApi
+     */
+    public likesControllerUpdateLike(options?: RawAxiosRequestConfig) {
+        return LikesApiFp(this.configuration).likesControllerUpdateLike(options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -2272,6 +2578,112 @@ export class UsersApi extends BaseAPI {
      */
     public usersControllerUpdateUsername(username: string, options?: RawAxiosRequestConfig) {
         return UsersApiFp(this.configuration).usersControllerUpdateUsername(username, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * WaitlistApi - axios parameter creator
+ * @export
+ */
+export const WaitlistApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {WaitlistSignupDto} waitlistSignupDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        waitlistControllerJoinWaitlist: async (waitlistSignupDto: WaitlistSignupDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'waitlistSignupDto' is not null or undefined
+            assertParamExists('waitlistControllerJoinWaitlist', 'waitlistSignupDto', waitlistSignupDto)
+            const localVarPath = `/waitlist/join`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(waitlistSignupDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * WaitlistApi - functional programming interface
+ * @export
+ */
+export const WaitlistApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = WaitlistApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {WaitlistSignupDto} waitlistSignupDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async waitlistControllerJoinWaitlist(waitlistSignupDto: WaitlistSignupDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.waitlistControllerJoinWaitlist(waitlistSignupDto, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['WaitlistApi.waitlistControllerJoinWaitlist']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * WaitlistApi - factory interface
+ * @export
+ */
+export const WaitlistApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = WaitlistApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {WaitlistSignupDto} waitlistSignupDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        waitlistControllerJoinWaitlist(waitlistSignupDto: WaitlistSignupDto, options?: any): AxiosPromise<void> {
+            return localVarFp.waitlistControllerJoinWaitlist(waitlistSignupDto, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * WaitlistApi - object-oriented interface
+ * @export
+ * @class WaitlistApi
+ * @extends {BaseAPI}
+ */
+export class WaitlistApi extends BaseAPI {
+    /**
+     * 
+     * @param {WaitlistSignupDto} waitlistSignupDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof WaitlistApi
+     */
+    public waitlistControllerJoinWaitlist(waitlistSignupDto: WaitlistSignupDto, options?: RawAxiosRequestConfig) {
+        return WaitlistApiFp(this.configuration).waitlistControllerJoinWaitlist(waitlistSignupDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

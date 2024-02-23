@@ -2,6 +2,7 @@ import axios from "axios";
 import {
   AuthApi,
   FindsApi,
+  LikesApi,
   PlacesApi,
   SavesApi,
   SearchApi,
@@ -42,6 +43,8 @@ export const usersApi = new UsersApi(undefined, BASE_URL, instance);
 export const authApi = new AuthApi(undefined, BASE_URL, instance);
 
 export const savesApi = new SavesApi(undefined, BASE_URL, instance);
+
+export const likesApi = new LikesApi(undefined, BASE_URL, instance);
 
 export const searchApi = new SearchApi(undefined, BASE_URL, instance);
 
